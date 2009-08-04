@@ -1,0 +1,3 @@
+#!/bin/bash
+premake4 codeblocks
+premake4 gmake
