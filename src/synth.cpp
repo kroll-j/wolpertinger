@@ -44,7 +44,7 @@ void wolpVoice::process(float* p1, float* p2, int samples)
 	float cutoff= synth->getparam(wolp::cutoff) * freq;
 	float step= freq / getSampleRate();
 	float vol= this->vol * synth->getparam(wolp::gain);
-	int n= int(synth->getparam(wolp::nfilters));
+	int nfilters= int(synth->getparam(wolp::nfilters));
 
 	float msaw= synth->getparam(wolp::gsaw),
 		  mrect= synth->getparam(wolp::grect),
@@ -71,7 +71,7 @@ void wolpVoice::process(float* p1, float* p2, int samples)
 			cyclecount++,
 			phase -= 2;
 
-		val= filter.run(val, n);
+		val= filter.run(val, nfilters);
 
 		curvol+= volstep;
 		if(curvol<=0.0f) { clearCurrentNote(); curvol= 0; break; }

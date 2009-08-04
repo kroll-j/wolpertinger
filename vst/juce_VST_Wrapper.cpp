@@ -53,9 +53,6 @@
 
 #if JucePlugin_Build_VST
 
-#define CREATE_MMLOCK
-//#define CALL_ON_MESSAGE_THREAD
-
 
 //==============================================================================
 /*  These files come with the Steinberg VST SDK - to get them, you'll need to
@@ -232,7 +229,7 @@ public:
     {
         startThread (7);
         while(!initialized)
-            usleep(100000);
+            usleep(100000); // wait for thread intialization to avoid a race condition
     }
 
     ~SharedMessageThread()
@@ -253,6 +250,7 @@ public:
         initialiseJuce_GUI();
 
         initialized= true;
+
         while ( (! threadShouldExit()) && messageManager->runDispatchLoopUntil (250) )
         {
         }
@@ -454,56 +452,32 @@ public:
         }
     }
 
-    static void messageThread_Open(JuceVSTWrapper *self)
-    {
-        AudioProcessorEditor* const ed = self->filter->createEditorIfNeeded();
-
-        if (ed != 0)
-            self->cEffect.flags |= effFlagsHasEditor;
-        else
-            self->cEffect.flags &= ~effFlagsHasEditor;
-
-        self->filter->editorBeingDeleted (ed);
-        delete ed;
-    }
-
     void open()
     {
         if (editorComp == 0)
         {
-#ifdef CREATE_MMLOCK
             const MessageManagerLock mmlock;
-#endif
-#ifdef CALL_ON_MESSAGE_THREAD
-            MessageManager::getInstance()->
-                callFunctionOnMessageThread( (MessageCallbackFunction*)messageThread_Open, this );
-#else
-            messageThread_Open(this);
-#endif
+            AudioProcessorEditor* const ed = filter->createEditorIfNeeded();
+
+            if (ed != 0)
+                cEffect.flags |= effFlagsHasEditor;
+            else
+                cEffect.flags &= ~effFlagsHasEditor;
+
+            filter->editorBeingDeleted (ed);
+            delete ed;
         }
 
         startTimer (1000 / 4);
     }
 
-    static void messageThread_Close(JuceVSTWrapper *self)
-    {
-        jassert (! recursionCheck);
-
-        self->stopTimer();
-        self->deleteEditor (false);
-    }
-
     void close()
     {
-#ifdef CREATE_MMLOCK
         const MessageManagerLock mmlock;
-#endif
-#ifdef CALL_ON_MESSAGE_THREAD
-        MessageManager::getInstance()->
-            callFunctionOnMessageThread( (MessageCallbackFunction*)messageThread_Close, this );
-#else
-        messageThread_Close(this);
-#endif
+        jassert (! recursionCheck);
+
+        stopTimer();
+        deleteEditor (false);
     }
 
     //==============================================================================
@@ -1217,6 +1191,7 @@ public:
                 if (canDeleteLaterIfModal)
                 {
                     shouldDeleteEditor = true;
+                    recursionCheck = false; // KRAKEN
                     return;
                 }
             }
@@ -1245,67 +1220,6 @@ public:
         recursionCheck = false;
     }
 
-    static VstIntPtr messageThread_effEditOpen(JuceVSTWrapper *self)
-    {
-        jassert (! recursionCheck);
-
-        self->deleteEditor (true);
-        self->createEditorComp();
-
-        if (self->editorComp != 0)
-        {
-            self->editorComp->setOpaque (true);
-            self->editorComp->setVisible (false);
-
-#if JUCE_WIN32
-            self->editorComp->addToDesktop (0);
-            self->hostWindow = (HWND) self->args.ptr;
-            HWND editorWnd = (HWND) self->editorComp->getWindowHandle();
-            SetParent (editorWnd, self->hostWindow);
-
-            DWORD val = GetWindowLong (editorWnd, GWL_STYLE);
-            val = (val & ~WS_POPUP) | WS_CHILD;
-            SetWindowLong (editorWnd, GWL_STYLE, val);
-#elif JUCE_LINUX
-            self->editorComp->addToDesktop (0);
-            self->hostWindow = (Window) self->args.ptr;
-            Window editorWnd = (Window) self->editorComp->getWindowHandle();
-            XReparentWindow (display, editorWnd, self->hostWindow, 0, 0);
-#else
-            self->hostWindow = attachComponentToWindowRef (editorComp, (WindowRef) ptr);
-#endif
-            self->editorComp->setVisible (true);
-
-            return 1;
-        }
-    }
-
-    static void messageThread_effEditClose(JuceVSTWrapper *self)
-    {
-        self->deleteEditor (true);
-    }
-
-    static VstIntPtr messageThread_effEditGetRect(JuceVSTWrapper *self)
-    {
-        self->createEditorComp();
-
-        if (self->editorComp != 0)
-        {
-            self->editorSize.left = 0;
-            self->editorSize.top = 0;
-            self->editorSize.right = self->editorComp->getWidth();
-            self->editorSize.bottom = self->editorComp->getHeight();
-
-            *((ERect**) self->args.ptr) = &self->editorSize;
-
-            return (VstIntPtr) (pointer_sized_int) &self->editorSize;
-        }
-        else
-        {
-            return 0;
-        }
-    }
-
     VstIntPtr dispatcher (VstInt32 opCode, VstInt32 index, VstIntPtr value, void* ptr, float opt)
     {
         if (hasShutdown)
@@ -1318,42 +1232,65 @@ public:
         }
         else if (opCode == effEditOpen)
         {
-#ifdef CREATE_MMLOCK
             const MessageManagerLock mmlock;
-#endif
-            args.ptr= ptr;
-#ifdef CALL_ON_MESSAGE_THREAD
-            return (VstIntPtr) MessageManager::getInstance()->
-                callFunctionOnMessageThread( (MessageCallbackFunction*)messageThread_effEditOpen, this );
+            jassert (! recursionCheck);
+
+            deleteEditor (true);
+            createEditorComp();
+
+            if (editorComp != 0)
+            {
+                editorComp->setOpaque (true);
+                editorComp->setVisible (false);
+
+#if JUCE_WIN32
+                editorComp->addToDesktop (0);
+                hostWindow = (HWND) ptr;
+                HWND editorWnd = (HWND) editorComp->getWindowHandle();
+                SetParent (editorWnd, hostWindow);
+
+                DWORD val = GetWindowLong (editorWnd, GWL_STYLE);
+                val = (val & ~WS_POPUP) | WS_CHILD;
+                SetWindowLong (editorWnd, GWL_STYLE, val);
+#elif JUCE_LINUX
+                editorComp->addToDesktop (0);
+                hostWindow = (Window) ptr;
+                Window editorWnd = (Window) editorComp->getWindowHandle();
+                XReparentWindow (display, editorWnd, hostWindow, 0, 0);
 #else
-            return messageThread_effEditOpen(this);
+                hostWindow = attachComponentToWindowRef (editorComp, (WindowRef) ptr);
 #endif
+                editorComp->setVisible (true);
+
+                return 1;
+            }
         }
         else if (opCode == effEditClose)
         {
-#ifdef CREATE_MMLOCK
             const MessageManagerLock mmlock;
-#endif
-#ifdef CALL_ON_MESSAGE_THREAD
-            MessageManager::getInstance()->
-                callFunctionOnMessageThread( (MessageCallbackFunction*)messageThread_effEditClose, this );
+            deleteEditor (true);
             return 0;
-#else
-            messageThread_effEditClose(this);
-#endif
         }
         else if (opCode == effEditGetRect)
         {
-#ifdef CREATE_MMLOCK
             const MessageManagerLock mmlock;
-#endif
-            args.ptr= ptr;
-#ifdef CALL_ON_MESSAGE_THREAD
-            return (VstIntPtr) MessageManager::getInstance()->
-                callFunctionOnMessageThread( (MessageCallbackFunction*)messageThread_effEditGetRect, this );
-#else
-            return messageThread_effEditGetRect(this);
-#endif
+            createEditorComp();
+
+            if (editorComp != 0)
+            {
+                editorSize.left = 0;
+                editorSize.top = 0;
+                editorSize.right = editorComp->getWidth();
+                editorSize.bottom = editorComp->getHeight();
+
+                *((ERect**) ptr) = &editorSize;
+
+                return (VstIntPtr) (pointer_sized_int) &editorSize;
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         return AudioEffectX::dispatcher (opCode, index, value, ptr, opt);
@@ -1485,10 +1422,6 @@ private:
         return host;
     }
 
-    struct  // additional arguments passed to the message thread
-    {
-        void *ptr;
-    } args;
 #if JUCE_MAC
     void* hostWindow;
 #elif JUCE_LINUX
