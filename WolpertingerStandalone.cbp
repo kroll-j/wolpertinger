@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="WolpertingerStandalone" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="build/Debug/Wolpertinger" prefix_auto="0" extension_auto="0" />
+				<Option object_output="build/Debug/WolpertingerStandalone" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="-DLINUX=1" />
+					<Add option="-DJUCE_USE_XSHM=1" />
+					<Add option="-DJUCE_ALSA=1" />
+					<Add option="-DJUCE_USE_VSTSDK_2_4=1" />
+					<Add option="-DDEBUG=1" />
+					<Add option="-D_DEBUG=1" />
+					<Add option="-ggdb" />
+					<Add directory="../juced/juce" />
+					<Add directory="../vstsdk2.4" />
+					<Add directory="src" />
+				</Compiler>
+				<Linker>
+					<Add directory="../juced/bin" />
+					<Add directory="../../../../usr/X11R6/lib" />
+					<Add directory="../../../../usr/lib" />
+					<Add library="freetype" />
+					<Add library="pthread" />
+					<Add library="rt" />
+					<Add library="X11" />
+					<Add library="GL" />
+					<Add library="GLU" />
+					<Add library="Xinerama" />
+					<Add library="asound" />
+					<Add library="m" />
+					<Add library="juce_debug" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="build/Release/Wolpertinger" prefix_auto="0" extension_auto="0" />
+				<Option object_output="build/Release/WolpertingerStandalone" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-DLINUX=1" />
+					<Add option="-DJUCE_USE_XSHM=1" />
+					<Add option="-DJUCE_ALSA=1" />
+					<Add option="-DJUCE_USE_VSTSDK_2_4=1" />
+					<Add option="-DNDEBUG=1" />
+					<Add option="-O2" />
+					<Add directory="../juced/juce" />
+					<Add directory="../vstsdk2.4" />
+					<Add directory="src" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add directory="../juced/bin" />
+					<Add directory="../../../../usr/X11R6/lib" />
+					<Add directory="../../../../usr/lib" />
+					<Add library="freetype" />
+					<Add library="pthread" />
+					<Add library="rt" />
+					<Add library="X11" />
+					<Add library="GL" />
+					<Add library="GLU" />
+					<Add library="Xinerama" />
+					<Add library="asound" />
+					<Add library="m" />
+					<Add library="juce" />
+				</Linker>
+			</Target>
+		</Build>
+		<Unit filename="src/synth.cpp">
+			<Option compilerVar="CPP" />
+		</Unit>
+		<Unit filename="src/editor.cpp">
+			<Option compilerVar="CPP" />
+		</Unit>
+		<Unit filename="src/synth.h">
+		</Unit>
+		<Unit filename="src/filters.h">
+		</Unit>
+		<Unit filename="src/editor.h">
+		</Unit>
+		<Unit filename="src/JucePluginCharacteristics.h">
+		</Unit>
+		<Unit filename="standalone/wolpMain.cpp">
+			<Option compilerVar="CPP" />
+		</Unit>
+		<Extensions />
+	</Project>
+</CodeBlocks_project_file>
+
