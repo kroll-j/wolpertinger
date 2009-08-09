@@ -229,7 +229,7 @@ public:
     {
         startThread (7);
         while(!initialized)
-            usleep(100000); // wait for thread intialization to avoid a race condition
+            sleep(1);   // wait for thread intialization to avoid a race condition
     }
 
     ~SharedMessageThread()

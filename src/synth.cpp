@@ -211,13 +211,13 @@ const wolp::paraminfo wolp::paraminfos[]=
 	{ "rect", 				"Rect",		 	0.0,	1.0,	0.0 },
 	{ "tri", 				"Tri",		 	0.0,	1.0,	0.0 },
 	{ "tune", 				"Tune",		 	0.0, 	1.0,	0.5 },
-	{ "filter_cutoff", 		"Cutoff X",	 	0.0, 	32.0,	0.5 },
+	{ "filter_cutoff", 		"Filter X",	 	0.0, 	32.0,	0.5 },
 	{ "filter_reso", 		"Resonance",	0.0,	1.0,	0.4 },
 	{ "filter_bandwidth", 	"Bandwidth",	0.0,	1.0,	0.4 },
 	{ "filter_velocity", 	"Velocity",	 	0.0,	1.0,	0.25 },
 	{ "filter_inertia", 	"Inertia",	 	0.0,	1.0,	0.25 },
 	{ "filter_passes", 		"Passes",	 	0.0,	8.0,	0.5 },
-	{ "filter_curcutoff", 	"Cur Cutoff",	0.0,	20000,	0.25 },
+	{ "filter_curcutoff", 	"Filter Freq",	0.0,	20000,	0.25 },
 };
 
 

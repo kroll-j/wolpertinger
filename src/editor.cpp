@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  1 Aug 2009 4:33:21 pm
+  Creation date:  8 Aug 2009 12:26:56 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -199,7 +199,7 @@ editor::editor (AudioProcessor *const ownerFilter)
     groupComponent3->setColour (GroupComponent::textColourId, Colours::white);
 
     addAndMakeVisible (label7 = new Label (T("new label"),
-                                           T("Cutoff X")));
+                                           T("Filter X")));
     label7->setFont (Font (15.0000f, Font::plain));
     label7->setJustificationType (Justification::centredRight);
     label7->setEditable (false, false, false);
@@ -324,7 +324,7 @@ editor::editor (AudioProcessor *const ownerFilter)
     slinertia->setSkewFactor (0.5);
 
     addAndMakeVisible (label13 = new Label (T("new label"),
-                                            T("Cur Cutoff")));
+                                            T("Filter Freq")));
     label13->setFont (Font (15.0000f, Font::plain));
     label13->setJustificationType (Justification::centredRight);
     label13->setEditable (false, false, false);
@@ -679,7 +679,7 @@ BEGIN_JUCER_METADATA
                   textcol="ffffffff" title="Filter" textpos="33"/>
   <LABEL name="new label" id="e57e597377fef365" memberName="label7" virtualName=""
          explicitFocusOrder="0" pos="16 152 64 16" textCol="ffffffff"
-         edTextCol="ff000000" edBkgCol="0" labelText="Cutoff X" editableSingleClick="0"
+         edTextCol="ff000000" edBkgCol="0" labelText="Filter X" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="34"/>
   <SLIDER name="new slider" id="df34f7f508b7adb0" memberName="slcutoff"
@@ -744,7 +744,7 @@ BEGIN_JUCER_METADATA
           textBoxHeight="20" skewFactor="0.5"/>
   <LABEL name="new label" id="77aa4e9b34a8fa81" memberName="label13" virtualName=""
          explicitFocusOrder="0" pos="16 296 64 16" textCol="ffffffff"
-         edTextCol="ff000000" edBkgCol="0" labelText="Cur Cutoff" editableSingleClick="0"
+         edTextCol="ff000000" edBkgCol="0" labelText="Filter Freq" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="34"/>
   <SLIDER name="new slider" id="88030f6cab98eb34" memberName="slcurcutoff"

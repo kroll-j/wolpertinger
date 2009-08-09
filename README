@@ -1,6 +1,6 @@
 tumbetoene: Wolpertinger v0.1
 
-Wolpertinger is a subtractive synth with a sharp bandpass filter whose center frequency "bounces" around to the frequency of the playing notes. Thanks to the Juced library it can be used both as a standalone application supporting JACK or ALSA audio outputs, and as a VST instrument.
+Wolpertinger is a subtractive synth with a sharp bandpass filter whose center frequency "bounces" around the frequency of the playing notes. Thanks to the Juced library it can be used both as a standalone application supporting JACK or ALSA audio outputs, and as a VST instrument.
 
 Web: http://tumbetoene.tuxfamily.org/
 Subversion: svn://svn.tuxfamily.org/svnroot/tumbetoene/wolpertinger
