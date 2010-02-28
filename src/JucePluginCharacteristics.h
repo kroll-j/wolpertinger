@@ -54,7 +54,7 @@
 
 /** The name of your plugin. (Try to keep this as short as possible)
 */
-#define JucePlugin_Name                     "Wolpertinger" JucePlugin_VersionString
+#define JucePlugin_Name                     "Wolpertinger"
 
 /** A longer decription of your plugin.
 */
