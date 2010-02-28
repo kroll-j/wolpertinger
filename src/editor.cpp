@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  8 Aug 2009 12:26:56 pm
+  Creation date:  28 Feb 2010 6:09:51 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -61,7 +61,22 @@ editor::editor (AudioProcessor *const ownerFilter)
       slinertia (0),
       label13 (0),
       slcurcutoff (0),
-      label14 (0)
+      label14 (0),
+      label15 (0),
+      label19 (0),
+      label20 (0),
+      label16 (0),
+      label17 (0),
+      label18 (0),
+      slattack5 (0),
+      slattack6 (0),
+      label21 (0),
+      label22 (0),
+      slattack7 (0),
+      slattack (0),
+      slattack2 (0),
+      slattack3 (0),
+      slattack4 (0)
 {
     addAndMakeVisible (groupComponent2 = new GroupComponent (T("new group"),
                                                              T("Oscillators")));
@@ -345,25 +360,162 @@ editor::editor (AudioProcessor *const ownerFilter)
     slcurcutoff->setSkewFactor (0.4);
 
     addAndMakeVisible (label14 = new Label (T("new label"),
-                                            T("Mix")));
+                                            T("Waveform")));
     label14->setFont (Font (15.0000f, Font::plain));
-    label14->setJustificationType (Justification::centredRight);
+    label14->setJustificationType (Justification::centredLeft);
     label14->setEditable (false, false, false);
     label14->setColour (Label::textColourId, Colours::white);
     label14->setColour (TextEditor::textColourId, Colours::black);
     label14->setColour (TextEditor::backgroundColourId, Colour (0x0));
 
+    addAndMakeVisible (label15 = new Label (T("new label"),
+                                            T("A")));
+    label15->setFont (Font (15.0000f, Font::plain));
+    label15->setJustificationType (Justification::centred);
+    label15->setEditable (false, false, false);
+    label15->setColour (Label::textColourId, Colours::white);
+    label15->setColour (TextEditor::textColourId, Colours::black);
+    label15->setColour (TextEditor::backgroundColourId, Colour (0x0));
+
+    addAndMakeVisible (label19 = new Label (T("new label"),
+                                            T("Inertia")));
+    label19->setFont (Font (15.0000f, Font::plain));
+    label19->setJustificationType (Justification::centred);
+    label19->setEditable (false, false, false);
+    label19->setColour (Label::textColourId, Colours::white);
+    label19->setColour (TextEditor::textColourId, Colours::black);
+    label19->setColour (TextEditor::backgroundColourId, Colour (0x0));
+
+    addAndMakeVisible (label20 = new Label (T("new label"),
+                                            T("Velocity")));
+    label20->setFont (Font (15.0000f, Font::plain));
+    label20->setJustificationType (Justification::centred);
+    label20->setEditable (false, false, false);
+    label20->setColour (Label::textColourId, Colours::white);
+    label20->setColour (TextEditor::textColourId, Colours::black);
+    label20->setColour (TextEditor::backgroundColourId, Colour (0x0));
+
+    addAndMakeVisible (label16 = new Label (T("new label"),
+                                            T("D")));
+    label16->setFont (Font (15.0000f, Font::plain));
+    label16->setJustificationType (Justification::centred);
+    label16->setEditable (false, false, false);
+    label16->setColour (Label::textColourId, Colours::white);
+    label16->setColour (TextEditor::textColourId, Colours::black);
+    label16->setColour (TextEditor::backgroundColourId, Colour (0x0));
+
+    addAndMakeVisible (label17 = new Label (T("new label"),
+                                            T("S")));
+    label17->setFont (Font (15.0000f, Font::plain));
+    label17->setJustificationType (Justification::centred);
+    label17->setEditable (false, false, false);
+    label17->setColour (Label::textColourId, Colours::white);
+    label17->setColour (TextEditor::textColourId, Colours::black);
+    label17->setColour (TextEditor::backgroundColourId, Colour (0x0));
+
+    addAndMakeVisible (label18 = new Label (T("new label"),
+                                            T("R")));
+    label18->setFont (Font (15.0000f, Font::plain));
+    label18->setJustificationType (Justification::centred);
+    label18->setEditable (false, false, false);
+    label18->setColour (Label::textColourId, Colours::white);
+    label18->setColour (TextEditor::textColourId, Colours::black);
+    label18->setColour (TextEditor::backgroundColourId, Colour (0x0));
+
+    addAndMakeVisible (slattack5 = new Slider (T("new slider")));
+    slattack5->setRange (0, 1, 0);
+    slattack5->setSliderStyle (Slider::Rotary);
+    slattack5->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
+    slattack5->setColour (Slider::thumbColourId, Colour (0xffbbf2ff));
+    slattack5->setColour (Slider::rotarySliderFillColourId, Colour (0x7f00b9ff));
+    slattack5->setColour (Slider::rotarySliderOutlineColourId, Colour (0x80ffffff));
+    slattack5->addListener (this);
+
+    addAndMakeVisible (slattack6 = new Slider (T("new slider")));
+    slattack6->setRange (0, 1, 0);
+    slattack6->setSliderStyle (Slider::Rotary);
+    slattack6->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
+    slattack6->setColour (Slider::thumbColourId, Colour (0xffbbf2ff));
+    slattack6->setColour (Slider::rotarySliderFillColourId, Colour (0x7f00b9ff));
+    slattack6->setColour (Slider::rotarySliderOutlineColourId, Colour (0x80ffffff));
+    slattack6->addListener (this);
+
+    addAndMakeVisible (label21 = new Label (T("new label"),
+                                            T("Scale")));
+    label21->setFont (Font (15.0000f, Font::plain));
+    label21->setJustificationType (Justification::centred);
+    label21->setEditable (false, false, false);
+    label21->setColour (Label::textColourId, Colours::white);
+    label21->setColour (TextEditor::textColourId, Colours::black);
+    label21->setColour (TextEditor::backgroundColourId, Colour (0x0));
+
+    addAndMakeVisible (label22 = new Label (T("new label"),
+                                            T("Vol Env")));
+    label22->setFont (Font (15.0000f, Font::plain));
+    label22->setJustificationType (Justification::centredLeft);
+    label22->setEditable (false, false, false);
+    label22->setColour (Label::textColourId, Colours::white);
+    label22->setColour (TextEditor::textColourId, Colours::black);
+    label22->setColour (TextEditor::backgroundColourId, Colour (0x0));
+
+    addAndMakeVisible (slattack7 = new Slider (T("new slider")));
+    slattack7->setRange (0, 1, 0);
+    slattack7->setSliderStyle (Slider::Rotary);
+    slattack7->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
+    slattack7->setColour (Slider::thumbColourId, Colour (0xffbbf2ff));
+    slattack7->setColour (Slider::rotarySliderFillColourId, Colour (0x7f00b9ff));
+    slattack7->setColour (Slider::rotarySliderOutlineColourId, Colour (0x80ffffff));
+    slattack7->addListener (this);
+
+    addAndMakeVisible (slattack = new Slider (T("new slider")));
+    slattack->setRange (0, 1, 0);
+    slattack->setSliderStyle (Slider::Rotary);
+    slattack->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
+    slattack->setColour (Slider::thumbColourId, Colour (0xffbbf2ff));
+    slattack->setColour (Slider::rotarySliderFillColourId, Colour (0x7f00b9ff));
+    slattack->setColour (Slider::rotarySliderOutlineColourId, Colour (0x80ffffff));
+    slattack->addListener (this);
+
+    addAndMakeVisible (slattack2 = new Slider (T("new slider")));
+    slattack2->setRange (0, 1, 0);
+    slattack2->setSliderStyle (Slider::Rotary);
+    slattack2->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
+    slattack2->setColour (Slider::thumbColourId, Colour (0xffbbf2ff));
+    slattack2->setColour (Slider::rotarySliderFillColourId, Colour (0x7f00b9ff));
+    slattack2->setColour (Slider::rotarySliderOutlineColourId, Colour (0x80ffffff));
+    slattack2->addListener (this);
+
+    addAndMakeVisible (slattack3 = new Slider (T("new slider")));
+    slattack3->setRange (0, 1, 0);
+    slattack3->setSliderStyle (Slider::Rotary);
+    slattack3->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
+    slattack3->setColour (Slider::thumbColourId, Colour (0xffbbf2ff));
+    slattack3->setColour (Slider::rotarySliderFillColourId, Colour (0x7f00b9ff));
+    slattack3->setColour (Slider::rotarySliderOutlineColourId, Colour (0x80ffffff));
+    slattack3->addListener (this);
+
+    addAndMakeVisible (slattack4 = new Slider (T("new slider")));
+    slattack4->setRange (0, 1, 0);
+    slattack4->setSliderStyle (Slider::Rotary);
+    slattack4->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
+    slattack4->setColour (Slider::thumbColourId, Colour (0xffbbf2ff));
+    slattack4->setColour (Slider::rotarySliderFillColourId, Colour (0x7f00b9ff));
+    slattack4->setColour (Slider::rotarySliderOutlineColourId, Colour (0x80ffffff));
+    slattack4->addListener (this);
+
 
     //[UserPreSize]
     //[/UserPreSize]
 
-    setSize (400, 438);
+    setSize (400, 428);
 
     //[Constructor] You can add your own custom stuff here..
 
     ((wolp*)ownerFilter)->addChangeListener(this);
 
     printf("editor() -- Thread: %08X\n", Thread::getCurrentThreadId());
+
+
 
     //[/Constructor]
 }
@@ -405,6 +557,21 @@ editor::~editor()
     deleteAndZero (label13);
     deleteAndZero (slcurcutoff);
     deleteAndZero (label14);
+    deleteAndZero (label15);
+    deleteAndZero (label19);
+    deleteAndZero (label20);
+    deleteAndZero (label16);
+    deleteAndZero (label17);
+    deleteAndZero (label18);
+    deleteAndZero (slattack5);
+    deleteAndZero (slattack6);
+    deleteAndZero (label21);
+    deleteAndZero (label22);
+    deleteAndZero (slattack7);
+    deleteAndZero (slattack);
+    deleteAndZero (slattack2);
+    deleteAndZero (slattack3);
+    deleteAndZero (slattack4);
 
     //[Destructor]. You can add your own custom destruction code here..
     //[/Destructor]
@@ -424,36 +591,51 @@ void editor::paint (Graphics& g)
 
 void editor::resized()
 {
-    groupComponent2->setBounds (8, 8, 384, 104);
-    groupComponent->setBounds (8, 344, 384, 80);
-    label->setBounds (16, 368, 56, 16);
-    label2->setBounds (16, 392, 56, 16);
-    slgain->setBounds (80, 368, 304, 16);
-    slclip->setBounds (80, 392, 304, 16);
-    slsaw->setBounds (56, 32, 56, 48);
-    label3->setBounds (56, 80, 56, 16);
-    slrect->setBounds (136, 32, 56, 48);
-    label4->setBounds (136, 80, 56, 16);
-    sltri->setBounds (216, 32, 56, 48);
-    label5->setBounds (216, 80, 56, 16);
-    sltune->setBounds (320, 32, 56, 48);
-    label6->setBounds (320, 80, 56, 16);
-    groupComponent3->setBounds (8, 128, 384, 200);
-    label7->setBounds (16, 152, 64, 16);
-    slcutoff->setBounds (80, 152, 304, 16);
-    label8->setBounds (16, 176, 64, 16);
-    slreso->setBounds (80, 176, 304, 16);
-    label9->setBounds (16, 200, 64, 16);
-    slbandwidth->setBounds (80, 200, 304, 16);
-    label10->setBounds (16, 224, 64, 16);
-    slpasses->setBounds (80, 224, 304, 16);
-    label11->setBounds (16, 248, 64, 16);
-    slvelocity->setBounds (80, 248, 304, 16);
-    label12->setBounds (16, 272, 64, 16);
-    slinertia->setBounds (80, 272, 304, 16);
-    label13->setBounds (16, 296, 64, 16);
-    slcurcutoff->setBounds (80, 296, 304, 16);
-    label14->setBounds (16, (32) + (48) / 2 - ((16) / 2), 32, 16);
+    groupComponent2->setBounds (8, 8, 384, 112);
+    groupComponent->setBounds (8, 337, 384, 80);
+    label->setBounds (16, 361, 56, 16);
+    label2->setBounds (16, 385, 56, 16);
+    slgain->setBounds (80, 361, 304, 16);
+    slclip->setBounds (80, 385, 304, 16);
+    slsaw->setBounds (24, 48, 48, 40);
+    label3->setBounds (24, 88, 48, 16);
+    slrect->setBounds (80, 48, 48, 40);
+    label4->setBounds (80, 88, 48, 16);
+    sltri->setBounds (136, 48, 48, 40);
+    label5->setBounds (136, 88, 48, 16);
+    sltune->setBounds (320, 48, 48, 40);
+    label6->setBounds (320, 88, 48, 16);
+    groupComponent3->setBounds (8, 129, 384, 200);
+    label7->setBounds (16, 153, 64, 16);
+    slcutoff->setBounds (80, 153, 304, 16);
+    label8->setBounds (16, 177, 64, 16);
+    slreso->setBounds (80, 177, 304, 16);
+    label9->setBounds (16, 201, 64, 16);
+    slbandwidth->setBounds (80, 201, 304, 16);
+    label10->setBounds (16, 225, 64, 16);
+    slpasses->setBounds (80, 225, 304, 16);
+    label11->setBounds (16, 249, 64, 16);
+    slvelocity->setBounds (80, 249, 304, 16);
+    label12->setBounds (16, 273, 64, 16);
+    slinertia->setBounds (80, 273, 304, 16);
+    label13->setBounds (16, 297, 64, 16);
+    slcurcutoff->setBounds (80, 297, 304, 16);
+    label14->setBounds (24, (48) + (40) / 2 + -28 - ((16) / 2), 120, 16);
+    label15->setBounds (432, 168, 32, 16);
+    label19->setBounds (720, 168, 48, 16);
+    label20->setBounds (664, 168, 56, 16);
+    label16->setBounds (472, 168, 32, 16);
+    label17->setBounds (512, 168, 32, 16);
+    label18->setBounds (552, 168, 32, 16);
+    slattack5->setBounds (672, 136, 40, 32);
+    slattack6->setBounds (728, 136, 32, 32);
+    label21->setBounds (616, 168, 48, 16);
+    label22->setBounds (424, 120, 150, 16);
+    slattack7->setBounds (624, 136, 32, 32);
+    slattack->setBounds (432, 136, 32, 32);
+    slattack2->setBounds (472, 136, 32, 32);
+    slattack3->setBounds (512, 136, 32, 32);
+    slattack4->setBounds (552, 136, 32, 32);
     //[UserResized] Add your own custom resize handling here..
 #if 1
     #define initslider(slidername, param)\
@@ -570,6 +752,41 @@ void editor::sliderValueChanged (Slider* sliderThatWasMoved)
 		updateval(curcutoff);
         //[/UserSliderCode_slcurcutoff]
     }
+    else if (sliderThatWasMoved == slattack5)
+    {
+        //[UserSliderCode_slattack5] -- add your slider handling code here..
+        //[/UserSliderCode_slattack5]
+    }
+    else if (sliderThatWasMoved == slattack6)
+    {
+        //[UserSliderCode_slattack6] -- add your slider handling code here..
+        //[/UserSliderCode_slattack6]
+    }
+    else if (sliderThatWasMoved == slattack7)
+    {
+        //[UserSliderCode_slattack7] -- add your slider handling code here..
+        //[/UserSliderCode_slattack7]
+    }
+    else if (sliderThatWasMoved == slattack)
+    {
+        //[UserSliderCode_slattack] -- add your slider handling code here..
+        //[/UserSliderCode_slattack]
+    }
+    else if (sliderThatWasMoved == slattack2)
+    {
+        //[UserSliderCode_slattack2] -- add your slider handling code here..
+        //[/UserSliderCode_slattack2]
+    }
+    else if (sliderThatWasMoved == slattack3)
+    {
+        //[UserSliderCode_slattack3] -- add your slider handling code here..
+        //[/UserSliderCode_slattack3]
+    }
+    else if (sliderThatWasMoved == slattack4)
+    {
+        //[UserSliderCode_slattack4] -- add your slider handling code here..
+        //[/UserSliderCode_slattack4]
+    }
 
     //[UsersliderValueChanged_Post]
     #undef updateval
@@ -584,11 +801,33 @@ void editor::sliderValueChanged (Slider* sliderThatWasMoved)
 void editor::changeListenerCallback(void *objectThatHasChanged)
 {
     int idx= (int)objectThatHasChanged;
-    if(idx==wolp::curcutoff)
-    {
-        wolp *synth= (wolp*)getAudioProcessor();
-        slcurcutoff->setValue( synth->getparam(wolp::curcutoff), false );
-    }
+	wolp *synth= (wolp*)getAudioProcessor();
+#define updateslider(name, slidername)		\
+		case wolp::name:	\
+			slidername->setValue( synth->params[wolp::name] * \
+								  (synth->paraminfos[idx].max-synth->paraminfos[idx].min), false );	\
+			break;
+
+	switch(idx)
+	{
+		updateslider (gain, slgain);
+		updateslider (clip, slclip);
+		updateslider (gsaw, slsaw);
+		updateslider (grect, slrect);
+		updateslider (gtri, sltri);
+		updateslider (tune, sltune);
+		updateslider (cutoff, slcutoff);
+		updateslider (resonance, slreso);
+		updateslider (bandwidth, slbandwidth);
+		updateslider (velocity, slvelocity);
+		updateslider (inertia, slinertia);
+		updateslider (nfilters, slpasses);
+		updateslider (curcutoff, slcurcutoff);
+		default:
+			printf("Object Changed: %d\n", idx);
+			break;
+	}
+#undef updateslider
 }
 
 //[/MiscUserCode]
@@ -606,158 +845,233 @@ BEGIN_JUCER_METADATA
                  parentClasses="public AudioProcessorEditor, public ChangeListener"
                  constructorParams="AudioProcessor *const ownerFilter" variableInitialisers="AudioProcessorEditor(ownerFilter)"
                  snapPixels="8" snapActive="1" snapShown="0" overlayOpacity="0.330000013"
-                 fixedSize="0" initialWidth="400" initialHeight="438">
+                 fixedSize="0" initialWidth="400" initialHeight="428">
   <BACKGROUND backgroundColour="ff000000"/>
   <GROUPCOMPONENT name="new group" id="e5e178cd242b6420" memberName="groupComponent2"
-                  virtualName="" explicitFocusOrder="1" pos="8 8 384 104" outlinecol="66ffffff"
+                  virtualName="" explicitFocusOrder="1" pos="8 8 384 112" outlinecol="66ffffff"
                   textcol="ffffffff" title="Oscillators" textpos="33"/>
   <GROUPCOMPONENT name="new group" id="ad99a16746beb177" memberName="groupComponent"
-                  virtualName="" explicitFocusOrder="1" pos="8 344 384 80" outlinecol="66ffffff"
+                  virtualName="" explicitFocusOrder="1" pos="8 337 384 80" outlinecol="66ffffff"
                   textcol="ffffffff" title="Output" textpos="33"/>
   <LABEL name="new label" id="49509c28b7b7d12d" memberName="label" virtualName=""
-         explicitFocusOrder="0" pos="16 368 56 16" textCol="ffffffff"
+         explicitFocusOrder="0" pos="16 361 56 16" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="Gain" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="34"/>
   <LABEL name="new label" id="155d710d9c4a7bd0" memberName="label2" virtualName=""
-         explicitFocusOrder="0" pos="16 392 56 16" textCol="ffffffff"
+         explicitFocusOrder="0" pos="16 385 56 16" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="Clip" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="34"/>
   <SLIDER name="new slider" id="8a7b903812862b6c" memberName="slgain" virtualName=""
-          explicitFocusOrder="0" pos="80 368 304 16" bkgcol="868686" textboxtext="ffffffff"
+          explicitFocusOrder="0" pos="80 361 304 16" bkgcol="868686" textboxtext="ffffffff"
           textboxbkgd="565656" textboxhighlight="409a9aff" textboxoutline="0"
           min="0" max="4" int="0.0001" style="LinearHorizontal" textBoxPos="TextBoxRight"
           textBoxEditable="1" textBoxWidth="60" textBoxHeight="20" skewFactor="0.3"/>
   <SLIDER name="new slider" id="5f153060103ce45b" memberName="slclip" virtualName=""
-          explicitFocusOrder="0" pos="80 392 304 16" bkgcol="868686" textboxtext="ffffffff"
+          explicitFocusOrder="0" pos="80 385 304 16" bkgcol="868686" textboxtext="ffffffff"
           textboxbkgd="565656" textboxhighlight="409a9aff" textboxoutline="0"
           min="0" max="5" int="0.0001" style="LinearHorizontal" textBoxPos="TextBoxRight"
           textBoxEditable="1" textBoxWidth="60" textBoxHeight="20" skewFactor="0.5"/>
   <SLIDER name="new slider" id="9ed6f0186f5ff937" memberName="slsaw" virtualName=""
-          explicitFocusOrder="0" pos="56 32 56 48" thumbcol="ffbbf2ff"
+          explicitFocusOrder="0" pos="24 48 48 40" thumbcol="ffbbf2ff"
           rotarysliderfill="7f00b9ff" rotaryslideroutline="80ffffff" min="0"
           max="1" int="0" style="Rotary" textBoxPos="NoTextBox" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="new label" id="eb3d9855455c7a5c" memberName="label3" virtualName=""
-         explicitFocusOrder="0" pos="56 80 56 16" textCol="ffffffff" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="24 88 48 16" textCol="ffffffff" edTextCol="ff000000"
          edBkgCol="0" labelText="Saw" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="36"/>
   <SLIDER name="new slider" id="f984b6ce867a512c" memberName="slrect" virtualName=""
-          explicitFocusOrder="0" pos="136 32 56 48" thumbcol="ffbbf2ff"
+          explicitFocusOrder="0" pos="80 48 48 40" thumbcol="ffbbf2ff"
           rotarysliderfill="7f00b9ff" rotaryslideroutline="80ffffff" min="0"
           max="1" int="0" style="Rotary" textBoxPos="NoTextBox" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="new label" id="4df8bd0f758110b0" memberName="label4" virtualName=""
-         explicitFocusOrder="0" pos="136 80 56 16" textCol="ffffffff"
-         edTextCol="ff000000" edBkgCol="0" labelText="Rect" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="36"/>
+         explicitFocusOrder="0" pos="80 88 48 16" textCol="ffffffff" edTextCol="ff000000"
+         edBkgCol="0" labelText="Rect" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
+         bold="0" italic="0" justification="36"/>
   <SLIDER name="new slider" id="787a4f0997781dd1" memberName="sltri" virtualName=""
-          explicitFocusOrder="0" pos="216 32 56 48" thumbcol="ffbbf2ff"
+          explicitFocusOrder="0" pos="136 48 48 40" thumbcol="ffbbf2ff"
           rotarysliderfill="7f00b9ff" rotaryslideroutline="80ffffff" min="0"
           max="1" int="0" style="Rotary" textBoxPos="NoTextBox" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="new label" id="881dba415f31e105" memberName="label5" virtualName=""
-         explicitFocusOrder="0" pos="216 80 56 16" textCol="ffffffff"
+         explicitFocusOrder="0" pos="136 88 48 16" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="Tri" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="36"/>
   <SLIDER name="new slider" id="34b4e27fcd2e1063" memberName="sltune" virtualName=""
-          explicitFocusOrder="0" pos="320 32 56 48" thumbcol="ffbbf2ff"
+          explicitFocusOrder="0" pos="320 48 48 40" thumbcol="ffbbf2ff"
           rotarysliderfill="7f00b9ff" rotaryslideroutline="80ffffff" min="0"
           max="1" int="0" style="Rotary" textBoxPos="NoTextBox" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="new label" id="2466156e2db40baf" memberName="label6" virtualName=""
-         explicitFocusOrder="0" pos="320 80 56 16" textCol="ffffffff"
+         explicitFocusOrder="0" pos="320 88 48 16" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="Tune" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="36"/>
   <GROUPCOMPONENT name="new group" id="7ce402f8c62d5932" memberName="groupComponent3"
-                  virtualName="" explicitFocusOrder="1" pos="8 128 384 200" outlinecol="66ffffff"
+                  virtualName="" explicitFocusOrder="1" pos="8 129 384 200" outlinecol="66ffffff"
                   textcol="ffffffff" title="Filter" textpos="33"/>
   <LABEL name="new label" id="e57e597377fef365" memberName="label7" virtualName=""
-         explicitFocusOrder="0" pos="16 152 64 16" textCol="ffffffff"
+         explicitFocusOrder="0" pos="16 153 64 16" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="Filter X" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="34"/>
   <SLIDER name="new slider" id="df34f7f508b7adb0" memberName="slcutoff"
-          virtualName="" explicitFocusOrder="0" pos="80 152 304 16" bkgcol="868686"
+          virtualName="" explicitFocusOrder="0" pos="80 153 304 16" bkgcol="868686"
           textboxtext="ffffffff" textboxbkgd="565656" textboxhighlight="409a9aff"
           textboxoutline="0" min="0" max="4" int="0.0001" style="LinearHorizontal"
           textBoxPos="TextBoxRight" textBoxEditable="1" textBoxWidth="60"
           textBoxHeight="20" skewFactor="0.5"/>
   <LABEL name="new label" id="e2f509e8c9131813" memberName="label8" virtualName=""
-         explicitFocusOrder="0" pos="16 176 64 16" textCol="ffffffff"
+         explicitFocusOrder="0" pos="16 177 64 16" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="Resonance" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="34"/>
   <SLIDER name="new slider" id="35786a165f16578e" memberName="slreso" virtualName=""
-          explicitFocusOrder="0" pos="80 176 304 16" bkgcol="868686" textboxtext="ffffffff"
+          explicitFocusOrder="0" pos="80 177 304 16" bkgcol="868686" textboxtext="ffffffff"
           textboxbkgd="565656" textboxhighlight="409a9aff" textboxoutline="0"
           min="0" max="4" int="0.0001" style="LinearHorizontal" textBoxPos="TextBoxRight"
           textBoxEditable="1" textBoxWidth="60" textBoxHeight="20" skewFactor="0.5"/>
   <LABEL name="new label" id="cefa7252c084bf3a" memberName="label9" virtualName=""
-         explicitFocusOrder="0" pos="16 200 64 16" textCol="ffffffff"
+         explicitFocusOrder="0" pos="16 201 64 16" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="Bandwidth" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="34"/>
   <SLIDER name="new slider" id="5362f75ced0b9ac9" memberName="slbandwidth"
-          virtualName="" explicitFocusOrder="0" pos="80 200 304 16" bkgcol="868686"
+          virtualName="" explicitFocusOrder="0" pos="80 201 304 16" bkgcol="868686"
           textboxtext="ffffffff" textboxbkgd="565656" textboxhighlight="409a9aff"
           textboxoutline="0" min="0" max="4" int="0.0001" style="LinearHorizontal"
           textBoxPos="TextBoxRight" textBoxEditable="1" textBoxWidth="60"
           textBoxHeight="20" skewFactor="0.5"/>
   <LABEL name="new label" id="adcc1d907bb16758" memberName="label10" virtualName=""
-         explicitFocusOrder="0" pos="16 224 64 16" textCol="ffffffff"
+         explicitFocusOrder="0" pos="16 225 64 16" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="Passes" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="34"/>
   <SLIDER name="new slider" id="29e98c8c7765790" memberName="slpasses"
-          virtualName="" explicitFocusOrder="0" pos="80 224 304 16" bkgcol="868686"
+          virtualName="" explicitFocusOrder="0" pos="80 225 304 16" bkgcol="868686"
           textboxtext="ffffffff" textboxbkgd="565656" textboxhighlight="409a9aff"
           textboxoutline="0" min="0" max="4" int="0.0001" style="LinearHorizontal"
           textBoxPos="TextBoxRight" textBoxEditable="1" textBoxWidth="60"
           textBoxHeight="20" skewFactor="1"/>
   <LABEL name="new label" id="eae3af57dfc37cd5" memberName="label11" virtualName=""
-         explicitFocusOrder="0" pos="16 248 64 16" textCol="ffffffff"
+         explicitFocusOrder="0" pos="16 249 64 16" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="Velocity" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="34"/>
   <SLIDER name="new slider" id="f1f951fe4565a7db" memberName="slvelocity"
-          virtualName="" explicitFocusOrder="0" pos="80 248 304 16" bkgcol="868686"
+          virtualName="" explicitFocusOrder="0" pos="80 249 304 16" bkgcol="868686"
           textboxtext="ffffffff" textboxbkgd="565656" textboxhighlight="409a9aff"
           textboxoutline="0" min="0" max="4" int="0.0001" style="LinearHorizontal"
           textBoxPos="TextBoxRight" textBoxEditable="1" textBoxWidth="60"
           textBoxHeight="20" skewFactor="0.5"/>
   <LABEL name="new label" id="145c7f21c5783bd3" memberName="label12" virtualName=""
-         explicitFocusOrder="0" pos="16 272 64 16" textCol="ffffffff"
+         explicitFocusOrder="0" pos="16 273 64 16" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="Inertia" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="34"/>
   <SLIDER name="new slider" id="1f326d02c58973a" memberName="slinertia"
-          virtualName="" explicitFocusOrder="0" pos="80 272 304 16" bkgcol="868686"
+          virtualName="" explicitFocusOrder="0" pos="80 273 304 16" bkgcol="868686"
           textboxtext="ffffffff" textboxbkgd="565656" textboxhighlight="409a9aff"
           textboxoutline="0" min="0" max="4" int="0.0001" style="LinearHorizontal"
           textBoxPos="TextBoxRight" textBoxEditable="1" textBoxWidth="60"
           textBoxHeight="20" skewFactor="0.5"/>
   <LABEL name="new label" id="77aa4e9b34a8fa81" memberName="label13" virtualName=""
-         explicitFocusOrder="0" pos="16 296 64 16" textCol="ffffffff"
+         explicitFocusOrder="0" pos="16 297 64 16" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="Filter Freq" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="34"/>
   <SLIDER name="new slider" id="88030f6cab98eb34" memberName="slcurcutoff"
-          virtualName="" explicitFocusOrder="0" pos="80 296 304 16" bkgcol="868686"
+          virtualName="" explicitFocusOrder="0" pos="80 297 304 16" bkgcol="868686"
           textboxtext="ffffffff" textboxbkgd="565656" textboxhighlight="409a9aff"
           textboxoutline="0" min="0" max="4" int="0.0001" style="LinearHorizontal"
           textBoxPos="TextBoxRight" textBoxEditable="1" textBoxWidth="60"
           textBoxHeight="20" skewFactor="0.4"/>
   <LABEL name="new label" id="bf2b92c62f94cc75" memberName="label14" virtualName=""
-         explicitFocusOrder="0" pos="16 0Cc 32 16" posRelativeY="9ed6f0186f5ff937"
-         textCol="ffffffff" edTextCol="ff000000" edBkgCol="0" labelText="Mix"
+         explicitFocusOrder="0" pos="24 -28Cc 120 16" posRelativeY="9ed6f0186f5ff937"
+         textCol="ffffffff" edTextCol="ff000000" edBkgCol="0" labelText="Waveform"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
-         fontname="Default font" fontsize="15" bold="0" italic="0" justification="34"/>
+         fontname="Default font" fontsize="15" bold="0" italic="0" justification="33"/>
+  <LABEL name="new label" id="788f76f9610aa084" memberName="label15" virtualName=""
+         explicitFocusOrder="0" pos="432 168 32 16" textCol="ffffffff"
+         edTextCol="ff000000" edBkgCol="0" labelText="A" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15" bold="0" italic="0" justification="36"/>
+  <LABEL name="new label" id="c5f8428d8d54eb65" memberName="label19" virtualName=""
+         explicitFocusOrder="0" pos="720 168 48 16" textCol="ffffffff"
+         edTextCol="ff000000" edBkgCol="0" labelText="Inertia" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15" bold="0" italic="0" justification="36"/>
+  <LABEL name="new label" id="e21ba2fabc5b6c77" memberName="label20" virtualName=""
+         explicitFocusOrder="0" pos="664 168 56 16" textCol="ffffffff"
+         edTextCol="ff000000" edBkgCol="0" labelText="Velocity" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15" bold="0" italic="0" justification="36"/>
+  <LABEL name="new label" id="d263507c08f0e588" memberName="label16" virtualName=""
+         explicitFocusOrder="0" pos="472 168 32 16" textCol="ffffffff"
+         edTextCol="ff000000" edBkgCol="0" labelText="D" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15" bold="0" italic="0" justification="36"/>
+  <LABEL name="new label" id="1a960ef97d83f53a" memberName="label17" virtualName=""
+         explicitFocusOrder="0" pos="512 168 32 16" textCol="ffffffff"
+         edTextCol="ff000000" edBkgCol="0" labelText="S" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15" bold="0" italic="0" justification="36"/>
+  <LABEL name="new label" id="8a53fb5fd12f582b" memberName="label18" virtualName=""
+         explicitFocusOrder="0" pos="552 168 32 16" textCol="ffffffff"
+         edTextCol="ff000000" edBkgCol="0" labelText="R" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15" bold="0" italic="0" justification="36"/>
+  <SLIDER name="new slider" id="e34f9594ade717e" memberName="slattack5"
+          virtualName="" explicitFocusOrder="0" pos="672 136 40 32" thumbcol="ffbbf2ff"
+          rotarysliderfill="7f00b9ff" rotaryslideroutline="80ffffff" min="0"
+          max="1" int="0" style="Rotary" textBoxPos="NoTextBox" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="new slider" id="fccef4f71bc5a237" memberName="slattack6"
+          virtualName="" explicitFocusOrder="0" pos="728 136 32 32" thumbcol="ffbbf2ff"
+          rotarysliderfill="7f00b9ff" rotaryslideroutline="80ffffff" min="0"
+          max="1" int="0" style="Rotary" textBoxPos="NoTextBox" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <LABEL name="new label" id="9c19403fd33058bb" memberName="label21" virtualName=""
+         explicitFocusOrder="0" pos="616 168 48 16" textCol="ffffffff"
+         edTextCol="ff000000" edBkgCol="0" labelText="Scale" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15" bold="0" italic="0" justification="36"/>
+  <LABEL name="new label" id="94d601be4e7bf89b" memberName="label22" virtualName=""
+         explicitFocusOrder="0" pos="424 120 150 16" textCol="ffffffff"
+         edTextCol="ff000000" edBkgCol="0" labelText="Vol Env" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15" bold="0" italic="0" justification="33"/>
+  <SLIDER name="new slider" id="9c6a0f0cb6d7c451" memberName="slattack7"
+          virtualName="" explicitFocusOrder="0" pos="624 136 32 32" thumbcol="ffbbf2ff"
+          rotarysliderfill="7f00b9ff" rotaryslideroutline="80ffffff" min="0"
+          max="1" int="0" style="Rotary" textBoxPos="NoTextBox" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="new slider" id="9b7cc6b66815757b" memberName="slattack"
+          virtualName="" explicitFocusOrder="0" pos="432 136 32 32" thumbcol="ffbbf2ff"
+          rotarysliderfill="7f00b9ff" rotaryslideroutline="80ffffff" min="0"
+          max="1" int="0" style="Rotary" textBoxPos="NoTextBox" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="new slider" id="dbcf879a8e4f456b" memberName="slattack2"
+          virtualName="" explicitFocusOrder="0" pos="472 136 32 32" thumbcol="ffbbf2ff"
+          rotarysliderfill="7f00b9ff" rotaryslideroutline="80ffffff" min="0"
+          max="1" int="0" style="Rotary" textBoxPos="NoTextBox" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="new slider" id="ba560858e5b507f3" memberName="slattack3"
+          virtualName="" explicitFocusOrder="0" pos="512 136 32 32" thumbcol="ffbbf2ff"
+          rotarysliderfill="7f00b9ff" rotaryslideroutline="80ffffff" min="0"
+          max="1" int="0" style="Rotary" textBoxPos="NoTextBox" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="new slider" id="89e012ddb565692c" memberName="slattack4"
+          virtualName="" explicitFocusOrder="0" pos="552 136 32 32" thumbcol="ffbbf2ff"
+          rotarysliderfill="7f00b9ff" rotaryslideroutline="80ffffff" min="0"
+          max="1" int="0" style="Rotary" textBoxPos="NoTextBox" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

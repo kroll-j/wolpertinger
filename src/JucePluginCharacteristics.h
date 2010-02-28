@@ -54,7 +54,7 @@
 
 /** The name of your plugin. (Try to keep this as short as possible)
 */
-#define JucePlugin_Name                     "Wolpertinger"
+#define JucePlugin_Name                     "Wolpertinger" JucePlugin_VersionString
 
 /** A longer decription of your plugin.
 */
@@ -67,7 +67,7 @@
 /** A four-character code for your company.
     Use single quotes - this isn't a string!
 */
-#define JucePlugin_ManufacturerCode         'JohK'
+#define JucePlugin_ManufacturerCode         'TOEN'
 
 /** A unique four-character code for your plugin.
     Use single quotes - this isn't a string!
@@ -163,9 +163,9 @@
 //==============================================================================
 /** A version number
 */
-#define JucePlugin_VersionCode              0x00000100
+#define JucePlugin_VersionCode              0x00000002
 
-#define JucePlugin_VersionString            "0.1"
+#define JucePlugin_VersionString            "0.2"
 
 
 //==============================================================================

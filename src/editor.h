@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  8 Aug 2009 12:26:56 pm
+  Creation date:  28 Feb 2010 6:09:51 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -19,8 +19,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCER_HEADER_EDITOR_EDITOR_C20B912A__
-#define __JUCER_HEADER_EDITOR_EDITOR_C20B912A__
+#ifndef __JUCER_HEADER_EDITOR_EDITOR_6A847BBE__
+#define __JUCER_HEADER_EDITOR_EDITOR_6A847BBE__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "juce.h"
@@ -93,6 +93,21 @@ private:
     Label* label13;
     Slider* slcurcutoff;
     Label* label14;
+    Label* label15;
+    Label* label19;
+    Label* label20;
+    Label* label16;
+    Label* label17;
+    Label* label18;
+    Slider* slattack5;
+    Slider* slattack6;
+    Label* label21;
+    Label* label22;
+    Slider* slattack7;
+    Slider* slattack;
+    Slider* slattack2;
+    Slider* slattack3;
+    Slider* slattack4;
 
     //==============================================================================
     // (prevent copy constructor and operator= being generated..)
@@ -101,4 +116,4 @@ private:
 };
 
 
-#endif   // __JUCER_HEADER_EDITOR_EDITOR_C20B912A__
+#endif   // __JUCER_HEADER_EDITOR_EDITOR_6A847BBE__

@@ -2,7 +2,13 @@
 #include "editor.h"
 
 
-
+/*
+Versions
+0.2 MIDI parameter changes now update the GUI
+    Binaries no longer linked to OpenGL
+    Debug and Release binaries included
+0.1 initial release
+*/
 
 AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
@@ -113,6 +119,7 @@ void wolpVoice::renderNextBlock (AudioSampleBuffer& outputBuffer, int startSampl
 
 // ------------------------- Synth -------------------------
 
+
 void wolp::getStateInformation (JUCE_NAMESPACE::MemoryBlock& destData)
 {
 	XmlElement *doc= new XmlElement(String("synth"));
@@ -202,6 +209,30 @@ float wolp::getparam(int idx)
 	return v * (i.max-i.min); // + i.min;
 }
 
+void wolp::setParameter (int idx, float value)
+{
+	params[idx]= value;
+	if(idx==curcutoff) cutoff_filter.setvalue(getparam(idx));
+	else if(idx==tune)
+	{
+		for(int i= voices.size(); --i>=0; )
+		{
+			wolpVoice *voice= (wolpVoice*)voices.getUnchecked(i);
+			int note= voice->getCurrentlyPlayingNote();
+			if(note>=0) voice->setfreq(getnotefreq(note));
+		}
+	}
+
+	editor *e= (editor*)getActiveEditor();
+	if(e)
+	{
+		//if(idx!=12) printf("non-gui param change, setParameter %d %.2f\n", idx, value);
+		// no way to check if this change was caused by the GUI, so it's updated needlessly when it was.
+		sendChangeMessage((void*)idx);
+	}
+}
+
+
 
 const wolp::paraminfo wolp::paraminfos[]=
 {
@@ -220,12 +251,17 @@ const wolp::paraminfo wolp::paraminfos[]=
 	{ "filter_curcutoff", 	"Filter Freq",	0.0,	20000,	0.25 },
 };
 
+void wolp::loaddefaultparams()
+{
+	for(int i= 0; i<param_size; i++) params[i]= paraminfos[i].defval;
+}
+
 
 wolp::wolp()
 {
 	jassert(sizeof(paraminfos)/sizeof(paraminfos[0])==param_size);
+	loaddefaultparams();
 
-	for(int i= 0; i<param_size; i++) params[i]= paraminfos[i].defval;
 	samples_synthesized= 0;
 
 	for(int i= 0; i<8 ; i++)
@@ -259,7 +295,7 @@ void wolp::processBlock(AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 		if(out1[i]<-clp) out1[i]= -clp; else if(out1[i]>clp) out1[i]= clp;
 	}
 
-    editor *e= (editor*)getActiveEditor();
+//    editor *e= (editor*)getActiveEditor();
 //    if(e) e->updateparams();
 }
 

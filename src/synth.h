@@ -120,23 +120,10 @@ class wolp:	public AudioProcessor,
 					return String::formatted(JUCE_T("%.2f"), getparam(idx));
 			}
 		}
-		void setParameter (int idx, float value)
-		{
-			params[idx]= value;
-			if(idx==curcutoff) cutoff_filter.setvalue(getparam(idx));
-			else if(idx==tune)
-			{
-				for(int i= voices.size(); --i>=0; )
-				{
-					wolpVoice *voice= (wolpVoice*)voices.getUnchecked(i);
-					int note= voice->getCurrentlyPlayingNote();
-					if(note>=0) voice->setfreq(getnotefreq(note));
-				}
-			}
-		}
+		void setParameter (int idx, float value);
 
 		//==============================================================================
-		int getNumPrograms() { return 1; };
+		int getNumPrograms() { return 0; };
 		int getCurrentProgram() { return 0; };
 		void setCurrentProgram (int index) { };
 		const String getProgramName (int index) { return "Default"; };
@@ -155,6 +142,8 @@ class wolp:	public AudioProcessor,
 
 		float getparam(int idx);
 
+        void loaddefaultparams();
+
 		void renderNextBlock (AudioSampleBuffer& outputAudio,
 							  const MidiBuffer& inputMidi,
 							  int startSample,
@@ -170,6 +159,7 @@ class wolp:	public AudioProcessor,
 		unsigned long samples_synthesized;
 
 		friend class wolpVoice;
+		friend class editor;
 };
 
 
