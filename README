@@ -56,9 +56,6 @@ DEPENDENCIES
 You need the Juced library to compile the code. You can get Juced from 
 http://code.google.com/p/juced/
 
-I had to make a few necessary changes to the Juced codebase, so using the plain
-Juced code may or may not work. This will be fixed in a later version.
-
 Note that you need the VST 2.4 SDK if you want to build the VSTi. Steinberg's 
 license forbids redistribution, so I can't include the SDK. 
 It's free "as in beer" though: you can get it from http://www.steinberg.net/ 
