@@ -143,6 +143,12 @@
 */
 #define JucePlugin_ProducesMidiOutput               0
 
+/** If your plugin has a tail, you can set the length here and this information
+    will be passed on to the host.
+    (Not all formats/hosts might actually use this, though)
+*/
+#define JucePlugin_TailLengthSeconds                0
+
 /** If this is 1, it means that when the plugins input buffers are
     silent, it's output will be too.
 
