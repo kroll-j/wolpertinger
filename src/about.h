@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  8 Mar 2010 8:09:20pm
+  Creation date:  6 Mar 2010 11:38:13 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -19,8 +19,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCER_HEADER_EDITOR_EDITOR_C1AF0379__
-#define __JUCER_HEADER_EDITOR_EDITOR_C1AF0379__
+#ifndef __JUCER_HEADER_ABOUT_ABOUT_F138E1CD__
+#define __JUCER_HEADER_ABOUT_ABOUT_F138E1CD__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "juce.h"
@@ -36,25 +36,26 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class editor  : public AudioProcessorEditor,
-                public ChangeListener,
-                public SliderListener
+class about  : public Component
 {
 public:
     //==============================================================================
-    editor (AudioProcessor *const ownerFilter);
-    ~editor();
+    about ();
+    ~about();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
     void changeListenerCallback(void *objectThatHasChanged);
-    void parentHierarchyChanged();
     //[/UserMethods]
 
     void paint (Graphics& g);
     void resized();
-    void sliderValueChanged (Slider* sliderThatWasMoved);
 
+    // Binary resources:
+    static const char* logo_png;
+    static const int logo_pngSize;
+    static const char* icon_png;
+    static const int icon_pngSize;
 
     //==============================================================================
     juce_UseDebuggingNewOperator
@@ -64,57 +65,16 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    GroupComponent* groupComponent2;
-    GroupComponent* groupComponent;
+    HyperlinkButton* hyperlinkButton;
     Label* label;
     Label* label2;
-    Slider* slgain;
-    Slider* slclip;
-    Slider* slsaw;
-    Label* label3;
-    Slider* slrect;
-    Label* label4;
-    Slider* sltri;
-    Label* label5;
-    Slider* sltune;
-    Label* label6;
-    GroupComponent* groupComponent3;
-    Label* label7;
-    Slider* slcutoff;
-    Label* label8;
-    Slider* slreso;
-    Label* label9;
-    Slider* slbandwidth;
-    Label* label10;
-    Slider* slpasses;
-    Label* label11;
-    Slider* slvelocity;
-    Label* label12;
-    Slider* slinertia;
-    Label* label13;
-    Slider* slcurcutoff;
-    Label* label14;
-    Label* label15;
-    Label* label19;
-    Label* label20;
-    Label* label16;
-    Label* label17;
-    Label* label18;
-    Slider* slattack5;
-    Slider* slattack6;
-    Label* label21;
-    Label* label22;
-    Slider* slattack7;
-    Slider* slattack;
-    Slider* slattack2;
-    Slider* slattack3;
-    Slider* slattack4;
+    Image* cachedImage_logo_png;
 
     //==============================================================================
     // (prevent copy constructor and operator= being generated..)
-    editor (const editor&);
-    const editor& operator= (const editor&);
+    about (const about&);
+    const about& operator= (const about&);
 };
 
 
-#endif   // __JUCER_HEADER_EDITOR_EDITOR_C1AF0379__
+#endif   // __JUCER_HEADER_ABOUT_ABOUT_F138E1CD__

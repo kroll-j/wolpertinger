@@ -7,7 +7,7 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="build/Debug/Wolpertinger002-debug" prefix_auto="0" extension_auto="0" />
+				<Option output="build/Wolpertinger003-debug" prefix_auto="0" extension_auto="0" />
 				<Option object_output="build/Debug/WolpertingerStandalone" />
 				<Option type="0" />
 				<Option compiler="gcc" />
@@ -17,15 +17,21 @@
 					<Add option="-DJUCE_USE_XSHM=1" />
 					<Add option="-DJUCE_ALSA=1" />
 					<Add option="-DJUCE_USE_VSTSDK_2_4=1" />
+					<Add option="-DDATE=&quot;`date +%F`&quot;" />
+					<Add option="-DVERSION=003" />
+					<Add option="-DVERSIONSTRING=&quot;0.3&quot;" />
+					<Add option="-DCONFIGURATION=&quot;Debug&quot;" />
+					<Add option="-DCONFIG_STANDALONE=1" />
+					<Add option="-DBINTYPE=&quot;Linux Standalone&quot;" />
 					<Add option="-DDEBUG=1" />
 					<Add option="-D_DEBUG=1" />
 					<Add option="-ggdb" />
-					<Add directory="../juced/juce" />
+					<Add directory="../juce-git" />
 					<Add directory="../vstsdk2.4" />
 					<Add directory="src" />
 				</Compiler>
 				<Linker>
-					<Add directory="../juced/bin" />
+					<Add directory="../juce-git/bin" />
 					<Add directory="../../../../usr/X11R6/lib" />
 					<Add directory="../../../../usr/lib" />
 					<Add library="freetype" />
@@ -40,7 +46,7 @@
 				</Linker>
 			</Target>
 			<Target title="Release">
-				<Option output="build/Release/Wolpertinger002" prefix_auto="0" extension_auto="0" />
+				<Option output="build/Wolpertinger003" prefix_auto="0" extension_auto="0" />
 				<Option object_output="build/Release/WolpertingerStandalone" />
 				<Option type="0" />
 				<Option compiler="gcc" />
@@ -50,15 +56,21 @@
 					<Add option="-DJUCE_USE_XSHM=1" />
 					<Add option="-DJUCE_ALSA=1" />
 					<Add option="-DJUCE_USE_VSTSDK_2_4=1" />
+					<Add option="-DDATE=&quot;`date +%F`&quot;" />
+					<Add option="-DVERSION=003" />
+					<Add option="-DVERSIONSTRING=&quot;0.3&quot;" />
+					<Add option="-DCONFIGURATION=&quot;Release&quot;" />
+					<Add option="-DCONFIG_STANDALONE=1" />
+					<Add option="-DBINTYPE=&quot;Linux Standalone&quot;" />
 					<Add option="-DNDEBUG=1" />
 					<Add option="-O2" />
-					<Add directory="../juced/juce" />
+					<Add directory="../juce-git" />
 					<Add directory="../vstsdk2.4" />
 					<Add directory="src" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add directory="../juced/bin" />
+					<Add directory="../juce-git/bin" />
 					<Add directory="../../../../usr/X11R6/lib" />
 					<Add directory="../../../../usr/lib" />
 					<Add library="freetype" />
@@ -73,17 +85,43 @@
 				</Linker>
 			</Target>
 		</Build>
+		<Unit filename="src/TabbedEditor.cpp">
+		</Unit>
+		<Unit filename="src/PresetComboBox.cpp">
+		</Unit>
+		<Unit filename="src/RotatingToggleButton.cpp">
+		</Unit>
 		<Unit filename="src/synth.cpp">
 		</Unit>
+		<Unit filename="src/KeyboardButton.cpp">
+		</Unit>
+		<Unit filename="src/about.cpp">
+		</Unit>
 		<Unit filename="src/editor.cpp">
+		</Unit>
+		<Unit filename="src/tabbed-editor.cpp">
 		</Unit>
 		<Unit filename="src/editor.h">
 		</Unit>
 		<Unit filename="src/JucePluginCharacteristics.h">
 		</Unit>
+		<Unit filename="src/PresetComboBox.h">
+		</Unit>
 		<Unit filename="src/filters.h">
 		</Unit>
+		<Unit filename="src/juce_PluginHeaders.h">
+		</Unit>
+		<Unit filename="src/RotatingToggleButton.h">
+		</Unit>
 		<Unit filename="src/synth.h">
+		</Unit>
+		<Unit filename="src/about.h">
+		</Unit>
+		<Unit filename="src/KeyboardButton.h">
+		</Unit>
+		<Unit filename="src/TabbedEditor.h">
+		</Unit>
+		<Unit filename="src/tabbed-editor.h">
 		</Unit>
 		<Unit filename="standalone/wolpMain.cpp">
 		</Unit>

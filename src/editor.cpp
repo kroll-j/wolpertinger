@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  28 Feb 2010 6:09:51 pm
+  Creation date:  8 Mar 2010 8:09:20pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -21,6 +21,7 @@
 
 //[Headers] You can add your own extra header files here...
 #include "synth.h"
+#include "about.h"
 //[/Headers]
 
 #include "editor.h"
@@ -583,7 +584,7 @@ void editor::paint (Graphics& g)
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
 
-    g.fillAll (Colours::black);
+    g.fillAll (Colour (0xff272727));
 
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
@@ -795,7 +796,6 @@ void editor::sliderValueChanged (Slider* sliderThatWasMoved)
 }
 
 
-
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 
 void editor::changeListenerCallback(void *objectThatHasChanged)
@@ -830,6 +830,14 @@ void editor::changeListenerCallback(void *objectThatHasChanged)
 #undef updateslider
 }
 
+void editor::parentHierarchyChanged()
+{
+	Image &icon= *ImageCache::getFromMemory(about::icon_png, about::icon_pngSize);
+	ComponentPeer *peer= getPeer();
+	if(peer)
+		peer->setIcon(icon);
+}
+
 //[/MiscUserCode]
 
 
@@ -844,9 +852,9 @@ BEGIN_JUCER_METADATA
 <JUCER_COMPONENT documentType="Component" className="editor" componentName=""
                  parentClasses="public AudioProcessorEditor, public ChangeListener"
                  constructorParams="AudioProcessor *const ownerFilter" variableInitialisers="AudioProcessorEditor(ownerFilter)"
-                 snapPixels="8" snapActive="1" snapShown="0" overlayOpacity="0.330000013"
+                 snapPixels="8" snapActive="0" snapShown="0" overlayOpacity="0.330000013"
                  fixedSize="0" initialWidth="400" initialHeight="428">
-  <BACKGROUND backgroundColour="ff000000"/>
+  <BACKGROUND backgroundColour="ff272727"/>
   <GROUPCOMPONENT name="new group" id="e5e178cd242b6420" memberName="groupComponent2"
                   virtualName="" explicitFocusOrder="1" pos="8 8 384 112" outlinecol="66ffffff"
                   textcol="ffffffff" title="Oscillators" textpos="33"/>

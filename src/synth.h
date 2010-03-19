@@ -62,7 +62,8 @@ class wolpVoice: public SynthesiserVoice
 
 class wolp:	public AudioProcessor,
             public Synthesiser,
-            public ChangeBroadcaster
+            public ChangeBroadcaster,
+            public MidiKeyboardStateListener
 {
 	public:
 		enum params
@@ -117,13 +118,13 @@ class wolp:	public AudioProcessor,
 			switch(idx)
 			{
 				default:
-					return String::formatted(JUCE_T("%.2f"), getparam(idx));
+					return String(getparam(idx), 2);
 			}
 		}
 		void setParameter (int idx, float value);
 
 		//==============================================================================
-		int getNumPrograms() { return 0; };
+		int getNumPrograms() { return 1; };
 		int getCurrentProgram() { return 0; };
 		void setCurrentProgram (int index) { };
 		const String getProgramName (int index) { return "Default"; };
@@ -148,6 +149,37 @@ class wolp:	public AudioProcessor,
 							  const MidiBuffer& inputMidi,
 							  int startSample,
 							  int numSamples);
+
+		//==============================================================================
+		/** Called when one of the MidiKeyboardState's keys is pressed.
+
+			This will be called synchronously when the state is either processing a
+			buffer in its MidiKeyboardState::processNextMidiBuffer() method, or
+			when a note is being played with its MidiKeyboardState::noteOn() method.
+
+			Note that this callback could happen from an audio callback thread, so be
+			careful not to block, and avoid any UI activity in the callback.
+		*/
+		virtual void handleNoteOn (MidiKeyboardState* source,
+								   int midiChannel, int midiNoteNumber, float velocity)
+		{
+			noteOn(midiChannel, midiNoteNumber, velocity);
+		}
+
+		/** Called when one of the MidiKeyboardState's keys is released.
+
+			This will be called synchronously when the state is either processing a
+			buffer in its MidiKeyboardState::processNextMidiBuffer() method, or
+			when a note is being played with its MidiKeyboardState::noteOff() method.
+
+			Note that this callback could happen from an audio callback thread, so be
+			careful not to block, and avoid any UI activity in the callback.
+		*/
+		virtual void handleNoteOff (MidiKeyboardState* source,
+									int midiChannel, int midiNoteNumber)
+		{
+			noteOff(midiChannel, midiNoteNumber, velocity);
+		}
 
 	protected:
 

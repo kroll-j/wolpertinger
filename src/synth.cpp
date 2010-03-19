@@ -1,9 +1,12 @@
 #include "synth.h"
-#include "editor.h"
+#include "tabbed-editor.h"
+#include "about.h"
 
 
 /*
 Versions
+0.3 Virtual Keyboard Component, GUI niceties
+	Changed back to Juce
 0.2 MIDI parameter changes now update the GUI
     Binaries no longer linked to OpenGL
     Debug and Release binaries included
@@ -122,6 +125,7 @@ void wolpVoice::renderNextBlock (AudioSampleBuffer& outputBuffer, int startSampl
 
 void wolp::getStateInformation (JUCE_NAMESPACE::MemoryBlock& destData)
 {
+	printf("getStateInformation()\n");
 	XmlElement *doc= new XmlElement(String("synth"));
 	for(int i= 0; i<param_size; i++)
 	{
@@ -141,6 +145,7 @@ void wolp::setStateInformation (const void* data, int sizeInBytes)
 
 	if(xml && xml->getTagName() == String("synth"))
 	{
+		loaddefaultparams();
 		forEachXmlChildElementWithTagName(*xml, param, T("param"))
 		{
 			const char *name= param->getStringAttribute(T("name")).toUTF8();
@@ -160,7 +165,7 @@ void wolp::setStateInformation (const void* data, int sizeInBytes)
 	else errorstring= T("XML data corrupt\n");
 
 	if(errorstring.length())
-		AlertWindow::showMessageBox(AlertWindow::WarningIcon, String("Synth2"), errorstring);
+		AlertWindow::showMessageBox(AlertWindow::WarningIcon, String("Wolpertinger"), errorstring);
 
 	if(xml) delete xml;
 }
@@ -223,12 +228,12 @@ void wolp::setParameter (int idx, float value)
 		}
 	}
 
-	editor *e= (editor*)getActiveEditor();
+	tabbed_editor *e= (tabbed_editor*)getActiveEditor();
 	if(e)
 	{
 		//if(idx!=12) printf("non-gui param change, setParameter %d %.2f\n", idx, value);
 		// no way to check if this change was caused by the GUI, so it's updated needlessly when it was.
-		sendChangeMessage((void*)idx);
+//		sendChangeMessage((void*)idx);
 	}
 }
 
@@ -388,7 +393,7 @@ void wolp::renderNextBlock (AudioSampleBuffer& outputBuffer,
 AudioProcessorEditor* wolp::createEditor()
 {
     printf("wolp::createEditor() thread=%08X\n", Thread::getCurrentThreadId());
-	editor *e= new editor(this);
+	tabbed_editor *e= new tabbed_editor(this);
     printf("wolp::createEditor() done\n");
 
 	return e;

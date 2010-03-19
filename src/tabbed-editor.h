@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  8 Mar 2010 8:09:20pm
+  Creation date:  17 Mar 2010 5:47:24pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -19,11 +19,13 @@
   ==============================================================================
 */
 
-#ifndef __JUCER_HEADER_EDITOR_EDITOR_C1AF0379__
-#define __JUCER_HEADER_EDITOR_EDITOR_C1AF0379__
+#ifndef __JUCER_HEADER_TABBEDEDITOR_TABBEDEDITOR_F921B809__
+#define __JUCER_HEADER_TABBEDEDITOR_TABBEDEDITOR_F921B809__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "juce.h"
+#include "PresetComboBox.h"
+#include "KeyboardButton.h"
 //[/Headers]
 
 
@@ -36,24 +38,21 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class editor  : public AudioProcessorEditor,
-                public ChangeListener,
-                public SliderListener
+class tabbed_editor  : public AudioProcessorEditor,
+                       public ComboBoxListener
 {
 public:
     //==============================================================================
-    editor (AudioProcessor *const ownerFilter);
-    ~editor();
+    tabbed_editor (AudioProcessor *const ownerFilter);
+    ~tabbed_editor();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-    void changeListenerCallback(void *objectThatHasChanged);
-    void parentHierarchyChanged();
     //[/UserMethods]
 
     void paint (Graphics& g);
     void resized();
-    void sliderValueChanged (Slider* sliderThatWasMoved);
+    void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
 
 
     //==============================================================================
@@ -61,60 +60,42 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+
+	struct initLookAndFeel
+	{
+		initLookAndFeel()
+		{
+			LookAndFeel &look= LookAndFeel::getDefaultLookAndFeel();
+			look.setColour(ComboBox::backgroundColourId, Colour(0xFF101830));
+			look.setColour(ComboBox::textColourId, Colour(0xFFF0F0F0));
+			look.setColour(ComboBox::outlineColourId, Colour(0xFF404040));
+			look.setColour(ComboBox::buttonColourId, Colour(0xFF607080));
+			look.setColour(ComboBox::arrowColourId, Colour(0xFF000000));
+			look.setColour(TextButton::buttonColourId, Colour(0xFF405068));
+			look.setColour(TextButton::textColourOnId, Colour(0xFFFFFFFF));
+			look.setColour(TextButton::textColourOffId, Colour(0xFFFFFFFF));
+			look.setColour(PopupMenu::backgroundColourId, Colour(0xFFA0B0C0));
+			look.setColour(PopupMenu::textColourId, Colour(0xFF000000));
+			look.setColour(PopupMenu::highlightedBackgroundColourId, Colour(0xFF204060));
+
+		}
+	} __initLookAndFeel;
+
+    MidiKeyboardState midi_keyboard_state;
+    KeyboardButton *kbd_button;
     //[/UserVariables]
 
     //==============================================================================
-    GroupComponent* groupComponent2;
-    GroupComponent* groupComponent;
-    Label* label;
-    Label* label2;
-    Slider* slgain;
-    Slider* slclip;
-    Slider* slsaw;
-    Label* label3;
-    Slider* slrect;
-    Label* label4;
-    Slider* sltri;
-    Label* label5;
-    Slider* sltune;
-    Label* label6;
-    GroupComponent* groupComponent3;
-    Label* label7;
-    Slider* slcutoff;
-    Label* label8;
-    Slider* slreso;
-    Label* label9;
-    Slider* slbandwidth;
-    Label* label10;
-    Slider* slpasses;
-    Label* label11;
-    Slider* slvelocity;
-    Label* label12;
-    Slider* slinertia;
-    Label* label13;
-    Slider* slcurcutoff;
-    Label* label14;
-    Label* label15;
-    Label* label19;
-    Label* label20;
-    Label* label16;
-    Label* label17;
-    Label* label18;
-    Slider* slattack5;
-    Slider* slattack6;
-    Label* label21;
-    Label* label22;
-    Slider* slattack7;
-    Slider* slattack;
-    Slider* slattack2;
-    Slider* slattack3;
-    Slider* slattack4;
+    MidiKeyboardComponent* midi_keyboard;
+    TabbedComponent* tabbedEditor;
+    PresetComboBox* comboBox;
+    Path internalPath1;
 
     //==============================================================================
     // (prevent copy constructor and operator= being generated..)
-    editor (const editor&);
-    const editor& operator= (const editor&);
+    tabbed_editor (const tabbed_editor&);
+    const tabbed_editor& operator= (const tabbed_editor&);
 };
 
 
-#endif   // __JUCER_HEADER_EDITOR_EDITOR_C1AF0379__
+#endif   // __JUCER_HEADER_TABBEDEDITOR_TABBEDEDITOR_F921B809__

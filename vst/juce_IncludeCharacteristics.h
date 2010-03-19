@@ -2,29 +2,23 @@
   ==============================================================================
 
    This file is part of the JUCE library - "Jules' Utility Class Extensions"
-   Copyright 2004-7 by Raw Material Software ltd.
+   Copyright 2004-9 by Raw Material Software Ltd.
 
   ------------------------------------------------------------------------------
 
-   JUCE can be redistributed and/or modified under the terms of the
-   GNU General Public License, as published by the Free Software Foundation;
-   either version 2 of the License, or (at your option) any later version.
+   JUCE can be redistributed and/or modified under the terms of the GNU General
+   Public License (Version 2), as published by the Free Software Foundation.
+   A copy of the license is included in the JUCE distribution, or can be found
+   online at www.gnu.org/licenses.
 
-   JUCE is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with JUCE; if not, visit www.gnu.org/licenses or write to the
-   Free Software Foundation, Inc., 59 Temple Place, Suite 330,
-   Boston, MA 02111-1307 USA
+   JUCE is distributed in the hope that it will be useful, but WITHOUT ANY
+   WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+   A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
   ------------------------------------------------------------------------------
 
-   If you'd like to release a closed-source product which uses JUCE, commercial
-   licenses are also available: visit www.rawmaterialsoftware.com/juce for
-   more information.
+   To release a closed-source product which uses JUCE, commercial licenses are
+   available: visit www.rawmaterialsoftware.com/juce for more information.
 
   ==============================================================================
 */
@@ -92,7 +86,11 @@
  #error "You need to define the JucePlugin_EditorRequiresKeyboardFocus value in your JucePluginCharacteristics.h file!"
 #endif
 
-#if ! (JucePlugin_Build_VST || JucePlugin_Build_AU || JucePlugin_Build_RTAS)
+#ifndef JucePlugin_TailLengthSeconds
+ #error "You need to define the JucePlugin_TailLengthSeconds value in your JucePluginCharacteristics.h file!"
+#endif
+
+#if ! (JucePlugin_Build_VST || JucePlugin_Build_AU || JucePlugin_Build_RTAS || JucePlugin_Build_Standalone)
  #error "You need to define at least one plugin format value in your JucePluginCharacteristics.h file!"
 #endif
 
@@ -104,10 +102,12 @@
  #error "You need to define the JucePlugin_WinBag_path value in your JucePluginCharacteristics.h file!"
 #endif
 
+#if JucePlugin_Build_AU && ! defined (JucePlugin_AUCocoaViewClassName)
+ #error "You need to define the JucePlugin_AUCocoaViewClassName value in your JucePluginCharacteristics.h file!"
+#endif
+
+#if ! defined (JUCE_ObjCExtraSuffix)
+ #error "To avoid objective-C name clashes with other plugins, you need to define the JUCE_ObjCExtraSuffix value in your JucePluginCharacteristics.h file!"
+#endif
+
 #endif   // __JUCE_INCLUDECHARACTERISTICS_JUCEHEADER__
-#ifndef JUCE_INCLUDECHARACTERISTICS_H_INCLUDED
-#define JUCE_INCLUDECHARACTERISTICS_H_INCLUDED
-
-
-
-#endif // JUCE_INCLUDECHARACTERISTICS_H_INCLUDED
