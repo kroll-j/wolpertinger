@@ -93,8 +93,6 @@
 				</Linker>
 			</Target>
 		</Build>
-		<Unit filename="src/TabbedEditor.cpp">
-		</Unit>
 		<Unit filename="src/PresetComboBox.cpp">
 		</Unit>
 		<Unit filename="src/RotatingToggleButton.cpp">
@@ -127,8 +125,6 @@
 		</Unit>
 		<Unit filename="src/KeyboardButton.h">
 		</Unit>
-		<Unit filename="src/TabbedEditor.h">
-		</Unit>
 		<Unit filename="src/tabbed-editor.h">
 		</Unit>
 		<Unit filename="vst/juce_VST_Wrapper.cpp">
@@ -136,8 +132,6 @@
 		<Unit filename="vst/juce_PluginHeaders.h">
 		</Unit>
 		<Unit filename="vst/juce_IncludeCharacteristics.h">
-		</Unit>
-		<Unit filename="vst/juce_IncludeCharacteristics-old.h">
 		</Unit>
 		<Extensions />
 	</Project>

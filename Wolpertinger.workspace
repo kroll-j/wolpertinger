@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_workspace_file>
 	<Workspace title="Wolpertinger">
-		<Project filename="WolpertingerVST.cbp" active="1">
-		</Project>
-		<Project filename="WolpertingerStandalone.cbp">
-		</Project>
+		<Project filename="../juce-git/build/linux/JUCE.cbp" />
+		<Project filename="WolpertingerVST.cbp" />
+		<Project filename="WolpertingerStandalone.cbp" />
+		<Project filename="../rptr/rptrStandalone.cbp" active="1" />
 	</Workspace>
 </CodeBlocks_workspace_file>

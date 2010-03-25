@@ -61,9 +61,9 @@ public:
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
 
-	struct initLookAndFeel
+	struct myLookAndFeel
 	{
-		initLookAndFeel()
+		myLookAndFeel()
 		{
 			LookAndFeel &look= LookAndFeel::getDefaultLookAndFeel();
 			look.setColour(ComboBox::backgroundColourId, Colour(0xFF101830));
@@ -79,7 +79,7 @@ private:
 			look.setColour(PopupMenu::highlightedBackgroundColourId, Colour(0xFF204060));
 
 		}
-	} __initLookAndFeel;
+	} __myLookAndFeel;
 
     MidiKeyboardState midi_keyboard_state;
     KeyboardButton *kbd_button;

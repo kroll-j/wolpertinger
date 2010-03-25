@@ -64,7 +64,6 @@ ifeq ($(config),release)
 endif
 
 OBJECTS := \
-	$(OBJDIR)/TabbedEditor.o \
 	$(OBJDIR)/PresetComboBox.o \
 	$(OBJDIR)/RotatingToggleButton.o \
 	$(OBJDIR)/synth.o \
@@ -131,9 +130,6 @@ $(GCH): $(PCH)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o $@ -c $<
 endif
 
-$(OBJDIR)/TabbedEditor.o: src/TabbedEditor.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o $@ -c $<
 $(OBJDIR)/PresetComboBox.o: src/PresetComboBox.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o $@ -c $<

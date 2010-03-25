@@ -85,8 +85,6 @@
 				</Linker>
 			</Target>
 		</Build>
-		<Unit filename="src/TabbedEditor.cpp">
-		</Unit>
 		<Unit filename="src/PresetComboBox.cpp">
 		</Unit>
 		<Unit filename="src/RotatingToggleButton.cpp">
@@ -118,8 +116,6 @@
 		<Unit filename="src/about.h">
 		</Unit>
 		<Unit filename="src/KeyboardButton.h">
-		</Unit>
-		<Unit filename="src/TabbedEditor.h">
 		</Unit>
 		<Unit filename="src/tabbed-editor.h">
 		</Unit>

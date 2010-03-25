@@ -24,4 +24,4 @@
 */
 
 #include "juce_IncludeCharacteristics.h"
-#include "../../../juce_amalgamated.h"
+#include "../../../juce.h"
