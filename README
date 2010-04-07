@@ -67,6 +67,8 @@ perfectly compatible:
 	
 	cd build/linux; make && make CONFIG=Release
 
+Juce may need Premake 3.7 to be rebuilt -- http://premake.sourceforge.net/download
+
 5. (Optional) If you want to build the VSTi, put the VST 2.4 SDK into a subdirectory 
 'vstsdk2.4' alongside the wolpertinger directory. You can get the SDK from 
 http://www.steinberg.net/ after doing whatever Steinberg wants you to do (mostly 
