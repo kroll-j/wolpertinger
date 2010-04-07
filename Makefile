@@ -6,23 +6,23 @@ ifndef config
 endif
 export config
 
-PROJECTS := WolpertingerVST WolpertingerStandalone
+PROJECTS := WolpertingerStandalone WolpertingerVST
 
 .PHONY: all clean help $(PROJECTS)
 
 all: $(PROJECTS)
 
-WolpertingerVST: 
-	@echo ==== Building WolpertingerVST ====
-	@${MAKE} --no-print-directory -C . -f WolpertingerVST.make
-
 WolpertingerStandalone: 
 	@echo ==== Building WolpertingerStandalone ====
 	@${MAKE} --no-print-directory -C . -f WolpertingerStandalone.make
 
+WolpertingerVST: 
+	@echo ==== Building WolpertingerVST ====
+	@${MAKE} --no-print-directory -C . -f WolpertingerVST.make
+
 clean:
-	@${MAKE} --no-print-directory -C . -f WolpertingerVST.make clean
 	@${MAKE} --no-print-directory -C . -f WolpertingerStandalone.make clean
+	@${MAKE} --no-print-directory -C . -f WolpertingerVST.make clean
 
 help:
 	@echo "Usage: make [config=name] [target]"
@@ -34,7 +34,7 @@ help:
 	@echo "TARGETS:"
 	@echo "   all (default)"
 	@echo "   clean"
-	@echo "   WolpertingerVST"
 	@echo "   WolpertingerStandalone"
+	@echo "   WolpertingerVST"
 	@echo ""
 	@echo "For more information, see http://industriousone.com/premake/quick-start"

@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  6 Mar 2010 11:38:13 pm
+  Creation date:  4 Apr 2010 4:33:43pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -43,7 +43,7 @@ about::about ()
     hyperlinkButton->setColour (HyperlinkButton::textColourId, Colour (0xffaeffc9));
 
     addAndMakeVisible (label = new Label (T("new label"),
-                                          T("Wolpertinger\nA subtractive synth with a twist")));
+                                          T("Wolpertinger\nA subtractive synth from animal hell")));
     label->setFont (Font (15.0000f, Font::plain));
     label->setJustificationType (Justification::centredLeft);
     label->setEditable (false, false, false);
@@ -117,7 +117,7 @@ void about::paint (Graphics& g)
 void about::resized()
 {
     hyperlinkButton->setBounds (getWidth() - 288 - ((192) / 2), 156, 192, 24);
-    label->setBounds (16, 28, 208, 32);
+    label->setBounds (16, 28, 250, 32);
     label2->setBounds (16, 84, 208, 48);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
@@ -150,8 +150,8 @@ BEGIN_JUCER_METADATA
                    buttonText="tumbetoene.tuxfamily.org" connectedEdges="0" needsCallback="0"
                    radioGroupId="0" url="http://tumbetoene.tuxfamily.org"/>
   <LABEL name="new label" id="7e2a61a2798f6bbf" memberName="label" virtualName=""
-         explicitFocusOrder="0" pos="16 28 208 32" textCol="ffffffff"
-         edTextCol="ff000000" edBkgCol="0" labelText="Wolpertinger&#10;A subtractive synth with a twist"
+         explicitFocusOrder="0" pos="16 28 250 32" textCol="ffffffff"
+         edTextCol="ff000000" edBkgCol="0" labelText="Wolpertinger&#10;A subtractive synth from animal hell"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15" bold="0" italic="0" justification="33"/>
   <LABEL name="new label" id="799547a0a1e6f1f1" memberName="label2" virtualName=""

@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  6 Mar 2010 11:38:13 pm
+  Creation date:  4 Apr 2010 4:33:43pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -19,8 +19,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCER_HEADER_ABOUT_ABOUT_F138E1CD__
-#define __JUCER_HEADER_ABOUT_ABOUT_F138E1CD__
+#ifndef __JUCER_HEADER_ABOUT_ABOUT_543E827B__
+#define __JUCER_HEADER_ABOUT_ABOUT_543E827B__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "juce.h"
@@ -77,4 +77,4 @@ private:
 };
 
 
-#endif   // __JUCER_HEADER_ABOUT_ABOUT_F138E1CD__
+#endif   // __JUCER_HEADER_ABOUT_ABOUT_543E827B__

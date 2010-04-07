@@ -20,7 +20,7 @@ ABOUT
 
 Wolpertinger is a subtractive synth with a sharp bandpass filter whose center
 frequency "bounces" around the frequency of the playing notes. Thanks to the
-Juced library it can be used both as a standalone application supporting JACK
+Juce library it can be used both as a standalone application supporting JACK
 or ALSA audio outputs, and as a VST instrument.
 
 Web: http://tumbetoene.tuxfamily.org/
@@ -53,8 +53,15 @@ get premake4 from http://industriousone.com/premake .
 
 DEPENDENCIES
 
-You need the Juced library to compile the code. You can get Juced from 
-http://code.google.com/p/juced/
+You need the Juce library to compile the code. This version is build with the
+current git tip which you can clone with the command
+
+	git clone git://juce.git.sourceforge.net/gitroot/juce/juce juce-git
+
+Optionally, select the commit used for building this version (to make sure it's
+perfectly compatible):
+	
+	git reset --hard d10fe251dd8afb1d0b6ec48628377c3bd416e682
 
 Note that you need the VST 2.4 SDK if you want to build the VSTi. Steinberg's 
 license forbids redistribution, so I can't include the SDK. 

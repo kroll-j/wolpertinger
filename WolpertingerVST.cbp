@@ -45,7 +45,7 @@
 					<Add library="Xext" />
 					<Add library="asound" />
 					<Add library="m" />
-					<Add library="png" />
+					<Add library="GL" />
 					<Add library="juce_debug" />
 				</Linker>
 			</Target>
@@ -88,7 +88,7 @@
 					<Add library="Xext" />
 					<Add library="asound" />
 					<Add library="m" />
-					<Add library="png" />
+					<Add library="GL" />
 					<Add library="juce" />
 				</Linker>
 			</Target>

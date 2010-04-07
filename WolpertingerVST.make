@@ -29,7 +29,7 @@ ifeq ($(config),debug)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -g -fPIC -ggdb
   CXXFLAGS  += $(CFLAGS) 
   LDFLAGS   += -shared -L../juce-git/bin -L../../../../usr/X11R6/lib -L../../../../usr/lib
-  LIBS      += -lfreetype -lpthread -lrt -lX11 -lXext -lasound -lm -lpng -ljuce_debug
+  LIBS      += -lfreetype -lpthread -lrt -lX11 -lXext -lasound -lm -lGL -ljuce_debug
   RESFLAGS  += $(DEFINES) $(INCLUDES) 
   LDDEPS    += 
   LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(ARCH) $(LIBS)
@@ -51,7 +51,7 @@ ifeq ($(config),release)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -O2 -fPIC -O2
   CXXFLAGS  += $(CFLAGS) 
   LDFLAGS   += -s -shared -L../juce-git/bin -L../../../../usr/X11R6/lib -L../../../../usr/lib
-  LIBS      += -lfreetype -lpthread -lrt -lX11 -lXext -lasound -lm -lpng -ljuce
+  LIBS      += -lfreetype -lpthread -lrt -lX11 -lXext -lasound -lm -lGL -ljuce
   RESFLAGS  += $(DEFINES) $(INCLUDES) 
   LDDEPS    += 
   LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(ARCH) $(LIBS)
