@@ -404,9 +404,11 @@ template <int N> struct bandpass
 //	void calc_filter_coeffs(int const type, double frequency, double const sample_rate, double q,
 //							double const db_gain, bool q_is_bandwidth)
 		const float min_freq= 50.0;
-		low[0].calc_filter_coeffs(0, (freq+bandwidth<min_freq? min_freq: freq+bandwidth), sampling_rate, q, 0, true);
+		low[0].calc_filter_coeffs(0, (freq+bandwidth<min_freq? min_freq: freq+bandwidth),
+								  sampling_rate, q, 0, true);
 		low.updateparams();
-		high[0].calc_filter_coeffs(1, (freq-bandwidth<min_freq? min_freq: freq-bandwidth), sampling_rate, q, 0, true);
+		high[0].calc_filter_coeffs(1, (freq-bandwidth<min_freq? min_freq: freq-bandwidth),
+								   sampling_rate, q, 0, true);
 		high.updateparams();
 	}
 

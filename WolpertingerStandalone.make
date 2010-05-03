@@ -22,8 +22,8 @@ endif
 ifeq ($(config),debug)
   OBJDIR     = build/Debug/WolpertingerStandalone
   TARGETDIR  = build
-  TARGET     = $(TARGETDIR)/Wolpertinger003-debug
-  DEFINES   += -DLINUX=1 -DJUCE_USE_XSHM=1 -DJUCE_ALSA=1 -DJUCE_USE_VSTSDK_2_4=1 -DDATE="`date +%F`" -DVERSION=003 -DVERSIONSTRING="0.3" -DCONFIGURATION="Debug" -DCONFIG_STANDALONE=1 -DBINTYPE="Linux Standalone" -DDEBUG=1 -D_DEBUG=1
+  TARGET     = $(TARGETDIR)/Wolpertinger004-debug
+  DEFINES   += -DLINUX=1 -DJUCE_USE_XSHM=1 -DJUCE_ALSA=1 -DJUCE_USE_VSTSDK_2_4=1 -DDATE="`date +%F`" -DVERSION=004 -DVERSIONSTRING="0.4" -DCONFIGURATION="Debug" -DCONFIG_STANDALONE=1 -DBINTYPE="Linux Standalone" -DDEBUG=1 -D_DEBUG=1
   INCLUDES  += -I../juce-git -I../vstsdk2.4 -Isrc
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -g -ggdb
@@ -44,8 +44,8 @@ endif
 ifeq ($(config),release)
   OBJDIR     = build/Release/WolpertingerStandalone
   TARGETDIR  = build
-  TARGET     = $(TARGETDIR)/Wolpertinger003
-  DEFINES   += -DLINUX=1 -DJUCE_USE_XSHM=1 -DJUCE_ALSA=1 -DJUCE_USE_VSTSDK_2_4=1 -DDATE="`date +%F`" -DVERSION=003 -DVERSIONSTRING="0.3" -DCONFIGURATION="Release" -DCONFIG_STANDALONE=1 -DBINTYPE="Linux Standalone" -DNDEBUG=1
+  TARGET     = $(TARGETDIR)/Wolpertinger004
+  DEFINES   += -DLINUX=1 -DJUCE_USE_XSHM=1 -DJUCE_ALSA=1 -DJUCE_USE_VSTSDK_2_4=1 -DDATE="`date +%F`" -DVERSION=004 -DVERSIONSTRING="0.4" -DCONFIGURATION="Release" -DCONFIG_STANDALONE=1 -DBINTYPE="Linux Standalone" -DNDEBUG=1
   INCLUDES  += -I../juce-git -I../vstsdk2.4 -Isrc
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -O2 -O2
@@ -64,6 +64,7 @@ ifeq ($(config),release)
 endif
 
 OBJECTS := \
+	$(OBJDIR)/ADSRenv.o \
 	$(OBJDIR)/PresetComboBox.o \
 	$(OBJDIR)/RotatingToggleButton.o \
 	$(OBJDIR)/synth.o \
@@ -130,6 +131,9 @@ $(GCH): $(PCH)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o $@ -c $<
 endif
 
+$(OBJDIR)/ADSRenv.o: src/ADSRenv.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o $@ -c $<
 $(OBJDIR)/PresetComboBox.o: src/PresetComboBox.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o $@ -c $<

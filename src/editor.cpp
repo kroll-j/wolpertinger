@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  8 Mar 2010 8:09:20pm
+  Creation date:  30 Apr 2010 5:44:31pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -74,10 +74,10 @@ editor::editor (AudioProcessor *const ownerFilter)
       label21 (0),
       label22 (0),
       slattack7 (0),
-      slattack (0),
-      slattack2 (0),
-      slattack3 (0),
-      slattack4 (0)
+      knobAttack (0),
+      knobDecay (0),
+      knobSustain (0),
+      knobRelease (0)
 {
     addAndMakeVisible (groupComponent2 = new GroupComponent (T("new group"),
                                                              T("Oscillators")));
@@ -451,7 +451,7 @@ editor::editor (AudioProcessor *const ownerFilter)
     label21->setColour (TextEditor::backgroundColourId, Colour (0x0));
 
     addAndMakeVisible (label22 = new Label (T("new label"),
-                                            T("Vol Env")));
+                                            T("Envelope")));
     label22->setFont (Font (15.0000f, Font::plain));
     label22->setJustificationType (Justification::centredLeft);
     label22->setEditable (false, false, false);
@@ -468,41 +468,41 @@ editor::editor (AudioProcessor *const ownerFilter)
     slattack7->setColour (Slider::rotarySliderOutlineColourId, Colour (0x80ffffff));
     slattack7->addListener (this);
 
-    addAndMakeVisible (slattack = new Slider (T("new slider")));
-    slattack->setRange (0, 1, 0);
-    slattack->setSliderStyle (Slider::Rotary);
-    slattack->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
-    slattack->setColour (Slider::thumbColourId, Colour (0xffbbf2ff));
-    slattack->setColour (Slider::rotarySliderFillColourId, Colour (0x7f00b9ff));
-    slattack->setColour (Slider::rotarySliderOutlineColourId, Colour (0x80ffffff));
-    slattack->addListener (this);
+    addAndMakeVisible (knobAttack = new Slider (T("new slider")));
+    knobAttack->setRange (0, 1, 0);
+    knobAttack->setSliderStyle (Slider::Rotary);
+    knobAttack->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
+    knobAttack->setColour (Slider::thumbColourId, Colour (0xffbbf2ff));
+    knobAttack->setColour (Slider::rotarySliderFillColourId, Colour (0x7f00b9ff));
+    knobAttack->setColour (Slider::rotarySliderOutlineColourId, Colour (0x80ffffff));
+    knobAttack->addListener (this);
 
-    addAndMakeVisible (slattack2 = new Slider (T("new slider")));
-    slattack2->setRange (0, 1, 0);
-    slattack2->setSliderStyle (Slider::Rotary);
-    slattack2->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
-    slattack2->setColour (Slider::thumbColourId, Colour (0xffbbf2ff));
-    slattack2->setColour (Slider::rotarySliderFillColourId, Colour (0x7f00b9ff));
-    slattack2->setColour (Slider::rotarySliderOutlineColourId, Colour (0x80ffffff));
-    slattack2->addListener (this);
+    addAndMakeVisible (knobDecay = new Slider (T("new slider")));
+    knobDecay->setRange (0, 1, 0);
+    knobDecay->setSliderStyle (Slider::Rotary);
+    knobDecay->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
+    knobDecay->setColour (Slider::thumbColourId, Colour (0xffbbf2ff));
+    knobDecay->setColour (Slider::rotarySliderFillColourId, Colour (0x7f00b9ff));
+    knobDecay->setColour (Slider::rotarySliderOutlineColourId, Colour (0x80ffffff));
+    knobDecay->addListener (this);
 
-    addAndMakeVisible (slattack3 = new Slider (T("new slider")));
-    slattack3->setRange (0, 1, 0);
-    slattack3->setSliderStyle (Slider::Rotary);
-    slattack3->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
-    slattack3->setColour (Slider::thumbColourId, Colour (0xffbbf2ff));
-    slattack3->setColour (Slider::rotarySliderFillColourId, Colour (0x7f00b9ff));
-    slattack3->setColour (Slider::rotarySliderOutlineColourId, Colour (0x80ffffff));
-    slattack3->addListener (this);
+    addAndMakeVisible (knobSustain = new Slider (T("new slider")));
+    knobSustain->setRange (0, 1, 0);
+    knobSustain->setSliderStyle (Slider::Rotary);
+    knobSustain->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
+    knobSustain->setColour (Slider::thumbColourId, Colour (0xffbbf2ff));
+    knobSustain->setColour (Slider::rotarySliderFillColourId, Colour (0x7f00b9ff));
+    knobSustain->setColour (Slider::rotarySliderOutlineColourId, Colour (0x80ffffff));
+    knobSustain->addListener (this);
 
-    addAndMakeVisible (slattack4 = new Slider (T("new slider")));
-    slattack4->setRange (0, 1, 0);
-    slattack4->setSliderStyle (Slider::Rotary);
-    slattack4->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
-    slattack4->setColour (Slider::thumbColourId, Colour (0xffbbf2ff));
-    slattack4->setColour (Slider::rotarySliderFillColourId, Colour (0x7f00b9ff));
-    slattack4->setColour (Slider::rotarySliderOutlineColourId, Colour (0x80ffffff));
-    slattack4->addListener (this);
+    addAndMakeVisible (knobRelease = new Slider (T("new slider")));
+    knobRelease->setRange (0, 1, 0);
+    knobRelease->setSliderStyle (Slider::Rotary);
+    knobRelease->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
+    knobRelease->setColour (Slider::thumbColourId, Colour (0xffbbf2ff));
+    knobRelease->setColour (Slider::rotarySliderFillColourId, Colour (0x7f00b9ff));
+    knobRelease->setColour (Slider::rotarySliderOutlineColourId, Colour (0x80ffffff));
+    knobRelease->addListener (this);
 
 
     //[UserPreSize]
@@ -569,10 +569,10 @@ editor::~editor()
     deleteAndZero (label21);
     deleteAndZero (label22);
     deleteAndZero (slattack7);
-    deleteAndZero (slattack);
-    deleteAndZero (slattack2);
-    deleteAndZero (slattack3);
-    deleteAndZero (slattack4);
+    deleteAndZero (knobAttack);
+    deleteAndZero (knobDecay);
+    deleteAndZero (knobSustain);
+    deleteAndZero (knobRelease);
 
     //[Destructor]. You can add your own custom destruction code here..
     //[/Destructor]
@@ -598,14 +598,14 @@ void editor::resized()
     label2->setBounds (16, 385, 56, 16);
     slgain->setBounds (80, 361, 304, 16);
     slclip->setBounds (80, 385, 304, 16);
-    slsaw->setBounds (24, 48, 48, 40);
-    label3->setBounds (24, 88, 48, 16);
-    slrect->setBounds (80, 48, 48, 40);
-    label4->setBounds (80, 88, 48, 16);
-    sltri->setBounds (136, 48, 48, 40);
-    label5->setBounds (136, 88, 48, 16);
-    sltune->setBounds (320, 48, 48, 40);
-    label6->setBounds (320, 88, 48, 16);
+    slsaw->setBounds (24, 48, 40, 40);
+    label3->setBounds (24, 88, 40, 16);
+    slrect->setBounds (72, 48, 40, 40);
+    label4->setBounds (72, 88, 40, 16);
+    sltri->setBounds (120, 48, 40, 40);
+    label5->setBounds (120, 88, 40, 16);
+    sltune->setBounds (168, 48, 40, 40);
+    label6->setBounds (168, 88, 40, 16);
     groupComponent3->setBounds (8, 129, 384, 200);
     label7->setBounds (16, 153, 64, 16);
     slcutoff->setBounds (80, 153, 304, 16);
@@ -621,42 +621,47 @@ void editor::resized()
     slinertia->setBounds (80, 273, 304, 16);
     label13->setBounds (16, 297, 64, 16);
     slcurcutoff->setBounds (80, 297, 304, 16);
-    label14->setBounds (24, (48) + (40) / 2 + -28 - ((16) / 2), 120, 16);
-    label15->setBounds (432, 168, 32, 16);
+    label14->setBounds (24, (48) + (40) / 2 + -28 - ((16) / 2), 80, 16);
+    label15->setBounds (226, 89, 32, 16);
     label19->setBounds (720, 168, 48, 16);
     label20->setBounds (664, 168, 56, 16);
-    label16->setBounds (472, 168, 32, 16);
-    label17->setBounds (512, 168, 32, 16);
-    label18->setBounds (552, 168, 32, 16);
+    label16->setBounds (266, 89, 32, 16);
+    label17->setBounds (306, 89, 32, 16);
+    label18->setBounds (346, 89, 32, 16);
     slattack5->setBounds (672, 136, 40, 32);
     slattack6->setBounds (728, 136, 32, 32);
     label21->setBounds (616, 168, 48, 16);
-    label22->setBounds (424, 120, 150, 16);
+    label22->setBounds (224, 32, 136, 16);
     slattack7->setBounds (624, 136, 32, 32);
-    slattack->setBounds (432, 136, 32, 32);
-    slattack2->setBounds (472, 136, 32, 32);
-    slattack3->setBounds (512, 136, 32, 32);
-    slattack4->setBounds (552, 136, 32, 32);
+    knobAttack->setBounds (226, 48, 32, 41);
+    knobDecay->setBounds (266, 48, 32, 41);
+    knobSustain->setBounds (306, 48, 32, 41);
+    knobRelease->setBounds (346, 48, 32, 41);
     //[UserResized] Add your own custom resize handling here..
 #if 1
     #define initslider(slidername, param)\
-    sl##slidername->setRange(synth->paraminfos[wolp::param].min, synth->paraminfos[wolp::param].max);	\
-    sl##slidername->setValue(synth->getParameter(wolp::param)*(synth->paraminfos[wolp::param].max-synth->paraminfos[wolp::param].min));
+    slidername->setRange(synth->paraminfos[wolp::param].min, synth->paraminfos[wolp::param].max);	\
+    slidername->setValue(synth->getParameter(wolp::param)*(synth->paraminfos[wolp::param].max-synth->paraminfos[wolp::param].min));
     wolp *synth= (wolp*)getAudioProcessor();
-    initslider(saw, gsaw);
-    initslider(rect, grect);
-    initslider(tri, gtri);
-    initslider(tune, tune);
-    initslider(gain, gain);
-    initslider(clip, clip);
+    initslider(slsaw, gsaw);
+    initslider(slrect, grect);
+    initslider(sltri, gtri);
+    initslider(sltune, tune);
+    initslider(slgain, gain);
+    initslider(slclip, clip);
 
-    initslider(cutoff, cutoff);
-    initslider(reso, resonance);
-    initslider(bandwidth, bandwidth);
-    initslider(passes, nfilters);
-    initslider(velocity, velocity);
-    initslider(inertia, inertia);
-    initslider(curcutoff, curcutoff);
+    initslider(slcutoff, cutoff);
+    initslider(slreso, resonance);
+    initslider(slbandwidth, bandwidth);
+    initslider(slpasses, nfilters);
+    initslider(slvelocity, velocity);
+    initslider(slinertia, inertia);
+    initslider(slcurcutoff, curcutoff);
+
+    initslider(knobAttack, attack);
+    initslider(knobDecay, decay);
+    initslider(knobSustain, sustain);
+    initslider(knobRelease, release);
 
     slpasses->setRange(synth->paraminfos[wolp::nfilters].min, synth->paraminfos[wolp::nfilters].max, 1.0);
     slpasses->setValue(synth->getParameter(wolp::nfilters)*(synth->paraminfos[wolp::nfilters].max-synth->paraminfos[wolp::nfilters].min));
@@ -768,25 +773,29 @@ void editor::sliderValueChanged (Slider* sliderThatWasMoved)
         //[UserSliderCode_slattack7] -- add your slider handling code here..
         //[/UserSliderCode_slattack7]
     }
-    else if (sliderThatWasMoved == slattack)
+    else if (sliderThatWasMoved == knobAttack)
     {
-        //[UserSliderCode_slattack] -- add your slider handling code here..
-        //[/UserSliderCode_slattack]
+        //[UserSliderCode_knobAttack] -- add your slider handling code here..
+        updateval(attack);
+        //[/UserSliderCode_knobAttack]
     }
-    else if (sliderThatWasMoved == slattack2)
+    else if (sliderThatWasMoved == knobDecay)
     {
-        //[UserSliderCode_slattack2] -- add your slider handling code here..
-        //[/UserSliderCode_slattack2]
+        //[UserSliderCode_knobDecay] -- add your slider handling code here..
+        updateval(decay);
+        //[/UserSliderCode_knobDecay]
     }
-    else if (sliderThatWasMoved == slattack3)
+    else if (sliderThatWasMoved == knobSustain)
     {
-        //[UserSliderCode_slattack3] -- add your slider handling code here..
-        //[/UserSliderCode_slattack3]
+        //[UserSliderCode_knobSustain] -- add your slider handling code here..
+        updateval(sustain);
+        //[/UserSliderCode_knobSustain]
     }
-    else if (sliderThatWasMoved == slattack4)
+    else if (sliderThatWasMoved == knobRelease)
     {
-        //[UserSliderCode_slattack4] -- add your slider handling code here..
-        //[/UserSliderCode_slattack4]
+        //[UserSliderCode_knobRelease] -- add your slider handling code here..
+        updateval(release);
+        //[/UserSliderCode_knobRelease]
     }
 
     //[UsersliderValueChanged_Post]
@@ -794,6 +803,7 @@ void editor::sliderValueChanged (Slider* sliderThatWasMoved)
 #endif
     //[/UsersliderValueChanged_Post]
 }
+
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
@@ -823,6 +833,10 @@ void editor::changeListenerCallback(void *objectThatHasChanged)
 		updateslider (inertia, slinertia);
 		updateslider (nfilters, slpasses);
 		updateslider (curcutoff, slcurcutoff);
+		updateslider (attack, knobAttack);
+		updateslider (decay, knobDecay);
+		updateslider (sustain, knobSustain);
+		updateslider (release, knobRelease);
 		default:
 			printf("Object Changed: %d\n", idx);
 			break;
@@ -852,7 +866,7 @@ BEGIN_JUCER_METADATA
 <JUCER_COMPONENT documentType="Component" className="editor" componentName=""
                  parentClasses="public AudioProcessorEditor, public ChangeListener"
                  constructorParams="AudioProcessor *const ownerFilter" variableInitialisers="AudioProcessorEditor(ownerFilter)"
-                 snapPixels="8" snapActive="0" snapShown="0" overlayOpacity="0.330000013"
+                 snapPixels="8" snapActive="1" snapShown="0" overlayOpacity="0.330000013"
                  fixedSize="0" initialWidth="400" initialHeight="428">
   <BACKGROUND backgroundColour="ff272727"/>
   <GROUPCOMPONENT name="new group" id="e5e178cd242b6420" memberName="groupComponent2"
@@ -882,42 +896,42 @@ BEGIN_JUCER_METADATA
           min="0" max="5" int="0.0001" style="LinearHorizontal" textBoxPos="TextBoxRight"
           textBoxEditable="1" textBoxWidth="60" textBoxHeight="20" skewFactor="0.5"/>
   <SLIDER name="new slider" id="9ed6f0186f5ff937" memberName="slsaw" virtualName=""
-          explicitFocusOrder="0" pos="24 48 48 40" thumbcol="ffbbf2ff"
+          explicitFocusOrder="0" pos="24 48 40 40" thumbcol="ffbbf2ff"
           rotarysliderfill="7f00b9ff" rotaryslideroutline="80ffffff" min="0"
           max="1" int="0" style="Rotary" textBoxPos="NoTextBox" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="new label" id="eb3d9855455c7a5c" memberName="label3" virtualName=""
-         explicitFocusOrder="0" pos="24 88 48 16" textCol="ffffffff" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="24 88 40 16" textCol="ffffffff" edTextCol="ff000000"
          edBkgCol="0" labelText="Saw" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="36"/>
   <SLIDER name="new slider" id="f984b6ce867a512c" memberName="slrect" virtualName=""
-          explicitFocusOrder="0" pos="80 48 48 40" thumbcol="ffbbf2ff"
+          explicitFocusOrder="0" pos="72 48 40 40" thumbcol="ffbbf2ff"
           rotarysliderfill="7f00b9ff" rotaryslideroutline="80ffffff" min="0"
           max="1" int="0" style="Rotary" textBoxPos="NoTextBox" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="new label" id="4df8bd0f758110b0" memberName="label4" virtualName=""
-         explicitFocusOrder="0" pos="80 88 48 16" textCol="ffffffff" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="72 88 40 16" textCol="ffffffff" edTextCol="ff000000"
          edBkgCol="0" labelText="Rect" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="36"/>
   <SLIDER name="new slider" id="787a4f0997781dd1" memberName="sltri" virtualName=""
-          explicitFocusOrder="0" pos="136 48 48 40" thumbcol="ffbbf2ff"
+          explicitFocusOrder="0" pos="120 48 40 40" thumbcol="ffbbf2ff"
           rotarysliderfill="7f00b9ff" rotaryslideroutline="80ffffff" min="0"
           max="1" int="0" style="Rotary" textBoxPos="NoTextBox" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="new label" id="881dba415f31e105" memberName="label5" virtualName=""
-         explicitFocusOrder="0" pos="136 88 48 16" textCol="ffffffff"
+         explicitFocusOrder="0" pos="120 88 40 16" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="Tri" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="36"/>
   <SLIDER name="new slider" id="34b4e27fcd2e1063" memberName="sltune" virtualName=""
-          explicitFocusOrder="0" pos="320 48 48 40" thumbcol="ffbbf2ff"
+          explicitFocusOrder="0" pos="168 48 40 40" thumbcol="ffbbf2ff"
           rotarysliderfill="7f00b9ff" rotaryslideroutline="80ffffff" min="0"
           max="1" int="0" style="Rotary" textBoxPos="NoTextBox" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="new label" id="2466156e2db40baf" memberName="label6" virtualName=""
-         explicitFocusOrder="0" pos="320 88 48 16" textCol="ffffffff"
+         explicitFocusOrder="0" pos="168 88 40 16" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="Tune" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="36"/>
@@ -1001,12 +1015,12 @@ BEGIN_JUCER_METADATA
           textBoxPos="TextBoxRight" textBoxEditable="1" textBoxWidth="60"
           textBoxHeight="20" skewFactor="0.4"/>
   <LABEL name="new label" id="bf2b92c62f94cc75" memberName="label14" virtualName=""
-         explicitFocusOrder="0" pos="24 -28Cc 120 16" posRelativeY="9ed6f0186f5ff937"
+         explicitFocusOrder="0" pos="24 -28Cc 80 16" posRelativeY="9ed6f0186f5ff937"
          textCol="ffffffff" edTextCol="ff000000" edBkgCol="0" labelText="Waveform"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15" bold="0" italic="0" justification="33"/>
   <LABEL name="new label" id="788f76f9610aa084" memberName="label15" virtualName=""
-         explicitFocusOrder="0" pos="432 168 32 16" textCol="ffffffff"
+         explicitFocusOrder="0" pos="226 89 32 16" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="A" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="36"/>
@@ -1021,17 +1035,17 @@ BEGIN_JUCER_METADATA
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="36"/>
   <LABEL name="new label" id="d263507c08f0e588" memberName="label16" virtualName=""
-         explicitFocusOrder="0" pos="472 168 32 16" textCol="ffffffff"
+         explicitFocusOrder="0" pos="266 89 32 16" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="D" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="36"/>
   <LABEL name="new label" id="1a960ef97d83f53a" memberName="label17" virtualName=""
-         explicitFocusOrder="0" pos="512 168 32 16" textCol="ffffffff"
+         explicitFocusOrder="0" pos="306 89 32 16" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="S" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="36"/>
   <LABEL name="new label" id="8a53fb5fd12f582b" memberName="label18" virtualName=""
-         explicitFocusOrder="0" pos="552 168 32 16" textCol="ffffffff"
+         explicitFocusOrder="0" pos="346 89 32 16" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="R" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="36"/>
@@ -1051,8 +1065,8 @@ BEGIN_JUCER_METADATA
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="36"/>
   <LABEL name="new label" id="94d601be4e7bf89b" memberName="label22" virtualName=""
-         explicitFocusOrder="0" pos="424 120 150 16" textCol="ffffffff"
-         edTextCol="ff000000" edBkgCol="0" labelText="Vol Env" editableSingleClick="0"
+         explicitFocusOrder="0" pos="224 32 136 16" textCol="ffffffff"
+         edTextCol="ff000000" edBkgCol="0" labelText="Envelope" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="33"/>
   <SLIDER name="new slider" id="9c6a0f0cb6d7c451" memberName="slattack7"
@@ -1060,23 +1074,23 @@ BEGIN_JUCER_METADATA
           rotarysliderfill="7f00b9ff" rotaryslideroutline="80ffffff" min="0"
           max="1" int="0" style="Rotary" textBoxPos="NoTextBox" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <SLIDER name="new slider" id="9b7cc6b66815757b" memberName="slattack"
-          virtualName="" explicitFocusOrder="0" pos="432 136 32 32" thumbcol="ffbbf2ff"
+  <SLIDER name="new slider" id="9b7cc6b66815757b" memberName="knobAttack"
+          virtualName="" explicitFocusOrder="0" pos="226 48 32 41" thumbcol="ffbbf2ff"
           rotarysliderfill="7f00b9ff" rotaryslideroutline="80ffffff" min="0"
           max="1" int="0" style="Rotary" textBoxPos="NoTextBox" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <SLIDER name="new slider" id="dbcf879a8e4f456b" memberName="slattack2"
-          virtualName="" explicitFocusOrder="0" pos="472 136 32 32" thumbcol="ffbbf2ff"
+  <SLIDER name="new slider" id="dbcf879a8e4f456b" memberName="knobDecay"
+          virtualName="" explicitFocusOrder="0" pos="266 48 32 41" thumbcol="ffbbf2ff"
           rotarysliderfill="7f00b9ff" rotaryslideroutline="80ffffff" min="0"
           max="1" int="0" style="Rotary" textBoxPos="NoTextBox" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <SLIDER name="new slider" id="ba560858e5b507f3" memberName="slattack3"
-          virtualName="" explicitFocusOrder="0" pos="512 136 32 32" thumbcol="ffbbf2ff"
+  <SLIDER name="new slider" id="ba560858e5b507f3" memberName="knobSustain"
+          virtualName="" explicitFocusOrder="0" pos="306 48 32 41" thumbcol="ffbbf2ff"
           rotarysliderfill="7f00b9ff" rotaryslideroutline="80ffffff" min="0"
           max="1" int="0" style="Rotary" textBoxPos="NoTextBox" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <SLIDER name="new slider" id="89e012ddb565692c" memberName="slattack4"
-          virtualName="" explicitFocusOrder="0" pos="552 136 32 32" thumbcol="ffbbf2ff"
+  <SLIDER name="new slider" id="89e012ddb565692c" memberName="knobRelease"
+          virtualName="" explicitFocusOrder="0" pos="346 48 32 41" thumbcol="ffbbf2ff"
           rotarysliderfill="7f00b9ff" rotaryslideroutline="80ffffff" min="0"
           max="1" int="0" style="Rotary" textBoxPos="NoTextBox" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>

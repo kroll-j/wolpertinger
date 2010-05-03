@@ -13,6 +13,8 @@ Versions
 0.1 initial release
 */
 
+
+
 AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new wolp();
@@ -34,16 +36,21 @@ void wolpVoice::startNote(const int midiNoteNumber,
 	phase= low= band= high= 0;
 	freq= synth->getnotefreq(midiNoteNumber);
 	vol= velocity;
-	curvol= 0.0f;
+//	curvol= 0.0f;
 	cyclecount= 0;
 	playing= true;
+	env.setAttack(synth->getparam(wolp::attack));
+	env.setDecay(synth->getparam(wolp::decay));
+	env.setSustain(synth->getparam(wolp::sustain));
+	env.setRelease(synth->getparam(wolp::release));
+	env.resetTime();
 }
 
 void wolpVoice::stopNote(const bool allowTailOff)
 {
-	if(!allowTailOff) clearCurrentNote();
+	printf("stopNote %d\n", allowTailOff);
+	//if(!allowTailOff) clearCurrentNote();
 	playing= false;
-	vol= 0;
 }
 
 
@@ -51,60 +58,71 @@ void wolpVoice::stopNote(const bool allowTailOff)
 void wolpVoice::process(float* p1, float* p2, int samples)
 {
 	float cutoff= synth->getparam(wolp::cutoff) * freq;
-	float step= freq / getSampleRate();
+//	float step= freq / getSampleRate();
 	float vol= this->vol * synth->getparam(wolp::gain);
 	int nfilters= int(synth->getparam(wolp::nfilters));
 
-	float msaw= synth->getparam(wolp::gsaw),
-		  mrect= synth->getparam(wolp::grect),
-		  mtri= synth->getparam(wolp::gtri);
-	float div= msaw+mrect+mtri;
-	if(div==0.0f) msaw= div= 1.0;
-	div= 1.0/div;
-	msaw*= div;
-	mrect*= div;
-	mtri*= div;
+//	float msaw= synth->getparam(wolp::gsaw),
+//		  mrect= synth->getparam(wolp::grect),
+//		  mtri= synth->getparam(wolp::gtri);
+//	float div= msaw+mrect+mtri;
+//	if(div==0.0f) msaw= div= 1.0;
+//	div= 1.0/div;
+//	msaw*= div;
+//	mrect*= div;
+//	mtri*= div;
 
-	double volstep= playing? (vol>curvol? 100: -100)*vol/getSampleRate(): -50.0/getSampleRate();
+	generator.setFrequency(getSampleRate(), freq);
+	generator.setMultipliers(synth->getparam(wolp::gsaw), synth->getparam(wolp::grect), synth->getparam(wolp::gtri));
+
+//	double volstep= playing? (vol>curvol? 100: -100)*vol/getSampleRate(): -50.0/getSampleRate();
+//	double volstep= (vol>curvol? 100: -100)*vol/getSampleRate();
+	double sampleStep= 1.0/getSampleRate();
 
 	for(int i= 0; i<samples; i++)
 	{
-		double vsaw= phase,
-			   vrect= (phase<0.5? -1: 1),
-			   vtri= (cyclecount&1? 2-(phase+1)-1: phase);
+//		double vsaw= phase,
+//			   vrect= (phase<0.5? -1: 1),
+//			   vtri= (cyclecount&1? 2-(phase+1)-1: phase);
+//
+//		double val= vsaw*msaw + vrect*mrect + vtri*mtri;
+//
+//		phase+= step;
+//		if (phase > 1)
+//			cyclecount++,
+//			phase -= 2;
 
-		double val= vsaw*msaw + vrect*mrect + vtri*mtri;
+		double val= generator.getNextSample();
 
-		phase+= step;
-		if (phase > 1)
-			cyclecount++,
-			phase -= 2;
+		double envVol= env.getValue();
 
 		val= filter.run(val, nfilters);
 
-		curvol+= volstep;
-		if(curvol<=0.0f) { clearCurrentNote(); curvol= 0; break; }
-		if( (curvol>vol && volstep>0) || (curvol<vol && volstep<0) ) curvol= vol;
+//		curvol+= volstep;
+//		if(curvol<=0.0f) { clearCurrentNote(); curvol= 0; break; }
+//		if( (curvol>vol && volstep>0) || (curvol<vol && volstep<0) ) curvol= vol;
 
 //		curvol+= (vol-curvol)*1000.0/getSampleRate();
 //		if(curvol<0.001f && !playing) { clearCurrentNote(); curvol= 0; break; }
 
-
-		p1[i]+= val*curvol;
-		p2[i]+= val*curvol;
+		p1[i]+= val*vol*envVol;
+		p2[i]+= val*vol*envVol;
 
 		if( !((++synth->samples_synthesized) & 31) )
 		{
 			synth->cutoff_filter.setparams(synth->getparam(wolp::velocity) * 10000,
 										   synth->getparam(wolp::inertia) * 100);
 
-			float cut= synth->cutoff_filter.run(cutoff, this->vol * 32.0f/getSampleRate());
+			float cut= synth->cutoff_filter.run(cutoff, this->vol*envVol * 32.0f/getSampleRate());
 			filter.setparams(getSampleRate(), cut,
 							 synth->params[wolp::bandwidth]*cut, synth->params[wolp::resonance] * 2);
 
 			synth->setParameterNotifyingHost(wolp::curcutoff, sqrt(cut/20000));
             synth->sendChangeMessage((void*)wolp::curcutoff);
 		}
+
+		env.advance(sampleStep, playing);
+		if(env.isFinished()) { clearCurrentNote(); break; }
 	}
 }
 
@@ -205,6 +223,12 @@ float wolp::getparam(int idx)
 		case curcutoff:
 			v= sqr(params[idx]);
 			break;
+		case attack:
+		case decay:
+		case sustain:
+		case release:
+			v= sqr(params[idx]);
+			break;
 		default:
 			v= params[idx];
 			break;
@@ -233,7 +257,7 @@ void wolp::setParameter (int idx, float value)
 	{
 		//if(idx!=12) printf("non-gui param change, setParameter %d %.2f\n", idx, value);
 		// no way to check if this change was caused by the GUI, so it's updated needlessly when it was.
-//		sendChangeMessage((void*)idx);
+		sendChangeMessage((void*)idx);
 	}
 }
 
@@ -254,6 +278,11 @@ const wolp::paraminfo wolp::paraminfos[]=
 	{ "filter_inertia", 	"Inertia",	 	0.0,	1.0,	0.25 },
 	{ "filter_passes", 		"Passes",	 	0.0,	8.0,	0.5 },
 	{ "filter_curcutoff", 	"Filter Freq",	0.0,	20000,	0.25 },
+	{ "env_attack", 		"Attack",		0.0,	3.0,	0.25 },
+	{ "env_decay", 			"Decay",		0.0,	3.0,	0.25 },
+	{ "env_sustain", 		"Sustain",		0.0,	1.0,	0.5 },
+	{ "env_release", 		"Release",		0.0,	4.0,	0.5 },
+
 };
 
 void wolp::loaddefaultparams()
@@ -269,7 +298,7 @@ wolp::wolp()
 
 	samples_synthesized= 0;
 
-	for(int i= 0; i<8 ; i++)
+	for(int i= 0; i<16 ; i++)
 		addVoice(new wolpVoice(this));
 
 	addSound(new wolpSound());

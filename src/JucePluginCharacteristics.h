@@ -180,9 +180,10 @@
 //==============================================================================
 /** A version number
 */
-#define JucePlugin_VersionCode              0x00000003
-
-#define JucePlugin_VersionString            "0.3"
+#define __makestring(x) #x
+#define stringify(x) __makestring(x)
+#define JucePlugin_VersionCode              VERSION
+#define JucePlugin_VersionString            stringify(VERSIONSTRING)
 
 
 //==============================================================================

@@ -3,6 +3,7 @@
 
 #include "juce.h"
 #include "filters.h"
+#include "ADSRenv.h"
 
 
 template<typename T> T sqr(T v) { return v*v; }
@@ -14,6 +15,71 @@ class wolpSound: public SynthesiserSound
 	public:
 		bool appliesToNote(const int midiNoteNumber) { return true; }
 		bool appliesToChannel(const int midiChannel) { return true; }
+};
+
+class WaveGenerator
+{
+	public:
+		enum { oversampling = 16 };
+
+		WaveGenerator():
+			phase(0.0), cyclecount(0)
+		{ }
+
+		~WaveGenerator()
+		{ }
+
+		double getNextSample()
+		{
+			double s= 0;
+			for(int i= 0; i<oversampling; i++)
+			{
+				if(oversampling>1)
+					s+= filter.run(getNextRawSample());
+				else
+					s+= getNextRawSample();
+			}
+			return s/oversampling;
+		}
+
+		void setFrequency(double sampleRate, double noteFrequency)
+		{
+			sampleStep= noteFrequency / (sampleRate*oversampling);
+			filter[0].calc_filter_coeffs(0, sampleRate*0.4, sampleRate*oversampling, 0.1, 0, true);
+			filter.updateparams();
+		}
+
+		void setMultipliers(double mSaw, double mRect, double mTri)
+		{
+			float div= mSaw+mRect+mTri;
+			if(div==0.0f) mSaw= div= 1.0;
+			div= 1.0/div;
+			sawFactor= mSaw*div;
+			rectFactor= mRect*div;
+			triFactor= mTri*div;
+		}
+
+	private:
+		double sawFactor, rectFactor, triFactor, sampleStep, phase;
+		int cyclecount;
+
+		multifilter<CFxRbjFilter, 4> filter;
+
+		double getNextRawSample()
+		{
+			double saw= phase,
+				   rect= (phase<0.5? -1: 1),
+				   tri= (cyclecount&1? 2-(phase+1)-1: phase);
+
+			double val= saw*sawFactor+ rect*rectFactor + tri*triFactor;
+
+			phase+= sampleStep;
+			if (phase > 1)
+				cyclecount++,
+				phase -= 2;
+
+			return val;
+		}
 };
 
 class wolpVoice: public SynthesiserVoice
@@ -48,12 +114,13 @@ class wolpVoice: public SynthesiserVoice
 		void process(float* p1, float* p2, int samples);
 
 		double phase, low, band, high, vol, freq;
-		double vel, out;
-		double curvol;
+//		double curvol;
 		bool playing;
 		int cyclecount;
 
+		WaveGenerator generator;
 		bandpass<8> filter;
+		ADSRenv env;
 
 		class wolp *synth;
 };
@@ -81,6 +148,10 @@ class wolp:	public AudioProcessor,
 			inertia,
 			nfilters,
 			curcutoff,
+			attack,
+			decay,
+			sustain,
+			release,
 			param_size
 		};
 

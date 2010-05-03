@@ -1,6 +1,6 @@
 appname= "Wolpertinger"
-version= "003"
-version_string= "0.3"
+version= "004"
+version_string= "0.4"
 
 solution(appname)
 	includedirs {
