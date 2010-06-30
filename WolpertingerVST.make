@@ -23,7 +23,7 @@ ifeq ($(config),debug)
   OBJDIR     = build/Debug/WolpertingerVST
   TARGETDIR  = build
   TARGET     = $(TARGETDIR)/Wolpertinger004-debug.so
-  DEFINES   += -DLINUX=1 -DJUCE_USE_XSHM=1 -DJUCE_ALSA=1 -DJUCE_USE_VSTSDK_2_4=1 -DDATE="`date +%F`" -DVERSION=004 -DVERSIONSTRING="0.4" -DCONFIGURATION="Debug" -DCONFIG_VST=1 -DBINTYPE="Linux Native VST" -DDEBUG=1 -D_DEBUG=1
+  DEFINES   += -DLINUX=1 -DJUCE_USE_XSHM=1 -DJUCE_ALSA=1 -DJUCE_USE_VSTSDK_2_4=1 -DDATE="`date +%F`" -DVERSION=004 -DVERSIONSTRING="0.4" -DCONFIGURATION="Debug" -DJUCE_DEBUG -DCONFIG_VST=1 -DBINTYPE="Linux Native VST" -DDEBUG=1 -D_DEBUG=1
   INCLUDES  += -I../juce-git -I../vstsdk2.4 -Isrc
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -g -fPIC -ggdb
@@ -65,11 +65,11 @@ endif
 
 OBJECTS := \
 	$(OBJDIR)/ADSRenv.o \
+	$(OBJDIR)/KeyboardButton.o \
 	$(OBJDIR)/PresetComboBox.o \
 	$(OBJDIR)/RotatingToggleButton.o \
-	$(OBJDIR)/synth.o \
-	$(OBJDIR)/KeyboardButton.o \
 	$(OBJDIR)/about.o \
+	$(OBJDIR)/synth.o \
 	$(OBJDIR)/editor.o \
 	$(OBJDIR)/tabbed-editor.o \
 	$(OBJDIR)/juce_VST_Wrapper.o \
@@ -134,19 +134,19 @@ endif
 $(OBJDIR)/ADSRenv.o: src/ADSRenv.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o $@ -c $<
+$(OBJDIR)/KeyboardButton.o: src/KeyboardButton.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o $@ -c $<
 $(OBJDIR)/PresetComboBox.o: src/PresetComboBox.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o $@ -c $<
 $(OBJDIR)/RotatingToggleButton.o: src/RotatingToggleButton.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o $@ -c $<
-$(OBJDIR)/synth.o: src/synth.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o $@ -c $<
-$(OBJDIR)/KeyboardButton.o: src/KeyboardButton.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o $@ -c $<
 $(OBJDIR)/about.o: src/about.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o $@ -c $<
+$(OBJDIR)/synth.o: src/synth.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o $@ -c $<
 $(OBJDIR)/editor.o: src/editor.cpp

@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  30 Apr 2010 5:44:31pm
+  Creation date:  30 Jun 2010 9:54:46pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -77,7 +77,11 @@ editor::editor (AudioProcessor *const ownerFilter)
       knobAttack (0),
       knobDecay (0),
       knobSustain (0),
-      knobRelease (0)
+      knobRelease (0),
+      slfilterlimits (0),
+      label23 (0),
+      label24 (0),
+      slfilterspeed (0)
 {
     addAndMakeVisible (groupComponent2 = new GroupComponent (T("new group"),
                                                              T("Oscillators")));
@@ -340,7 +344,7 @@ editor::editor (AudioProcessor *const ownerFilter)
     slinertia->setSkewFactor (0.5);
 
     addAndMakeVisible (label13 = new Label (T("new label"),
-                                            T("Filter Freq")));
+                                            T("Freq")));
     label13->setFont (Font (15.0000f, Font::plain));
     label13->setJustificationType (Justification::centredRight);
     label13->setEditable (false, false, false);
@@ -504,11 +508,52 @@ editor::editor (AudioProcessor *const ownerFilter)
     knobRelease->setColour (Slider::rotarySliderOutlineColourId, Colour (0x80ffffff));
     knobRelease->addListener (this);
 
+    addAndMakeVisible (slfilterlimits = new Slider (T("new slider")));
+    slfilterlimits->setRange (0, 4, 0.0001);
+    slfilterlimits->setSliderStyle (Slider::TwoValueHorizontal);
+    slfilterlimits->setTextBoxStyle (Slider::NoTextBox, false, 60, 20);
+    slfilterlimits->setColour (Slider::backgroundColourId, Colour (0x868686));
+    slfilterlimits->setColour (Slider::textBoxTextColourId, Colours::white);
+    slfilterlimits->setColour (Slider::textBoxBackgroundColourId, Colour (0x565656));
+    slfilterlimits->setColour (Slider::textBoxHighlightColourId, Colour (0x409a9aff));
+    slfilterlimits->setColour (Slider::textBoxOutlineColourId, Colour (0x0));
+    slfilterlimits->addListener (this);
+    slfilterlimits->setSkewFactor (0.4);
+
+    addAndMakeVisible (label23 = new Label (T("new label"),
+                                            T("Limits")));
+    label23->setFont (Font (15.0000f, Font::plain));
+    label23->setJustificationType (Justification::centredRight);
+    label23->setEditable (false, false, false);
+    label23->setColour (Label::textColourId, Colours::white);
+    label23->setColour (TextEditor::textColourId, Colours::black);
+    label23->setColour (TextEditor::backgroundColourId, Colour (0x0));
+
+    addAndMakeVisible (label24 = new Label (T("new label"),
+                                            T("Speed")));
+    label24->setFont (Font (15.0000f, Font::plain));
+    label24->setJustificationType (Justification::centredRight);
+    label24->setEditable (false, false, false);
+    label24->setColour (Label::textColourId, Colours::white);
+    label24->setColour (TextEditor::textColourId, Colours::black);
+    label24->setColour (TextEditor::backgroundColourId, Colour (0x0));
+
+    addAndMakeVisible (slfilterspeed = new Slider (T("new slider")));
+    slfilterspeed->setRange (-1, 1, 0.0001);
+    slfilterspeed->setSliderStyle (Slider::LinearHorizontal);
+    slfilterspeed->setTextBoxStyle (Slider::TextBoxRight, false, 60, 20);
+    slfilterspeed->setColour (Slider::backgroundColourId, Colour (0x868686));
+    slfilterspeed->setColour (Slider::textBoxTextColourId, Colours::white);
+    slfilterspeed->setColour (Slider::textBoxBackgroundColourId, Colour (0x565656));
+    slfilterspeed->setColour (Slider::textBoxHighlightColourId, Colour (0x409a9aff));
+    slfilterspeed->setColour (Slider::textBoxOutlineColourId, Colour (0x0));
+    slfilterspeed->addListener (this);
+
 
     //[UserPreSize]
     //[/UserPreSize]
 
-    setSize (400, 428);
+    setSize (400, 444);
 
     //[Constructor] You can add your own custom stuff here..
 
@@ -573,6 +618,10 @@ editor::~editor()
     deleteAndZero (knobDecay);
     deleteAndZero (knobSustain);
     deleteAndZero (knobRelease);
+    deleteAndZero (slfilterlimits);
+    deleteAndZero (label23);
+    deleteAndZero (label24);
+    deleteAndZero (slfilterspeed);
 
     //[Destructor]. You can add your own custom destruction code here..
     //[/Destructor]
@@ -593,11 +642,11 @@ void editor::paint (Graphics& g)
 void editor::resized()
 {
     groupComponent2->setBounds (8, 8, 384, 112);
-    groupComponent->setBounds (8, 337, 384, 80);
-    label->setBounds (16, 361, 56, 16);
-    label2->setBounds (16, 385, 56, 16);
-    slgain->setBounds (80, 361, 304, 16);
-    slclip->setBounds (80, 385, 304, 16);
+    groupComponent->setBounds (8, 393, 384, 80);
+    label->setBounds (16, 417, 56, 16);
+    label2->setBounds (16, 441, 56, 16);
+    slgain->setBounds (80, 417, 304, 16);
+    slclip->setBounds (80, 441, 304, 16);
     slsaw->setBounds (24, 48, 40, 40);
     label3->setBounds (24, 88, 40, 16);
     slrect->setBounds (72, 48, 40, 40);
@@ -606,21 +655,21 @@ void editor::resized()
     label5->setBounds (120, 88, 40, 16);
     sltune->setBounds (168, 48, 40, 40);
     label6->setBounds (168, 88, 40, 16);
-    groupComponent3->setBounds (8, 129, 384, 200);
-    label7->setBounds (16, 153, 64, 16);
-    slcutoff->setBounds (80, 153, 304, 16);
-    label8->setBounds (16, 177, 64, 16);
-    slreso->setBounds (80, 177, 304, 16);
-    label9->setBounds (16, 201, 64, 16);
-    slbandwidth->setBounds (80, 201, 304, 16);
-    label10->setBounds (16, 225, 64, 16);
-    slpasses->setBounds (80, 225, 304, 16);
-    label11->setBounds (16, 249, 64, 16);
-    slvelocity->setBounds (80, 249, 304, 16);
-    label12->setBounds (16, 273, 64, 16);
-    slinertia->setBounds (80, 273, 304, 16);
-    label13->setBounds (16, 297, 64, 16);
-    slcurcutoff->setBounds (80, 297, 304, 16);
+    groupComponent3->setBounds (8, 129, 384, 255);
+    label7->setBounds (16, 160, 64, 16);
+    slcutoff->setBounds (80, 160, 304, 16);
+    label8->setBounds (16, 185, 64, 15);
+    slreso->setBounds (80, 185, 304, 15);
+    label9->setBounds (16, 209, 64, 15);
+    slbandwidth->setBounds (80, 209, 304, 15);
+    label10->setBounds (16, 233, 64, 15);
+    slpasses->setBounds (80, 233, 304, 15);
+    label11->setBounds (16, 257, 64, 15);
+    slvelocity->setBounds (80, 257, 304, 15);
+    label12->setBounds (16, 280, 64, 16);
+    slinertia->setBounds (80, 280, 304, 16);
+    label13->setBounds (16, 304, 64, 15);
+    slcurcutoff->setBounds (80, 304, 304, 16);
     label14->setBounds (24, (48) + (40) / 2 + -28 - ((16) / 2), 80, 16);
     label15->setBounds (226, 89, 32, 16);
     label19->setBounds (720, 168, 48, 16);
@@ -637,6 +686,10 @@ void editor::resized()
     knobDecay->setBounds (266, 48, 32, 41);
     knobSustain->setBounds (306, 48, 32, 41);
     knobRelease->setBounds (346, 48, 32, 41);
+    slfilterlimits->setBounds (80, 328, 244, 16);
+    label23->setBounds (16, 328, 64, 16);
+    label24->setBounds (16, 352, 64, 16);
+    slfilterspeed->setBounds (80, 352, 304, 16);
     //[UserResized] Add your own custom resize handling here..
 #if 1
     #define initslider(slidername, param)\
@@ -665,6 +718,10 @@ void editor::resized()
 
     slpasses->setRange(synth->paraminfos[wolp::nfilters].min, synth->paraminfos[wolp::nfilters].max, 1.0);
     slpasses->setValue(synth->getParameter(wolp::nfilters)*(synth->paraminfos[wolp::nfilters].max-synth->paraminfos[wolp::nfilters].min));
+
+    slfilterlimits->setRange(synth->paraminfos[wolp::filtermin].min, synth->paraminfos[wolp::filtermin].max);
+    slfilterlimits->setMaxValue(synth->getParameter(wolp::filtermax)*(synth->paraminfos[wolp::filtermax].max-synth->paraminfos[wolp::filtermax].min));
+    slfilterlimits->setMinValue(synth->getParameter(wolp::filtermin)*(synth->paraminfos[wolp::filtermin].max-synth->paraminfos[wolp::filtermin].min));
     #undef initslider
 #endif
     //[/UserResized]
@@ -797,6 +854,21 @@ void editor::sliderValueChanged (Slider* sliderThatWasMoved)
         updateval(release);
         //[/UserSliderCode_knobRelease]
     }
+    else if (sliderThatWasMoved == slfilterlimits)
+    {
+        //[UserSliderCode_slfilterlimits] -- add your slider handling code here..
+		synth->setParameterNotifyingHost( wolp::filtermin, sliderThatWasMoved->getMinValue() /
+			(synth->paraminfos[wolp::filtermin].max-synth->paraminfos[wolp::filtermin].min) );
+		synth->setParameterNotifyingHost( wolp::filtermax, sliderThatWasMoved->getMaxValue() /
+			(synth->paraminfos[wolp::filtermax].max-synth->paraminfos[wolp::filtermax].min) );
+        //[/UserSliderCode_slfilterlimits]
+    }
+    else if (sliderThatWasMoved == slfilterspeed)
+    {
+        //[UserSliderCode_slfilterspeed] -- add your slider handling code here..
+        updateval(filterspeed);
+        //[/UserSliderCode_slfilterspeed]
+    }
 
     //[UsersliderValueChanged_Post]
     #undef updateval
@@ -832,11 +904,30 @@ void editor::changeListenerCallback(void *objectThatHasChanged)
 		updateslider (velocity, slvelocity);
 		updateslider (inertia, slinertia);
 		updateslider (nfilters, slpasses);
-		updateslider (curcutoff, slcurcutoff);
+//		updateslider (curcutoff, slcurcutoff);
+//		updateslider (filterspeed, slfilterspeed);
 		updateslider (attack, knobAttack);
 		updateslider (decay, knobDecay);
 		updateslider (sustain, knobSustain);
 		updateslider (release, knobRelease);
+		case wolp::curcutoff:
+			slcurcutoff->setValue( synth->params[wolp::curcutoff] *
+								  (synth->paraminfos[idx].max-synth->paraminfos[idx].min), false );
+			slfilterspeed->setValue( synth->params[wolp::filterspeed] *
+								  (synth->paraminfos[idx].max-synth->paraminfos[idx].min), false );
+			break;
+		case wolp::filtermin:
+			slfilterlimits->setMinValue( synth->params[wolp::filtermin] *
+						(synth->paraminfos[idx].max-synth->paraminfos[idx].min), false );
+			break;
+		case wolp::filtermax:
+			slfilterlimits->setMaxValue( synth->params[wolp::filtermax] *
+						(synth->paraminfos[idx].max-synth->paraminfos[idx].min), false );
+			break;
+
+		case wolp::filterspeed:
+			break;
+
 		default:
 			printf("Object Changed: %d\n", idx);
 			break;
@@ -866,32 +957,32 @@ BEGIN_JUCER_METADATA
 <JUCER_COMPONENT documentType="Component" className="editor" componentName=""
                  parentClasses="public AudioProcessorEditor, public ChangeListener"
                  constructorParams="AudioProcessor *const ownerFilter" variableInitialisers="AudioProcessorEditor(ownerFilter)"
-                 snapPixels="8" snapActive="1" snapShown="0" overlayOpacity="0.330000013"
-                 fixedSize="0" initialWidth="400" initialHeight="428">
+                 snapPixels="4" snapActive="1" snapShown="0" overlayOpacity="0.330000013"
+                 fixedSize="0" initialWidth="400" initialHeight="444">
   <BACKGROUND backgroundColour="ff272727"/>
   <GROUPCOMPONENT name="new group" id="e5e178cd242b6420" memberName="groupComponent2"
                   virtualName="" explicitFocusOrder="1" pos="8 8 384 112" outlinecol="66ffffff"
                   textcol="ffffffff" title="Oscillators" textpos="33"/>
   <GROUPCOMPONENT name="new group" id="ad99a16746beb177" memberName="groupComponent"
-                  virtualName="" explicitFocusOrder="1" pos="8 337 384 80" outlinecol="66ffffff"
+                  virtualName="" explicitFocusOrder="1" pos="8 393 384 80" outlinecol="66ffffff"
                   textcol="ffffffff" title="Output" textpos="33"/>
   <LABEL name="new label" id="49509c28b7b7d12d" memberName="label" virtualName=""
-         explicitFocusOrder="0" pos="16 361 56 16" textCol="ffffffff"
+         explicitFocusOrder="0" pos="16 417 56 16" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="Gain" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="34"/>
   <LABEL name="new label" id="155d710d9c4a7bd0" memberName="label2" virtualName=""
-         explicitFocusOrder="0" pos="16 385 56 16" textCol="ffffffff"
+         explicitFocusOrder="0" pos="16 441 56 16" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="Clip" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="34"/>
   <SLIDER name="new slider" id="8a7b903812862b6c" memberName="slgain" virtualName=""
-          explicitFocusOrder="0" pos="80 361 304 16" bkgcol="868686" textboxtext="ffffffff"
+          explicitFocusOrder="0" pos="80 417 304 16" bkgcol="868686" textboxtext="ffffffff"
           textboxbkgd="565656" textboxhighlight="409a9aff" textboxoutline="0"
           min="0" max="4" int="0.0001" style="LinearHorizontal" textBoxPos="TextBoxRight"
           textBoxEditable="1" textBoxWidth="60" textBoxHeight="20" skewFactor="0.3"/>
   <SLIDER name="new slider" id="5f153060103ce45b" memberName="slclip" virtualName=""
-          explicitFocusOrder="0" pos="80 385 304 16" bkgcol="868686" textboxtext="ffffffff"
+          explicitFocusOrder="0" pos="80 441 304 16" bkgcol="868686" textboxtext="ffffffff"
           textboxbkgd="565656" textboxhighlight="409a9aff" textboxoutline="0"
           min="0" max="5" int="0.0001" style="LinearHorizontal" textBoxPos="TextBoxRight"
           textBoxEditable="1" textBoxWidth="60" textBoxHeight="20" skewFactor="0.5"/>
@@ -936,80 +1027,80 @@ BEGIN_JUCER_METADATA
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="36"/>
   <GROUPCOMPONENT name="new group" id="7ce402f8c62d5932" memberName="groupComponent3"
-                  virtualName="" explicitFocusOrder="1" pos="8 129 384 200" outlinecol="66ffffff"
+                  virtualName="" explicitFocusOrder="1" pos="8 129 384 255" outlinecol="66ffffff"
                   textcol="ffffffff" title="Filter" textpos="33"/>
   <LABEL name="new label" id="e57e597377fef365" memberName="label7" virtualName=""
-         explicitFocusOrder="0" pos="16 153 64 16" textCol="ffffffff"
+         explicitFocusOrder="0" pos="16 160 64 16" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="Filter X" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="34"/>
   <SLIDER name="new slider" id="df34f7f508b7adb0" memberName="slcutoff"
-          virtualName="" explicitFocusOrder="0" pos="80 153 304 16" bkgcol="868686"
+          virtualName="" explicitFocusOrder="0" pos="80 160 304 16" bkgcol="868686"
           textboxtext="ffffffff" textboxbkgd="565656" textboxhighlight="409a9aff"
           textboxoutline="0" min="0" max="4" int="0.0001" style="LinearHorizontal"
           textBoxPos="TextBoxRight" textBoxEditable="1" textBoxWidth="60"
           textBoxHeight="20" skewFactor="0.5"/>
   <LABEL name="new label" id="e2f509e8c9131813" memberName="label8" virtualName=""
-         explicitFocusOrder="0" pos="16 177 64 16" textCol="ffffffff"
+         explicitFocusOrder="0" pos="16 185 64 15" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="Resonance" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="34"/>
   <SLIDER name="new slider" id="35786a165f16578e" memberName="slreso" virtualName=""
-          explicitFocusOrder="0" pos="80 177 304 16" bkgcol="868686" textboxtext="ffffffff"
+          explicitFocusOrder="0" pos="80 185 304 15" bkgcol="868686" textboxtext="ffffffff"
           textboxbkgd="565656" textboxhighlight="409a9aff" textboxoutline="0"
           min="0" max="4" int="0.0001" style="LinearHorizontal" textBoxPos="TextBoxRight"
           textBoxEditable="1" textBoxWidth="60" textBoxHeight="20" skewFactor="0.5"/>
   <LABEL name="new label" id="cefa7252c084bf3a" memberName="label9" virtualName=""
-         explicitFocusOrder="0" pos="16 201 64 16" textCol="ffffffff"
+         explicitFocusOrder="0" pos="16 209 64 15" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="Bandwidth" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="34"/>
   <SLIDER name="new slider" id="5362f75ced0b9ac9" memberName="slbandwidth"
-          virtualName="" explicitFocusOrder="0" pos="80 201 304 16" bkgcol="868686"
+          virtualName="" explicitFocusOrder="0" pos="80 209 304 15" bkgcol="868686"
           textboxtext="ffffffff" textboxbkgd="565656" textboxhighlight="409a9aff"
           textboxoutline="0" min="0" max="4" int="0.0001" style="LinearHorizontal"
           textBoxPos="TextBoxRight" textBoxEditable="1" textBoxWidth="60"
           textBoxHeight="20" skewFactor="0.5"/>
   <LABEL name="new label" id="adcc1d907bb16758" memberName="label10" virtualName=""
-         explicitFocusOrder="0" pos="16 225 64 16" textCol="ffffffff"
+         explicitFocusOrder="0" pos="16 233 64 15" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="Passes" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="34"/>
   <SLIDER name="new slider" id="29e98c8c7765790" memberName="slpasses"
-          virtualName="" explicitFocusOrder="0" pos="80 225 304 16" bkgcol="868686"
+          virtualName="" explicitFocusOrder="0" pos="80 233 304 15" bkgcol="868686"
           textboxtext="ffffffff" textboxbkgd="565656" textboxhighlight="409a9aff"
           textboxoutline="0" min="0" max="4" int="0.0001" style="LinearHorizontal"
           textBoxPos="TextBoxRight" textBoxEditable="1" textBoxWidth="60"
           textBoxHeight="20" skewFactor="1"/>
   <LABEL name="new label" id="eae3af57dfc37cd5" memberName="label11" virtualName=""
-         explicitFocusOrder="0" pos="16 249 64 16" textCol="ffffffff"
+         explicitFocusOrder="0" pos="16 257 64 15" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="Velocity" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="34"/>
   <SLIDER name="new slider" id="f1f951fe4565a7db" memberName="slvelocity"
-          virtualName="" explicitFocusOrder="0" pos="80 249 304 16" bkgcol="868686"
+          virtualName="" explicitFocusOrder="0" pos="80 257 304 15" bkgcol="868686"
           textboxtext="ffffffff" textboxbkgd="565656" textboxhighlight="409a9aff"
           textboxoutline="0" min="0" max="4" int="0.0001" style="LinearHorizontal"
           textBoxPos="TextBoxRight" textBoxEditable="1" textBoxWidth="60"
           textBoxHeight="20" skewFactor="0.5"/>
   <LABEL name="new label" id="145c7f21c5783bd3" memberName="label12" virtualName=""
-         explicitFocusOrder="0" pos="16 273 64 16" textCol="ffffffff"
+         explicitFocusOrder="0" pos="16 280 64 16" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="Inertia" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="34"/>
   <SLIDER name="new slider" id="1f326d02c58973a" memberName="slinertia"
-          virtualName="" explicitFocusOrder="0" pos="80 273 304 16" bkgcol="868686"
+          virtualName="" explicitFocusOrder="0" pos="80 280 304 16" bkgcol="868686"
           textboxtext="ffffffff" textboxbkgd="565656" textboxhighlight="409a9aff"
           textboxoutline="0" min="0" max="4" int="0.0001" style="LinearHorizontal"
           textBoxPos="TextBoxRight" textBoxEditable="1" textBoxWidth="60"
           textBoxHeight="20" skewFactor="0.5"/>
   <LABEL name="new label" id="77aa4e9b34a8fa81" memberName="label13" virtualName=""
-         explicitFocusOrder="0" pos="16 297 64 16" textCol="ffffffff"
-         edTextCol="ff000000" edBkgCol="0" labelText="Filter Freq" editableSingleClick="0"
+         explicitFocusOrder="0" pos="16 304 64 15" textCol="ffffffff"
+         edTextCol="ff000000" edBkgCol="0" labelText="Freq" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="34"/>
   <SLIDER name="new slider" id="88030f6cab98eb34" memberName="slcurcutoff"
-          virtualName="" explicitFocusOrder="0" pos="80 297 304 16" bkgcol="868686"
+          virtualName="" explicitFocusOrder="0" pos="80 304 304 16" bkgcol="868686"
           textboxtext="ffffffff" textboxbkgd="565656" textboxhighlight="409a9aff"
           textboxoutline="0" min="0" max="4" int="0.0001" style="LinearHorizontal"
           textBoxPos="TextBoxRight" textBoxEditable="1" textBoxWidth="60"
@@ -1094,6 +1185,28 @@ BEGIN_JUCER_METADATA
           rotarysliderfill="7f00b9ff" rotaryslideroutline="80ffffff" min="0"
           max="1" int="0" style="Rotary" textBoxPos="NoTextBox" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="new slider" id="806ed68c0ceb178a" memberName="slfilterlimits"
+          virtualName="" explicitFocusOrder="0" pos="80 328 244 16" bkgcol="868686"
+          textboxtext="ffffffff" textboxbkgd="565656" textboxhighlight="409a9aff"
+          textboxoutline="0" min="0" max="4" int="0.0001" style="TwoValueHorizontal"
+          textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="60"
+          textBoxHeight="20" skewFactor="0.4"/>
+  <LABEL name="new label" id="b883df02b57d8ed8" memberName="label23" virtualName=""
+         explicitFocusOrder="0" pos="16 328 64 16" textCol="ffffffff"
+         edTextCol="ff000000" edBkgCol="0" labelText="Limits" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15" bold="0" italic="0" justification="34"/>
+  <LABEL name="new label" id="f7001fba3cc9d2a8" memberName="label24" virtualName=""
+         explicitFocusOrder="0" pos="16 352 64 16" textCol="ffffffff"
+         edTextCol="ff000000" edBkgCol="0" labelText="Speed" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15" bold="0" italic="0" justification="34"/>
+  <SLIDER name="new slider" id="63e1cd4be5e7f30e" memberName="slfilterspeed"
+          virtualName="" explicitFocusOrder="0" pos="80 352 304 16" bkgcol="868686"
+          textboxtext="ffffffff" textboxbkgd="565656" textboxhighlight="409a9aff"
+          textboxoutline="0" min="-1" max="1" int="0.0001" style="LinearHorizontal"
+          textBoxPos="TextBoxRight" textBoxEditable="1" textBoxWidth="60"
+          textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

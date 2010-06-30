@@ -35,7 +35,7 @@ solution(appname)
 		"asound", "m", "GL" }
 
 configuration "Debug"
-	defines { "CONFIGURATION=\"Debug\"" }
+	defines { "CONFIGURATION=\"Debug\"", "JUCE_DEBUG" }
 
 configuration "Release"
 	defines { "CONFIGURATION=\"Release\"" }

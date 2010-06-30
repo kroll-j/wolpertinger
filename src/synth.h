@@ -35,17 +35,17 @@ class WaveGenerator
 			for(int i= 0; i<oversampling; i++)
 			{
 				if(oversampling>1)
-					s+= filter.run(getNextRawSample());
+					s= filter.run(getNextRawSample());
 				else
-					s+= getNextRawSample();
+					s= getNextRawSample();
 			}
-			return s/oversampling;
+			return s;
 		}
 
 		void setFrequency(double sampleRate, double noteFrequency)
 		{
 			sampleStep= noteFrequency / (sampleRate*oversampling);
-			filter[0].calc_filter_coeffs(0, sampleRate*0.4, sampleRate*oversampling, 0.1, 0, true);
+			filter[0].calc_filter_coeffs(0, sampleRate*0.3, sampleRate*oversampling, 0.6, 0, false);
 			filter.updateparams();
 		}
 
@@ -152,6 +152,9 @@ class wolp:	public AudioProcessor,
 			decay,
 			sustain,
 			release,
+			filtermin,
+			filtermax,
+			filterspeed,
 			param_size
 		};
 
@@ -160,8 +163,9 @@ class wolp:	public AudioProcessor,
 			const char *internalname;
 			const char *label;
 			double min, max, defval;
+			bool dirty;		// parameter has changed, GUI must be updated
 		};
-		static const paraminfo paraminfos[param_size];
+		static paraminfo paraminfos[param_size];
 
 
 		wolp();
@@ -255,7 +259,7 @@ class wolp:	public AudioProcessor,
 	protected:
 
 	private:
-		float params[param_size];
+		double params[param_size];
 
 		velocityfilter <float> cutoff_filter;
 

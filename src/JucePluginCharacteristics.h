@@ -174,7 +174,7 @@
 
     Various hosts/platforms may deal with this differently, or ignore it.
 */
-#define JucePlugin_EditorRequiresKeyboardFocus      1
+#define JucePlugin_EditorRequiresKeyboardFocus      0
 
 
 //==============================================================================

@@ -384,6 +384,8 @@ template <typename T> struct velocityfilter
 
 		T getvalue() { return value; }
 		void setvalue(T val) { value= val; }
+		T getspeed() { return speed; }
+		void setspeed(T val) { speed= val; }
 
 	private:
 		T velocity, inertia;

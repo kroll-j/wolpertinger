@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  4 Apr 2010 4:54:31pm
+  Creation date:  30 Jun 2010 8:27:30pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -66,7 +66,7 @@ tabbed_editor::tabbed_editor (AudioProcessor *const ownerFilter)
     //[UserPreSize]
     //[/UserPreSize]
 
-    setSize (400, 520);
+    setSize (400, 576);
 
     //[Constructor] You can add your own custom stuff here..
     midi_keyboard_state.addListener((wolp*)ownerFilter);
@@ -83,7 +83,7 @@ tabbed_editor::tabbed_editor (AudioProcessor *const ownerFilter)
 #ifdef CONFIG_STANDALONE
     addAndMakeVisible (kbd_button = new KeyboardButton (String::empty));
     kbd_button->setColour (ToggleButton::textColourId, Colours::white);
-    kbd_button->setBounds (2, 444, getWidth()-4, 16);
+    kbd_button->setBounds (2, getHeight()-20, getWidth()-4, 16);
 #endif
     //[/Constructor]
 }
@@ -125,8 +125,8 @@ void tabbed_editor::paint (Graphics& g)
 
 void tabbed_editor::resized()
 {
-    midi_keyboard->setBounds (0, 464, 400, 56);
-    tabbedEditor->setBounds (0, 0, 400, 464);
+    midi_keyboard->setBounds (0, 520, 400, 56);
+    tabbedEditor->setBounds (0, 0, 400, 520);
     comboBox->setBounds (290, 6, 104, 16);
     internalPath1.clear();
     internalPath1.startNewSubPath (0.0f, 32.0f);
@@ -171,17 +171,17 @@ BEGIN_JUCER_METADATA
 <JUCER_COMPONENT documentType="Component" className="tabbed_editor" componentName=""
                  parentClasses="public AudioProcessorEditor" constructorParams="AudioProcessor *const ownerFilter"
                  variableInitialisers="AudioProcessorEditor(ownerFilter), kbd_button(0)"
-                 snapPixels="2" snapActive="1" snapShown="1" overlayOpacity="0.330000013"
-                 fixedSize="1" initialWidth="400" initialHeight="520">
+                 snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330000013"
+                 fixedSize="1" initialWidth="400" initialHeight="576">
   <BACKGROUND backgroundColour="ff404040">
     <PATH pos="0 0 100 100" fill="linear: 122 -4, 126 34, 0=ff505050, 1=ff303030"
           hasStroke="0" nonZeroWinding="1">s 0 32 l 0 0 l 400 0 l 400 32 x</PATH>
   </BACKGROUND>
   <GENERICCOMPONENT name="new component" id="bbb690ecc3998aec" memberName="midi_keyboard"
-                    virtualName="" explicitFocusOrder="0" pos="0 464 400 56" class="MidiKeyboardComponent"
+                    virtualName="" explicitFocusOrder="0" pos="0 520 400 56" class="MidiKeyboardComponent"
                     params="midi_keyboard_state,&#10;MidiKeyboardComponent::horizontalKeyboard"/>
   <TABBEDCOMPONENT name="tabbedEditor" id="eedf7b50f4218e4" memberName="tabbedEditor"
-                   virtualName="" explicitFocusOrder="0" pos="0 0 400 464" orientation="top"
+                   virtualName="" explicitFocusOrder="0" pos="0 0 400 520" orientation="top"
                    tabBarDepth="28" initialTab="0">
     <TAB name="Parameters" colour="ff272727" useJucerComp="1" contentClassName="asdf"
          constructorParams="ownerFilter" jucerComponentFile="editor.cpp"/>

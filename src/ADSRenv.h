@@ -8,13 +8,13 @@ class ADSRenv
 		ADSRenv();
 		virtual ~ADSRenv();
 
-		void setAttack(double v) { attack= v; attackInv= 1.0/v; }
+		void setAttack(double v) { if(v<0.005) v= 0.005; attack= v; attackInv= 1.0/v; }
 		double getAttack() { return attack; }
 		void setDecay(double v) { decay= v; decayInv= 1.0/v; }
 		double getDecay() { return decay; }
 		void setSustain(double v) { sustain= v; }
 		double getSustain() { return sustain; }
-		void setRelease(double v) { release= v; releaseInv= 1.0/v; }
+		void setRelease(double v) { if(v<0.005) v= 0.005; release= v; releaseInv= 1.0/v; }
 		double getRelease() { return release; }
 
 		void advance(double seconds, bool noteIsOn);

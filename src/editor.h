@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  30 Apr 2010 5:44:31pm
+  Creation date:  30 Jun 2010 9:54:46pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -19,8 +19,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCER_HEADER_EDITOR_EDITOR_FA5F0946__
-#define __JUCER_HEADER_EDITOR_EDITOR_FA5F0946__
+#ifndef __JUCER_HEADER_EDITOR_EDITOR_8D8AC92E__
+#define __JUCER_HEADER_EDITOR_EDITOR_8D8AC92E__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "juce.h"
@@ -109,6 +109,10 @@ private:
     Slider* knobDecay;
     Slider* knobSustain;
     Slider* knobRelease;
+    Slider* slfilterlimits;
+    Label* label23;
+    Label* label24;
+    Slider* slfilterspeed;
 
     //==============================================================================
     // (prevent copy constructor and operator= being generated..)
@@ -117,4 +121,4 @@ private:
 };
 
 
-#endif   // __JUCER_HEADER_EDITOR_EDITOR_FA5F0946__
+#endif   // __JUCER_HEADER_EDITOR_EDITOR_8D8AC92E__
