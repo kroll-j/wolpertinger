@@ -2,7 +2,7 @@
 <CodeBlocks_workspace_file>
 	<Workspace title="Wolpertinger">
 		<Project filename="../juce-git/build/linux/JUCE.cbp" />
-		<Project filename="WolpertingerStandalone.cbp" active="1" />
-		<Project filename="WolpertingerVST.cbp" />
+		<Project filename="WolpertingerStandalone.cbp" />
+		<Project filename="WolpertingerVST.cbp" active="1" />
 	</Workspace>
 </CodeBlocks_workspace_file>

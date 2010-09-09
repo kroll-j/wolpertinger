@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  30 Jun 2010 9:54:46pm
+  Creation date:  1 Jul 2010 4:40:48pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -882,7 +882,7 @@ void editor::sliderValueChanged (Slider* sliderThatWasMoved)
 
 void editor::changeListenerCallback(void *objectThatHasChanged)
 {
-    int idx= (int)objectThatHasChanged;
+    intptr_t idx= (intptr_t)objectThatHasChanged;
 	wolp *synth= (wolp*)getAudioProcessor();
 #define updateslider(name, slidername)		\
 		case wolp::name:	\

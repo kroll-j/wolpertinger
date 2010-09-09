@@ -24,7 +24,10 @@ class WaveGenerator
 
 		WaveGenerator():
 			phase(0.0), cyclecount(0)
-		{ }
+		{
+			memset(xv, 0, sizeof(xv));
+			memset(yv, 0, sizeof(xv));
+		}
 
 		~WaveGenerator()
 		{ }
@@ -35,7 +38,9 @@ class WaveGenerator
 			for(int i= 0; i<oversampling; i++)
 			{
 				if(oversampling>1)
-					s= filter.run(getNextRawSample());
+//					s= filter.run(getNextRawSample());
+//					s= butterworth_lp(getNextRawSample());
+					s= chebyshev_lp.run(getNextRawSample());
 				else
 					s= getNextRawSample();
 			}
@@ -80,6 +85,75 @@ class WaveGenerator
 
 			return val;
 		}
+
+		#define NZEROS 8
+		#define NPOLES 8
+		#define GAIN   1.664669804e+09
+
+		double xv[NZEROS+1], yv[NPOLES+1];
+
+		double butterworth_lp(double nextval)
+			  { xv[0] = xv[1]; xv[1] = xv[2]; xv[2] = xv[3]; xv[3] = xv[4]; xv[4] = xv[5]; xv[5] = xv[6]; xv[6] = xv[7]; xv[7] = xv[8];
+				xv[8] = nextval / GAIN;
+				yv[0] = yv[1]; yv[1] = yv[2]; yv[2] = yv[3]; yv[3] = yv[4]; yv[4] = yv[5]; yv[5] = yv[6]; yv[6] = yv[7]; yv[7] = yv[8];
+				yv[8] =   (xv[0] + xv[8]) + 8 * (xv[1] + xv[7]) + 28 * (xv[2] + xv[6])
+							 + 56 * (xv[3] + xv[5]) + 70 * xv[4]
+							 + ( -0.4696688419 * yv[0]) + (  4.1118419128 * yv[1])
+							 + (-15.7672926090 * yv[2]) + ( 34.5903197920 * yv[3])
+							 + (-47.4859069880 * yv[4]) + ( 41.7740652050 * yv[5])
+							 + (-22.9985902730 * yv[6]) + (  7.2452316476 * yv[7]);
+				return yv[8];
+			  }
+		#undef NZEROS
+		#undef NPOLES
+		#undef GAIN
+
+		class chebyshev_7pole
+		{
+			/* Digital filter designed by mkfilter/mkshape/gencode   A.J. Fisher
+			   Command line: /www/usr/fisher/helpers/mkfilter -Ch -5.0000000000e-02 -Lp -o 7 -a 2.2786458333e-02 0.0000000000e+00 -l */
+
+			#define NZEROS 7
+			#define NPOLES 7
+			#define GAIN   8.185223519e+08
+
+			public:
+
+			chebyshev_7pole() { memset(xv, 0, sizeof(xv)); memset(yv, 0, sizeof(yv)); }
+
+			double xv[NZEROS+1], yv[NPOLES+1];
+
+			double run(double nextvalue)
+			{
+				xv[0] = xv[1]; xv[1] = xv[2]; xv[2] = xv[3]; xv[3] = xv[4]; xv[4] = xv[5]; xv[5] = xv[6]; xv[6] = xv[7];
+				xv[7] = nextvalue / GAIN;
+				yv[0] = yv[1]; yv[1] = yv[2]; yv[2] = yv[3]; yv[3] = yv[4]; yv[4] = yv[5]; yv[5] = yv[6]; yv[6] = yv[7];
+				yv[7] =   (xv[0] + xv[7]) + 7 * (xv[1] + xv[6]) + 21 * (xv[2] + xv[5])
+							 + 35 * (xv[3] + xv[4])
+							 + (  0.7582559865 * yv[0]) + ( -5.4896632588 * yv[1])
+							 + ( 17.0657116090 * yv[2]) + (-29.5302444680 * yv[3])
+							 + ( 30.7191651920 * yv[4]) + (-19.2116577140 * yv[5])
+							 + (  6.6884324971 * yv[6]);
+				return yv[7];
+			}
+
+//			void filterloop()
+//			  { for (;;)
+//				  { xv[0] = xv[1]; xv[1] = xv[2]; xv[2] = xv[3]; xv[3] = xv[4]; xv[4] = xv[5]; xv[5] = xv[6]; xv[6] = xv[7];
+//					xv[7] = `next input value' / GAIN;
+//					yv[0] = yv[1]; yv[1] = yv[2]; yv[2] = yv[3]; yv[3] = yv[4]; yv[4] = yv[5]; yv[5] = yv[6]; yv[6] = yv[7];
+//					yv[7] =   (xv[0] + xv[7]) + 7 * (xv[1] + xv[6]) + 21 * (xv[2] + xv[5])
+//								 + 35 * (xv[3] + xv[4])
+//								 + (  0.7582559865 * yv[0]) + ( -5.4896632588 * yv[1])
+//								 + ( 17.0657116090 * yv[2]) + (-29.5302444680 * yv[3])
+//								 + ( 30.7191651920 * yv[4]) + (-19.2116577140 * yv[5])
+//								 + (  6.6884324971 * yv[6]);
+//					`next output value' = yv[7];
+//				  }
+//			  }
+		};
+
+		chebyshev_7pole chebyshev_lp;
 };
 
 class wolpVoice: public SynthesiserVoice
@@ -172,7 +246,10 @@ class wolp:	public AudioProcessor,
 		~wolp();
 
 		const String getName() const { return "wolp"; }
-		void prepareToPlay (double sampleRate, int estimatedSamplesPerBlock) { }
+		void prepareToPlay (double sampleRate, int estimatedSamplesPerBlock)
+		{
+			setCurrentPlaybackSampleRate(sampleRate);
+		}
 		void releaseResources() { }
 		void processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages);
 		const String getInputChannelName (const int channelIndex) const { return String("In") + String(channelIndex); }
@@ -238,6 +315,7 @@ class wolp:	public AudioProcessor,
 		virtual void handleNoteOn (MidiKeyboardState* source,
 								   int midiChannel, int midiNoteNumber, float velocity)
 		{
+//			printf("MidiKeyboard noteOn isProcessing=%s\n", isProcessing? "true": "false");
 			noteOn(midiChannel, midiNoteNumber, velocity);
 		}
 
@@ -253,6 +331,7 @@ class wolp:	public AudioProcessor,
 		virtual void handleNoteOff (MidiKeyboardState* source,
 									int midiChannel, int midiNoteNumber)
 		{
+//			printf("MidiKeyboard noteOff isProcessing=%s\n", isProcessing? "true": "false");
 			noteOff(midiChannel, midiNoteNumber, velocity);
 		}
 
@@ -261,9 +340,11 @@ class wolp:	public AudioProcessor,
 	private:
 		double params[param_size];
 
-		velocityfilter <float> cutoff_filter;
+		velocityfilter <double> cutoff_filter;
 
 		unsigned long samples_synthesized;
+
+		bool isProcessing;	// whether we are in the processBlock callback
 
 		friend class wolpVoice;
 		friend class editor;

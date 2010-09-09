@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  30 Jun 2010 8:27:30pm
+  Creation date:  2 Jul 2010 2:44:55pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -36,7 +36,8 @@ tabbed_editor::tabbed_editor (AudioProcessor *const ownerFilter)
     : AudioProcessorEditor(ownerFilter), kbd_button(0),
       midi_keyboard (0),
       tabbedEditor (0),
-      comboBox (0)
+      comboBox (0),
+      polytext (0)
 {
     addAndMakeVisible (midi_keyboard = new MidiKeyboardComponent (midi_keyboard_state,
                                                                   MidiKeyboardComponent::horizontalKeyboard));
@@ -61,6 +62,16 @@ tabbed_editor::tabbed_editor (AudioProcessor *const ownerFilter)
     comboBox->addItem (T("Save"), 6);
     comboBox->addItem (T("Save As..."), 7);
     comboBox->addListener (this);
+
+    addAndMakeVisible (polytext = new Label (T("new label"),
+                                             T("Poly: 0")));
+    polytext->setFont (Font (15.0000f, Font::plain));
+    polytext->setJustificationType (Justification::centredRight);
+    polytext->setEditable (false, false, false);
+    polytext->setColour (Label::textColourId, Colours::white);
+    polytext->setColour (Label::outlineColourId, Colour (0xff0000));
+    polytext->setColour (TextEditor::textColourId, Colours::black);
+    polytext->setColour (TextEditor::backgroundColourId, Colour (0x0));
 
 
     //[UserPreSize]
@@ -96,6 +107,7 @@ tabbed_editor::~tabbed_editor()
     deleteAndZero (midi_keyboard);
     deleteAndZero (tabbedEditor);
     deleteAndZero (comboBox);
+    deleteAndZero (polytext);
 
     //[Destructor]. You can add your own custom destruction code here..
 #ifdef CONFIG_STANDALONE
@@ -128,6 +140,7 @@ void tabbed_editor::resized()
     midi_keyboard->setBounds (0, 520, 400, 56);
     tabbedEditor->setBounds (0, 0, 400, 520);
     comboBox->setBounds (290, 6, 104, 16);
+    polytext->setBounds (328, 500, 72, 16);
     internalPath1.clear();
     internalPath1.startNewSubPath (0.0f, 32.0f);
     internalPath1.lineTo (0.0f, 0.0f);
@@ -171,7 +184,7 @@ BEGIN_JUCER_METADATA
 <JUCER_COMPONENT documentType="Component" className="tabbed_editor" componentName=""
                  parentClasses="public AudioProcessorEditor" constructorParams="AudioProcessor *const ownerFilter"
                  variableInitialisers="AudioProcessorEditor(ownerFilter), kbd_button(0)"
-                 snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330000013"
+                 snapPixels="4" snapActive="1" snapShown="1" overlayOpacity="0.330000013"
                  fixedSize="1" initialWidth="400" initialHeight="576">
   <BACKGROUND backgroundColour="ff404040">
     <PATH pos="0 0 100 100" fill="linear: 122 -4, 126 34, 0=ff505050, 1=ff303030"
@@ -192,6 +205,11 @@ BEGIN_JUCER_METADATA
             virtualName="PresetComboBox" explicitFocusOrder="0" pos="290 6 104 16"
             editable="0" layout="36" items="Bass Drone 1&#10;Bass Drone 2&#10;Lead Swirl&#10;Preset X&#10;----&#10;Save&#10;Save As..."
             textWhenNonSelected="" textWhenNoItems="(no choices)"/>
+  <LABEL name="new label" id="e5d0a1b78b69180a" memberName="polytext"
+         virtualName="" explicitFocusOrder="0" pos="328 500 72 16" textCol="ffffffff"
+         outlineCol="ff0000" edTextCol="ff000000" edBkgCol="0" labelText="Poly: 0"
+         editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
+         fontname="Default font" fontsize="15" bold="0" italic="0" justification="34"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

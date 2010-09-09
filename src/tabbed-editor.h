@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  30 Jun 2010 8:27:30pm
+  Creation date:  2 Jul 2010 2:44:55pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -19,8 +19,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCER_HEADER_TABBEDEDITOR_TABBEDEDITOR_2762D23C__
-#define __JUCER_HEADER_TABBEDEDITOR_TABBEDEDITOR_2762D23C__
+#ifndef __JUCER_HEADER_TABBEDEDITOR_TABBEDEDITOR_4D2E49C4__
+#define __JUCER_HEADER_TABBEDEDITOR_TABBEDEDITOR_4D2E49C4__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "juce.h"
@@ -48,6 +48,7 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+    void setPolyText(String text) { polytext->setText(text, false); }
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -89,6 +90,7 @@ private:
     MidiKeyboardComponent* midi_keyboard;
     TabbedComponent* tabbedEditor;
     PresetComboBox* comboBox;
+    Label* polytext;
     Path internalPath1;
 
     //==============================================================================
@@ -98,4 +100,4 @@ private:
 };
 
 
-#endif   // __JUCER_HEADER_TABBEDEDITOR_TABBEDEDITOR_2762D23C__
+#endif   // __JUCER_HEADER_TABBEDEDITOR_TABBEDEDITOR_4D2E49C4__

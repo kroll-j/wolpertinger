@@ -1,3 +1,4 @@
+#include <cfloat>
 #include "synth.h"
 #include "tabbed-editor.h"
 #include "about.h"
@@ -5,8 +6,9 @@
 
 /*
 Versions
-0.4	ADSR Envelope
-
+0.4	ADSR Volume Envelope
+	16x Oversampling
+	Bugfix: Set sample rate correctly
 0.3 Virtual Keyboard Component, GUI niceties
 	Changed back to Juce
 0.2 MIDI parameter changes now update the GUI
@@ -50,7 +52,6 @@ void wolpVoice::startNote(const int midiNoteNumber,
 
 void wolpVoice::stopNote(const bool allowTailOff)
 {
-	printf("stopNote %d\n", allowTailOff);
 	//if(!allowTailOff) clearCurrentNote();
 	playing= false;
 }
@@ -61,52 +62,21 @@ void wolpVoice::process(float* p1, float* p2, int samples)
 {
 	float param_cutoff= synth->getparam(wolp::cutoff);
 	float cutoff= param_cutoff * freq;
-//	float step= freq / getSampleRate();
 	float vol= this->vol * synth->getparam(wolp::gain);
 	int nfilters= int(synth->getparam(wolp::nfilters));
-
-//	float msaw= synth->getparam(wolp::gsaw),
-//		  mrect= synth->getparam(wolp::grect),
-//		  mtri= synth->getparam(wolp::gtri);
-//	float div= msaw+mrect+mtri;
-//	if(div==0.0f) msaw= div= 1.0;
-//	div= 1.0/div;
-//	msaw*= div;
-//	mrect*= div;
-//	mtri*= div;
 
 	generator.setFrequency(getSampleRate(), freq);
 	generator.setMultipliers(synth->getparam(wolp::gsaw), synth->getparam(wolp::grect), synth->getparam(wolp::gtri));
 
-//	double volstep= playing? (vol>curvol? 100: -100)*vol/getSampleRate(): -50.0/getSampleRate();
-//	double volstep= (vol>curvol? 100: -100)*vol/getSampleRate();
 	double sampleStep= 1.0/getSampleRate();
 
 	for(int i= 0; i<samples; i++)
 	{
-//		double vsaw= phase,
-//			   vrect= (phase<0.5? -1: 1),
-//			   vtri= (cyclecount&1? 2-(phase+1)-1: phase);
-//
-//		double val= vsaw*msaw + vrect*mrect + vtri*mtri;
-//
-//		phase+= step;
-//		if (phase > 1)
-//			cyclecount++,
-//			phase -= 2;
-
 		double val= generator.getNextSample();
 
 		double envVol= env.getValue();
 
 		val= filter.run(val, nfilters);
-
-//		curvol+= volstep;
-//		if(curvol<=0.0f) { clearCurrentNote(); curvol= 0; break; }
-//		if( (curvol>vol && volstep>0) || (curvol<vol && volstep<0) ) curvol= vol;
-
-//		curvol+= (vol-curvol)*1000.0/getSampleRate();
-//		if(curvol<0.001f && !playing) { clearCurrentNote(); curvol= 0; break; }
 
 		p1[i]+= val*vol*envVol;
 		p2[i]+= val*vol*envVol;
@@ -126,9 +96,9 @@ void wolpVoice::process(float* p1, float* p2, int samples)
 			filter.setparams(getSampleRate(), cut,
 							 synth->params[wolp::bandwidth]*cut, synth->params[wolp::resonance] * 2);
 
-			synth->setParameterNotifyingHost(wolp::curcutoff, sqrt(cut/20000));
-//			synth->setParameterNotifyingHost(wolp::filterspeed,
-//						synth->cutoff_filter.getspeed()/(getSampleRate()*freq*300/**param_cutoff*100*/));
+			synth->setParameter(wolp::curcutoff, sqrt(cut/20000));
+//			synth->setParameterNotifyingHost(wolp::curcutoff, sqrt(cut/20000));
+			synth->sendChangeMessage((void*)wolp::curcutoff);
 		}
 
 		env.advance(sampleStep, playing);
@@ -179,6 +149,7 @@ void wolp::setStateInformation (const void* data, int sizeInBytes)
 			const char *name= param->getStringAttribute(T("name")).toUTF8();
 			const double val= param->getDoubleAttribute(T("val"));
 			int i;
+			printf("%s = %.2f\n", name, val);
 			for(i= 0; i<param_size; i++)
 			{
 				if( !strcmp(name, paraminfos[i].internalname) )
@@ -252,17 +223,20 @@ float wolp::getparam(int idx)
 
 void wolp::setParameter (int idx, float value)
 {
-	params[idx]= value;
+	if(idx!=curcutoff) printf("setParameter %s = %.2f\n", paraminfos[idx].label, value);
+
 	switch(idx)
 	{
 		case curcutoff:
 		{
-			float cut= params[idx];
+			float cut= value;
 			if(cut<params[filtermin]) cut= params[filtermin];
 			if(cut>params[filtermax]) cut= params[filtermax];
+			params[idx]= cut;
 			cutoff_filter.setvalue(getparam(idx));
 			break;
 		}
+
 		case tune:
 		{
 			for(int i= voices.size(); --i>=0; )
@@ -271,35 +245,28 @@ void wolp::setParameter (int idx, float value)
 				int note= voice->getCurrentlyPlayingNote();
 				if(note>=0) voice->setfreq(getnotefreq(note));
 			}
+			params[idx]= value;
 			break;
 		}
+
 		case filterspeed:
 		{
-//			double f= cutoff_filter.getspeed()/cutoff_filter.getvalue();
-//			double filterspd= sqrt(fabs(f)) * (f<0? -0.000002: 0.000002);
+			params[idx]= value;
+			break;
+		}
 
-			if(!cutoff_filter.getvalue()) break;
-
-			double newspeed= sqr(value)*(1.0/0.000002) * cutoff_filter.getvalue() * (value<0? -1: 1);
-
-			printf(" %.2f -> %.2f\n", cutoff_filter.getspeed(), newspeed);
-
-			cutoff_filter.setspeed(newspeed);
-
+		default:
+		{
+			params[idx]= value;
 			break;
 		}
 	}
 
-/*
-	tabbed_editor *e= (tabbed_editor*)getActiveEditor();
-	if(e)
-	{
-		//if(idx!=12) printf("non-gui param change, setParameter %d %.2f\n", idx, value);
-		// no way to check if this change was caused by the GUI, so it's updated needlessly when it was.
+	if(isProcessing)
+		paraminfos[idx].dirty= true;
+
+	else if(getActiveEditor())
 		sendChangeMessage((void*)idx);
-	}
-*/
-	paraminfos[idx].dirty= true;
 }
 
 
@@ -315,7 +282,7 @@ wolp::paraminfo wolp::paraminfos[]=
 	{ "filter_cutoff", 		"Filter X",	 	0.0, 	32.0,	0.5 },
 	{ "filter_reso", 		"Resonance",	0.0,	1.0,	0.4 },
 	{ "filter_bandwidth", 	"Bandwidth",	0.0,	1.0,	0.4 },
-	{ "filter_velocity", 	"Velocity",	 	0.0,	1.0,	0.25 },
+	{ "filter_velocity", 	"Velocity",	 	FLT_MIN,1.0,	0.25 },
 	{ "filter_inertia", 	"Inertia",	 	0.0,	1.0,	0.25 },
 	{ "filter_passes", 		"Passes",	 	0.0,	8.0,	0.5 },
 	{ "filter_curcutoff", 	"Filter Freq",	0.0,	20000,	0.25 },
@@ -325,7 +292,7 @@ wolp::paraminfo wolp::paraminfos[]=
 	{ "env_release", 		"Release",		0.0,	4.0,	0.5 },
 	{ "filter_minfreq", 	"Filter Min",	0.0,	20000,	0.1 },
 	{ "filter_maxfreq", 	"Filter Max",	0.0,	20000,	1.0 },
-	{ "filter_speed", 		"Filter Speed",	-4.0,	4.0,	0.0 },
+	{ "filter_speed", 		"Filter Speed",	-1.0,	1.0,	0.0 },
 };
 
 void wolp::loaddefaultparams()
@@ -336,7 +303,14 @@ void wolp::loaddefaultparams()
 
 wolp::wolp()
 {
-	jassert(sizeof(paraminfos)/sizeof(paraminfos[0])==param_size);
+//	jassert macro seems to broken / always disabled
+//	jassert(sizeof(paraminfos)/sizeof(paraminfos[0])==param_size);
+
+	if( sizeof(paraminfos)/sizeof(paraminfos[0]) != param_size )
+	{
+		AlertWindow::showMessageBox(AlertWindow::WarningIcon, String("Wolpertinger"), "Paraminfos size mismatch");
+	}
+
 	loaddefaultparams();
 
 	samples_synthesized= 0;
@@ -368,19 +342,23 @@ void wolp::processBlock(AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 	float *out0= outbuf[0], *out1= outbuf[1];
 	for(int i= 0; i<size; i++)
 	{
-//		float val= filter.run(out0[i], int(params[nfilters]));
-//		out0[i]= out1[i]= val;
 		if(out0[i]<-clp) out0[i]= -clp; else if(out0[i]>clp) out0[i]= clp;
 		if(out1[i]<-clp) out1[i]= -clp; else if(out1[i]>clp) out1[i]= clp;
 	}
 
-	double f= cutoff_filter.getspeed()/cutoff_filter.getvalue();
-	double filterspd= sqrt(fabs(f)) * (f<0? -0.000002: 0.000002);
+	double f= cutoff_filter.getspeed(); ///cutoff_filter.getvalue();
+//	double filterspd= sqrt(fabs(f)) * (f<0? -0.000002: 0.000002);
+	double filterspd= f*0.0000000001;
 	if(filterspd!=params[filterspeed])
-		params[filterspeed]= filterspd,
+	{
+//		printf("filterspd old: %.8f new: %.8f freq: %.2f\n",
+//				params[filterspeed]*20000, filterspd*20000, cutoff_filter.getvalue());
+		params[filterspeed]= filterspd;
 		paraminfos[filterspeed].dirty= true;
+	}
 
-	if(getActiveEditor())
+	tabbed_editor *e= (tabbed_editor*)getActiveEditor();
+	if(e)
 	{
 		for(int i= 0; i<param_size; i++)
 		{
@@ -390,10 +368,17 @@ void wolp::processBlock(AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 				paraminfos[i].dirty= false;
 			}
 		}
-	}
 
-//    editor *e= (editor*)getActiveEditor();
-//    if(e) e->updateparams();
+		int nPoly= 0;
+		for(int i= voices.size(); --i>=0; )
+		{
+			wolpVoice *voice= (wolpVoice*)voices.getUnchecked(i);
+			if(voice->getCurrentlyPlayingNote()>=0) nPoly++;
+		}
+
+//	harmful in process callback?
+//		e->setPolyText(String("Poly: ") + String(nPoly));
+	}
 }
 
 
@@ -403,6 +388,7 @@ void wolp::renderNextBlock (AudioSampleBuffer& outputBuffer,
                                    int numSamples)
 {
     const ScopedLock sl (lock);
+	isProcessing= true;
 
     MidiBuffer::Iterator midiIterator (midiData);
     midiIterator.setNextSamplePosition (startSample);
@@ -479,14 +465,14 @@ void wolp::renderNextBlock (AudioSampleBuffer& outputBuffer,
         startSample += numThisTime;
         numSamples -= numThisTime;
     }
+
+	isProcessing= false;
 }
 
 
 AudioProcessorEditor* wolp::createEditor()
 {
-    printf("wolp::createEditor() thread=%08X\n", Thread::getCurrentThreadId());
 	tabbed_editor *e= new tabbed_editor(this);
-    printf("wolp::createEditor() done\n");
 
 	return e;
 }

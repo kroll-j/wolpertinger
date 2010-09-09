@@ -55,6 +55,7 @@
 				<Option use_console_runner="0" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add option="-g" />
 					<Add option="-DLINUX=1" />
 					<Add option="-DJUCE_USE_XSHM=1" />
 					<Add option="-DJUCE_ALSA=1" />
@@ -71,7 +72,6 @@
 					<Add directory="src" />
 				</Compiler>
 				<Linker>
-					<Add option="-s" />
 					<Add library="freetype" />
 					<Add library="pthread" />
 					<Add library="rt" />
