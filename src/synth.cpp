@@ -40,8 +40,8 @@ void wolpVoice::startNote(const int midiNoteNumber,
 	phase= low= band= high= 0;
 	freq= synth->getnotefreq(midiNoteNumber);
 	vol= velocity;
-//	curvol= 0.0f;
 	cyclecount= 0;
+	samples_synthesized= 0;
 	playing= true;
 	env.setAttack(synth->getparam(wolp::attack));
 	env.setDecay(synth->getparam(wolp::decay));
@@ -64,15 +64,17 @@ void wolpVoice::process(float* p1, float* p2, int samples)
 	float cutoff= param_cutoff * freq;
 	float vol= this->vol * synth->getparam(wolp::gain);
 	int nfilters= int(synth->getparam(wolp::nfilters));
+	float *waveSamples;
 
-	generator.setFrequency(getSampleRate(), freq);
-	generator.setMultipliers(synth->getparam(wolp::gsaw), synth->getparam(wolp::grect), synth->getparam(wolp::gtri));
+	generator16.setFrequency(getSampleRate(), freq);
+	generator16.setMultipliers(synth->getparam(wolp::gsaw), synth->getparam(wolp::grect), synth->getparam(wolp::gtri));
+	waveSamples= generator16.generateSamples(samples);
 
 	double sampleStep= 1.0/getSampleRate();
 
 	for(int i= 0; i<samples; i++)
 	{
-		double val= generator.getNextSample();
+		double val= waveSamples[i]; //generator.getNextSample();	//
 
 		double envVol= env.getValue();
 
@@ -81,7 +83,7 @@ void wolpVoice::process(float* p1, float* p2, int samples)
 		p1[i]+= val*vol*envVol;
 		p2[i]+= val*vol*envVol;
 
-		if( !((++synth->samples_synthesized) & 31) )
+		if( !((++samples_synthesized) & 31) )
 		{
 			synth->cutoff_filter.setparams(synth->getparam(wolp::velocity) * 10000,
 										   synth->getparam(wolp::inertia) * 100);
@@ -312,8 +314,6 @@ wolp::wolp()
 	}
 
 	loaddefaultparams();
-
-	samples_synthesized= 0;
 
 	for(int i= 0; i<16 ; i++)
 		addVoice(new wolpVoice(this));

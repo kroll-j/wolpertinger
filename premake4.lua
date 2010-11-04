@@ -47,6 +47,8 @@ project(appname .. "Standalone")
 	language "C++"
 	files { "standalone/**.cpp", "standalone/**.h" }
 	defines { "CONFIG_STANDALONE=1", "BINTYPE=\"Linux Standalone\"" }
+	buildoptions { "-fkeep-inline-functions -msse" }
+
 
 configuration "Debug"
 	defines { "DEBUG=1", "_DEBUG=1" }
@@ -59,8 +61,7 @@ configuration "Release"
 	defines { "NDEBUG=1" }
 	links { "juce" }
 	flags { "Optimize" }
-	buildoptions { "-O2" }
-
+	buildoptions { "-O2 -ffast-math" }
 
 
 
@@ -81,7 +82,7 @@ configuration "Release"
 	defines { "NDEBUG=1" }
 	links { "juce" }
 	flags { "Optimize" }
-	buildoptions { "-O2" }
+	buildoptions { "-O2 -ffast-math" }
 
 
 

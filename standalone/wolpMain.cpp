@@ -88,6 +88,8 @@ void StandaloneFilterApplication::perfTest()
 	}
 	clocksPerSampleAvg/= nTests;
 	printf("clocks/sample min: %.0f avg: %.0f\n", clocksPerSampleMin, clocksPerSampleAvg);
+
+	delete synth;
 }
 
 
@@ -124,7 +126,7 @@ void StandaloneFilterApplication::initialise (const String& commandLine)
     window->toFront (true);
     window->setVisible (true);
 
-//    perfTest();
+    perfTest();
 }
 
 void StandaloneFilterApplication::shutdown()

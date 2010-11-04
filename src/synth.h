@@ -2,9 +2,11 @@
 #define SYNTH_H
 
 #include <stdint.h>
+#include <vector>
 #include "juce.h"
 #include "filters.h"
 #include "ADSRenv.h"
+#include "simd.h"
 
 
 template<typename T> T sqr(T v) { return v*v; }
@@ -71,8 +73,8 @@ class chebyshev_7pole
 
 	#define NZEROS 7
 	#define NPOLES 7
-	#define GAIN   8.185223519e+08
-	#define IGAIN  (1.0/8.185223519e+08)
+	#define GAIN   3.749197811e+07	//8.185223519e+08
+	#define IGAIN  (1.0/GAIN)
 
 	public:
 
@@ -97,12 +99,18 @@ class chebyshev_7pole
 		xv[0] = xv[1]; xv[1] = xv[2]; xv[2] = xv[3]; xv[3] = xv[4]; xv[4] = xv[5]; xv[5] = xv[6]; xv[6] = xv[7];
 		xv[7] = nextvalue * IGAIN;
 		yv[0] = yv[1]; yv[1] = yv[2]; yv[2] = yv[3]; yv[3] = yv[4]; yv[4] = yv[5]; yv[5] = yv[6]; yv[6] = yv[7];
-		yv[7] =   (xv[0] + xv[7]) + 7 * (xv[1] + xv[6]) + 21 * (xv[2] + xv[5])
-					 + 35 * (xv[3] + xv[4])
-					 + (  0.7582559865 * yv[0]) + ( -5.4896632588 * yv[1])
-					 + ( 17.0657116090 * yv[2]) + (-29.5302444680 * yv[3])
-					 + ( 30.7191651920 * yv[4]) + (-19.2116577140 * yv[5])
-					 + (  6.6884324971 * yv[6]);
+        yv[7] =   (xv[0] + xv[7]) + 7 * (xv[1] + xv[6]) + 21 * (xv[2] + xv[5])
+                     + 35 * (xv[3] + xv[4])
+                     + (  0.5583379245 * yv[0]) + ( -4.2029878877 * yv[1])
+                     + ( 13.6048706560 * yv[2]) + (-24.5500454730 * yv[3])
+                     + ( 26.6748933120 * yv[4]) + (-17.4541474870 * yv[5])
+                     + (  6.3690755413 * yv[6]);
+//		yv[7] =   (xv[0] + xv[7]) + 7 * (xv[1] + xv[6]) + 21 * (xv[2] + xv[5])
+//					 + 35 * (xv[3] + xv[4])
+//					 + (  0.7582559865 * yv[0]) + ( -5.4896632588 * yv[1])
+//					 + ( 17.0657116090 * yv[2]) + (-29.5302444680 * yv[3])
+//					 + ( 30.7191651920 * yv[4]) + (-19.2116577140 * yv[5])
+//					 + (  6.6884324971 * yv[6]);
 		return yv[7];
 #endif
 	}
@@ -112,17 +120,78 @@ class chebyshev_7pole
 	#undef GAIN
 };
 
-class WaveGenerator
+class chebyshev_3pole
+{
+	/* Digital filter designed by mkfilter/mkshape/gencode   A.J. Fisher
+	   Command line: /www/usr/fisher/helpers/mkfilter -Ch -1.0000000000e-01 -Lp -o 3 -a 2.3437500000e-02 0.0000000000e+00 -l */
+	/*
+		  parameters:
+		  filtertype 	= 	Chebyshev
+		  passtype 		= 	Lowpass
+		  ripple 		= 	-.1
+		  order 		= 	3
+		  samplerate	= 	768000
+		  corner1 		= 	18000
+		  corner2 		=
+		  adzero 		=
+		  logmin 		=
+	*/
+
+	#define NZEROS 3
+	#define NPOLES 3
+	#define GAIN   1.761297947e+03
+	#define IGAIN  (1.0/GAIN)
+
+	public:
+		union {
+			struct { double xv[NZEROS+1]; float yv[NPOLES+1]; };
+			struct { v4sf xv_vec; v4sf yv_vec; };
+		};
+
+
+		chebyshev_3pole() { memset(xv, 0, sizeof(xv)); memset(yv, 0, sizeof(yv)); }
+
+		float run(float nextvalue)
+		{
+			xv[0] = xv[1]; xv[1] = xv[2]; xv[2] = xv[3];
+			xv[3] = nextvalue * IGAIN;
+			yv[0] = yv[1]; yv[1] = yv[2]; yv[2] = yv[3];
+			yv[3] =   (xv[0] + xv[3]) + 3 * (xv[1] + xv[2])
+					+ (  0.7518562751f * yv[0])
+					+ ( -2.4565610558f * yv[1])
+					+ (  2.7001626759f * yv[2]);
+			return yv[3];
+		}
+/*
+		float run_sse(float nextvalue)
+		{
+			v4sf xv_mul= { 1.0, 3.0, 3.0, 1.0 };
+			v4sf yv_mul= { 0.7518562751, -2.4565610558, 2.7001626759, 0.0 };
+
+			xv[0] = xv[1]; xv[1] = xv[2]; xv[2] = xv[3];
+			xv[3] = nextvalue * IGAIN;
+			yv[0] = yv[1]; yv[1] = yv[2]; yv[2] = yv[3];
+
+			yv[3] = (xv[0] + xv[3]) + 3 * (xv[1] + xv[2])
+					+ (  0.7518562751 * yv[0])
+					+ ( -2.4565610558 * yv[1])
+					+ (  2.7001626759 * yv[2]);
+
+			return yv[3];
+		}
+*/
+	#undef NZEROS
+	#undef NPOLES
+	#undef GAIN
+};
+
+
+template<int oversampling> class WaveGenerator
 {
 	public:
-		enum { oversampling = 16 };
-
 		WaveGenerator():
 			phase(0.0), cyclecount(0)
-		{
-			memset(xv, 0, sizeof(xv));
-			memset(yv, 0, sizeof(xv));
-		}
+		{ }
 
 		~WaveGenerator()
 		{ }
@@ -133,8 +202,6 @@ class WaveGenerator
 			for(int i= 0; i<oversampling; i++)
 			{
 				if(oversampling>1)
-//					s= filter.run(getNextRawSample());
-//					s= butterworth_lp(getNextRawSample());
 					s= chebyshev_lp.run(getNextRawSample());
 				else
 					s= getNextRawSample();
@@ -145,8 +212,6 @@ class WaveGenerator
 		void setFrequency(double sampleRate, double noteFrequency)
 		{
 			sampleStep= noteFrequency / (sampleRate*oversampling);
-			filter[0].calc_filter_coeffs(0, sampleRate*0.3, sampleRate*oversampling, 0.6, 0, false);
-			filter.updateparams();
 		}
 
 		void setMultipliers(double mSaw, double mRect, double mTri)
@@ -159,11 +224,60 @@ class WaveGenerator
 			triFactor= mTri*div;
 		}
 
+		float *generateSamples(int nSamples)
+		{
+//			if(rawSampleBuffer.size()<nSamples*oversampling)
+//				rawSampleBuffer.resize(nSamples*oversampling);
+			if(sampleBuffer.size()<nSamples)
+				sampleBuffer.resize(nSamples);
+
+//			generateRawSamples(&rawSampleBuffer[0], nSamples*oversampling);
+
+			int rawIdx= 0;
+			for(int i= 0; i<nSamples; i++)
+			{
+				float s;
+				for(int k= oversampling; k; k--)
+//					s= chebyshev_lp.run(rawSampleBuffer[rawIdx++]);
+					s= chebyshev_lp.run(getNextRawSample());
+				sampleBuffer[i]= s;
+			}
+			return &sampleBuffer[0];
+		}
+
 	private:
 		double sawFactor, rectFactor, triFactor, sampleStep, phase;
 		int cyclecount;
+		std::vector<float> rawSampleBuffer;
+		std::vector<float> sampleBuffer;
 
-		multifilter<CFxRbjFilter, 4> filter;
+		void generateRawSampleChunk(float *buffer, int nSamples)
+		{
+			double saw, rect, tri;
+			for(int i= 0; i<nSamples; i++)
+			{
+				saw= phase;
+				rect= (phase<0.5? -1: 1);
+				tri= (cyclecount&1? 2-(phase+1)-1: phase);
+
+				phase+= sampleStep;
+
+				buffer[i]= saw*sawFactor + rect*rectFactor + tri*triFactor;
+			}
+		}
+
+		void generateRawSamples(float *buffer, int nSamples)
+		{
+			while(phase>1.0) phase-= 2.0;
+			for(int i= 0; i<nSamples; )
+			{
+				int chunkSize= (2 - (phase+1)) / sampleStep;
+				if(chunkSize>nSamples-i) chunkSize= nSamples-i;
+				generateRawSampleChunk(buffer+i, chunkSize);
+				i+= chunkSize;
+				if(i<nSamples) phase-= 2, cyclecount++;
+			}
+		}
 
 		double getNextRawSample()
 		{
@@ -171,7 +285,7 @@ class WaveGenerator
 				   rect= (phase<0.5? -1: 1),
 				   tri= (cyclecount&1? 2-(phase+1)-1: phase);
 
-			double val= saw*sawFactor+ rect*rectFactor + tri*triFactor;
+			double val= saw*sawFactor + rect*rectFactor + tri*triFactor;
 
 			phase+= sampleStep;
 			if (phase > 1)
@@ -181,29 +295,7 @@ class WaveGenerator
 			return val;
 		}
 
-		#define NZEROS 8
-		#define NPOLES 8
-		#define GAIN   1.664669804e+09
-
-		double xv[NZEROS+1], yv[NPOLES+1];
-
-		double butterworth_lp(double nextval)
-			  { xv[0] = xv[1]; xv[1] = xv[2]; xv[2] = xv[3]; xv[3] = xv[4]; xv[4] = xv[5]; xv[5] = xv[6]; xv[6] = xv[7]; xv[7] = xv[8];
-				xv[8] = nextval / GAIN;
-				yv[0] = yv[1]; yv[1] = yv[2]; yv[2] = yv[3]; yv[3] = yv[4]; yv[4] = yv[5]; yv[5] = yv[6]; yv[6] = yv[7]; yv[7] = yv[8];
-				yv[8] =   (xv[0] + xv[8]) + 8 * (xv[1] + xv[7]) + 28 * (xv[2] + xv[6])
-							 + 56 * (xv[3] + xv[5]) + 70 * xv[4]
-							 + ( -0.4696688419 * yv[0]) + (  4.1118419128 * yv[1])
-							 + (-15.7672926090 * yv[2]) + ( 34.5903197920 * yv[3])
-							 + (-47.4859069880 * yv[4]) + ( 41.7740652050 * yv[5])
-							 + (-22.9985902730 * yv[6]) + (  7.2452316476 * yv[7]);
-				return yv[8];
-			  }
-		#undef NZEROS
-		#undef NPOLES
-		#undef GAIN
-
-		chebyshev_7pole chebyshev_lp;
+		chebyshev_3pole chebyshev_lp;
 };
 
 class wolpVoice: public SynthesiserVoice
@@ -238,11 +330,12 @@ class wolpVoice: public SynthesiserVoice
 		void process(float* p1, float* p2, int samples);
 
 		double phase, low, band, high, vol, freq;
-//		double curvol;
 		bool playing;
 		int cyclecount;
+		unsigned long samples_synthesized;
 
-		WaveGenerator generator;
+		WaveGenerator<8> generator8;
+		WaveGenerator<16> generator16;
 		bandpass<8> filter;
 		ADSRenv env;
 
@@ -391,8 +484,6 @@ class wolp:	public AudioProcessor,
 		double params[param_size];
 
 		velocityfilter <double> cutoff_filter;
-
-		unsigned long samples_synthesized;
 
 		bool isProcessing;	// whether we are in the processBlock callback
 

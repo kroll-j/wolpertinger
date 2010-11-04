@@ -11,7 +11,6 @@
 				<Option object_output="build/Debug/WolpertingerStandalone" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option use_console_runner="0" />
 				<Compiler>
 					<Add option="-g" />
 					<Add option="-DLINUX=1" />
@@ -52,9 +51,11 @@
 				<Option object_output="build/Release/WolpertingerStandalone" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option use_console_runner="0" />
 				<Compiler>
+					<Add option="-fexpensive-optimizations" />
 					<Add option="-O2" />
+					<Add option="-g" />
+					<Add option="-ffast-math -fkeep-inline-functions" />
 					<Add option="-DLINUX=1" />
 					<Add option="-DJUCE_USE_XSHM=1" />
 					<Add option="-DJUCE_ALSA=1" />
@@ -71,7 +72,6 @@
 					<Add directory="src" />
 				</Compiler>
 				<Linker>
-					<Add option="-s" />
 					<Add library="freetype" />
 					<Add library="pthread" />
 					<Add library="rt" />
@@ -102,6 +102,7 @@
 		<Unit filename="src/editor.h" />
 		<Unit filename="src/filters.h" />
 		<Unit filename="src/juce_PluginHeaders.h" />
+		<Unit filename="src/simd.h" />
 		<Unit filename="src/synth.cpp" />
 		<Unit filename="src/synth.h" />
 		<Unit filename="src/tabbed-editor.cpp" />
