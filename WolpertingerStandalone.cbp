@@ -14,7 +14,6 @@
 				<Option use_console_runner="0" />
 				<Compiler>
 					<Add option="-g" />
-					<Add option="-ggdb" />
 					<Add option="-DLINUX=1" />
 					<Add option="-DJUCE_USE_XSHM=1" />
 					<Add option="-DJUCE_ALSA=1" />
@@ -23,11 +22,12 @@
 					<Add option="-DVERSION=004" />
 					<Add option='-DVERSIONSTRING=&quot;0.4&quot;' />
 					<Add option='-DCONFIGURATION=&quot;Debug&quot;' />
-					<Add option="-DJUCE_DEBUG=1" />
+					<Add option="-DJUCE_DEBUG" />
 					<Add option="-DCONFIG_STANDALONE=1" />
 					<Add option='-DBINTYPE=&quot;Linux Standalone&quot;' />
 					<Add option="-DDEBUG=1" />
 					<Add option="-D_DEBUG=1" />
+					<Add option="-ggdb" />
 					<Add directory="../juce-git" />
 					<Add directory="../vstsdk2.4" />
 					<Add directory="src" />
@@ -55,7 +55,6 @@
 				<Option use_console_runner="0" />
 				<Compiler>
 					<Add option="-O2" />
-					<Add option="-g" />
 					<Add option="-DLINUX=1" />
 					<Add option="-DJUCE_USE_XSHM=1" />
 					<Add option="-DJUCE_ALSA=1" />
@@ -72,6 +71,7 @@
 					<Add directory="src" />
 				</Compiler>
 				<Linker>
+					<Add option="-s" />
 					<Add library="freetype" />
 					<Add library="pthread" />
 					<Add library="rt" />
@@ -109,7 +109,6 @@
 		<Unit filename="standalone/wolpMain.cpp" />
 		<Extensions>
 			<code_completion />
-			<envvars />
 			<debugger />
 		</Extensions>
 	</Project>

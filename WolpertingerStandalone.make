@@ -70,8 +70,8 @@ OBJECTS := \
 	$(OBJDIR)/RotatingToggleButton.o \
 	$(OBJDIR)/about.o \
 	$(OBJDIR)/synth.o \
-	$(OBJDIR)/editor.o \
 	$(OBJDIR)/tabbed-editor.o \
+	$(OBJDIR)/editor.o \
 	$(OBJDIR)/wolpMain.o \
 
 RESOURCES := \
@@ -149,10 +149,10 @@ $(OBJDIR)/about.o: src/about.cpp
 $(OBJDIR)/synth.o: src/synth.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o $@ -c $<
-$(OBJDIR)/editor.o: src/editor.cpp
+$(OBJDIR)/tabbed-editor.o: src/tabbed-editor.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o $@ -c $<
-$(OBJDIR)/tabbed-editor.o: src/tabbed-editor.cpp
+$(OBJDIR)/editor.o: src/editor.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o $@ -c $<
 $(OBJDIR)/wolpMain.o: standalone/wolpMain.cpp

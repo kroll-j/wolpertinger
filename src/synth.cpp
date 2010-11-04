@@ -149,7 +149,7 @@ void wolp::setStateInformation (const void* data, int sizeInBytes)
 			const char *name= param->getStringAttribute(T("name")).toUTF8();
 			const double val= param->getDoubleAttribute(T("val"));
 			int i;
-			printf("%s = %.2f\n", name, val);
+//			printf("%s = %.2f\n", name, val);
 			for(i= 0; i<param_size; i++)
 			{
 				if( !strcmp(name, paraminfos[i].internalname) )
@@ -223,7 +223,7 @@ float wolp::getparam(int idx)
 
 void wolp::setParameter (int idx, float value)
 {
-	if(idx!=curcutoff) printf("setParameter %s = %.2f\n", paraminfos[idx].label, value);
+//	if(idx!=curcutoff) printf("setParameter %s = %.2f\n", paraminfos[idx].label, value);
 
 	switch(idx)
 	{

@@ -1,6 +1,7 @@
 #ifndef SYNTH_H
 #define SYNTH_H
 
+#include <stdint.h>
 #include "juce.h"
 #include "filters.h"
 #include "ADSRenv.h"
@@ -9,12 +10,106 @@
 template<typename T> T sqr(T v) { return v*v; }
 
 
+inline uint64_t rdtsc()
+{
+	union
+	{
+		uint64_t val;
+		struct { uint32_t lo; uint32_t hi; };
+	} ret;
+	asm ("rdtsc\n": "=a" (ret.lo), "=d" (ret.hi));
+	return ret.val;
+}
+
 
 class wolpSound: public SynthesiserSound
 {
 	public:
 		bool appliesToNote(const int midiNoteNumber) { return true; }
 		bool appliesToChannel(const int midiChannel) { return true; }
+};
+
+
+class chebyshev_7pole_generated
+{
+	/* Digital filter designed by mkfilter/mkshape/gencode   A.J. Fisher
+	   Command line: /www/usr/fisher/helpers/mkfilter -Ch -5.0000000000e-02 -Lp -o 7 -a 2.2786458333e-02 0.0000000000e+00 -l */
+
+	#define NZEROS 7
+	#define NPOLES 7
+	#define GAIN   8.185223519e+08
+
+	public:
+
+	chebyshev_7pole_generated() { memset(xv, 0, sizeof(xv)); memset(yv, 0, sizeof(yv)); }
+
+	double xv[NZEROS+1], yv[NPOLES+1];
+
+	double run(double nextvalue)
+	{
+		xv[0] = xv[1]; xv[1] = xv[2]; xv[2] = xv[3]; xv[3] = xv[4]; xv[4] = xv[5]; xv[5] = xv[6]; xv[6] = xv[7];
+		xv[7] = nextvalue / GAIN;
+		yv[0] = yv[1]; yv[1] = yv[2]; yv[2] = yv[3]; yv[3] = yv[4]; yv[4] = yv[5]; yv[5] = yv[6]; yv[6] = yv[7];
+		yv[7] =   (xv[0] + xv[7]) + 7 * (xv[1] + xv[6]) + 21 * (xv[2] + xv[5])
+					 + 35 * (xv[3] + xv[4])
+					 + (  0.7582559865 * yv[0]) + ( -5.4896632588 * yv[1])
+					 + ( 17.0657116090 * yv[2]) + (-29.5302444680 * yv[3])
+					 + ( 30.7191651920 * yv[4]) + (-19.2116577140 * yv[5])
+					 + (  6.6884324971 * yv[6]);
+		return yv[7];
+	}
+
+	#undef NZEROS
+	#undef NPOLES
+	#undef GAIN
+};
+
+class chebyshev_7pole
+{
+	/* Digital filter designed by mkfilter/mkshape/gencode   A.J. Fisher
+	   Command line: /www/usr/fisher/helpers/mkfilter -Ch -5.0000000000e-02 -Lp -o 7 -a 2.2786458333e-02 0.0000000000e+00 -l */
+
+	#define NZEROS 7
+	#define NPOLES 7
+	#define GAIN   8.185223519e+08
+	#define IGAIN  (1.0/8.185223519e+08)
+
+	public:
+
+	uint32_t index;
+	chebyshev_7pole(): index(0) { memset(xv, 0, sizeof(xv)); memset(yv, 0, sizeof(yv)); }
+
+	double xv[NZEROS+1], yv[NPOLES+1];
+
+	double run(double nextvalue)
+	{
+#if 0
+		index++;
+		xv[index+7&7]= nextvalue*IGAIN;
+		yv[index+7&7]= (xv[index+0&7] + xv[index+7&7]) + 7 * (xv[index+1&7] + xv[index+6&7]) + 21 * (xv[index+2&7] + xv[index+5&7])
+					 + 35 * (xv[index+3&7] + xv[index+4&7])
+					 + (  0.7582559865 * yv[index+0&7]) + ( -5.4896632588 * yv[index+1&7])
+					 + ( 17.0657116090 * yv[index+2&7]) + (-29.5302444680 * yv[index+3&7])
+					 + ( 30.7191651920 * yv[index+4&7]) + (-19.2116577140 * yv[index+5&7])
+					 + (  6.6884324971 * yv[index+6&7]);
+		return yv[index+7&7];
+#else
+		xv[0] = xv[1]; xv[1] = xv[2]; xv[2] = xv[3]; xv[3] = xv[4]; xv[4] = xv[5]; xv[5] = xv[6]; xv[6] = xv[7];
+		xv[7] = nextvalue * IGAIN;
+		yv[0] = yv[1]; yv[1] = yv[2]; yv[2] = yv[3]; yv[3] = yv[4]; yv[4] = yv[5]; yv[5] = yv[6]; yv[6] = yv[7];
+		yv[7] =   (xv[0] + xv[7]) + 7 * (xv[1] + xv[6]) + 21 * (xv[2] + xv[5])
+					 + 35 * (xv[3] + xv[4])
+					 + (  0.7582559865 * yv[0]) + ( -5.4896632588 * yv[1])
+					 + ( 17.0657116090 * yv[2]) + (-29.5302444680 * yv[3])
+					 + ( 30.7191651920 * yv[4]) + (-19.2116577140 * yv[5])
+					 + (  6.6884324971 * yv[6]);
+		return yv[7];
+#endif
+	}
+
+	#undef NZEROS
+	#undef NPOLES
+	#undef GAIN
 };
 
 class WaveGenerator
@@ -107,51 +202,6 @@ class WaveGenerator
 		#undef NZEROS
 		#undef NPOLES
 		#undef GAIN
-
-		class chebyshev_7pole
-		{
-			/* Digital filter designed by mkfilter/mkshape/gencode   A.J. Fisher
-			   Command line: /www/usr/fisher/helpers/mkfilter -Ch -5.0000000000e-02 -Lp -o 7 -a 2.2786458333e-02 0.0000000000e+00 -l */
-
-			#define NZEROS 7
-			#define NPOLES 7
-			#define GAIN   8.185223519e+08
-
-			public:
-
-			chebyshev_7pole() { memset(xv, 0, sizeof(xv)); memset(yv, 0, sizeof(yv)); }
-
-			double xv[NZEROS+1], yv[NPOLES+1];
-
-			double run(double nextvalue)
-			{
-				xv[0] = xv[1]; xv[1] = xv[2]; xv[2] = xv[3]; xv[3] = xv[4]; xv[4] = xv[5]; xv[5] = xv[6]; xv[6] = xv[7];
-				xv[7] = nextvalue / GAIN;
-				yv[0] = yv[1]; yv[1] = yv[2]; yv[2] = yv[3]; yv[3] = yv[4]; yv[4] = yv[5]; yv[5] = yv[6]; yv[6] = yv[7];
-				yv[7] =   (xv[0] + xv[7]) + 7 * (xv[1] + xv[6]) + 21 * (xv[2] + xv[5])
-							 + 35 * (xv[3] + xv[4])
-							 + (  0.7582559865 * yv[0]) + ( -5.4896632588 * yv[1])
-							 + ( 17.0657116090 * yv[2]) + (-29.5302444680 * yv[3])
-							 + ( 30.7191651920 * yv[4]) + (-19.2116577140 * yv[5])
-							 + (  6.6884324971 * yv[6]);
-				return yv[7];
-			}
-
-//			void filterloop()
-//			  { for (;;)
-//				  { xv[0] = xv[1]; xv[1] = xv[2]; xv[2] = xv[3]; xv[3] = xv[4]; xv[4] = xv[5]; xv[5] = xv[6]; xv[6] = xv[7];
-//					xv[7] = `next input value' / GAIN;
-//					yv[0] = yv[1]; yv[1] = yv[2]; yv[2] = yv[3]; yv[3] = yv[4]; yv[4] = yv[5]; yv[5] = yv[6]; yv[6] = yv[7];
-//					yv[7] =   (xv[0] + xv[7]) + 7 * (xv[1] + xv[6]) + 21 * (xv[2] + xv[5])
-//								 + 35 * (xv[3] + xv[4])
-//								 + (  0.7582559865 * yv[0]) + ( -5.4896632588 * yv[1])
-//								 + ( 17.0657116090 * yv[2]) + (-29.5302444680 * yv[3])
-//								 + ( 30.7191651920 * yv[4]) + (-19.2116577140 * yv[5])
-//								 + (  6.6884324971 * yv[6]);
-//					`next output value' = yv[7];
-//				  }
-//			  }
-		};
 
 		chebyshev_7pole chebyshev_lp;
 };

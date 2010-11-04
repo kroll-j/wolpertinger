@@ -1,4 +1,7 @@
+#include <stdint.h>
+#include <cfloat>
 #include "about.h"
+#include "synth.h"
 
 #include "../vst/juce_PluginHeaders.h"
 
@@ -44,6 +47,8 @@ private:
 
     StandaloneFilterApplication (const StandaloneFilterApplication&);
     const StandaloneFilterApplication& operator= (const StandaloneFilterApplication&);
+
+    void perfTest();
 };
 
 //==============================================================================
@@ -55,6 +60,37 @@ StandaloneFilterApplication::StandaloneFilterApplication()
 StandaloneFilterApplication::~StandaloneFilterApplication()
 {
 }
+
+
+
+//==============================================================================
+void StandaloneFilterApplication::perfTest()
+{
+	wolp *synth= new wolp();
+	enum { sampleRate=48000, testSamples=500, nTestsPerLoop=10, nTests=1000 };
+	AudioSampleBuffer buffer(2, testSamples);
+	double clocksPerSampleMin= DBL_MAX;
+
+	synth->prepareToPlay(sampleRate, 512);
+
+	synth->noteOn(0, 64, 1.0);
+	MidiBuffer midiBuf;
+	double clocksPerSampleAvg= 0;
+	for(int i= 0; i<nTests; i++)
+	{
+		uint64_t startClocks= rdtsc();
+		for(int k= 0; k<nTestsPerLoop; k++)
+			synth->processBlock(buffer, midiBuf);
+		uint64_t endClocks= rdtsc();
+		double ticksPerSample= double(endClocks-startClocks)/(testSamples*nTestsPerLoop);
+		if(ticksPerSample<clocksPerSampleMin) clocksPerSampleMin= ticksPerSample;
+		clocksPerSampleAvg+= ticksPerSample;
+	}
+	clocksPerSampleAvg/= nTests;
+	printf("clocks/sample min: %.0f avg: %.0f\n", clocksPerSampleMin, clocksPerSampleAvg);
+}
+
+
 
 //==============================================================================
 void StandaloneFilterApplication::initialise (const String& commandLine)
@@ -80,19 +116,15 @@ void StandaloneFilterApplication::initialise (const String& commandLine)
     // create the window
     window = new StandaloneFilterWindow (pluginWindowName,
                                           Colour (32, 32, 32));
-//                                         DocumentWindow::closeButton | DocumentWindow::minimiseButton,
-//                                         true);
+
 
 	window->setTitleBarHeight(24);
 //	window->setUsingNativeTitleBar(true);
 
-    // set window visible
     window->toFront (true);
     window->setVisible (true);
 
-//	Image &icon= *ImageCache::getFromMemory(about::icon_png, about::icon_pngSize);
-//	//window->setIcon(&icon);
-//	window->getPeer()->setIcon(icon);
+//    perfTest();
 }
 
 void StandaloneFilterApplication::shutdown()
