@@ -4,15 +4,13 @@ version_string= "0.4"
 
 solution(appname)
 	includedirs {
---		"../juced/juce",	-- adjust this to match your juce basedir containing the 'src' subdirectory
-		"../juce-git",
+		"../juce-151",		-- adjust this to match your juce basedir containing the 'src' subdirectory
 		"../vstsdk2.4", 	-- adjust this to match your vst sdk 2.4 basedir containing the 'public.sdk' subdirectory
 		"src"
 	}
 
 	libdirs {
---		"../juced/bin", 	-- adjust this to match your juce bindir
-		"../juce-git/bin",
+		"../juce/bin",		-- adjust this to match your juce bindir
 		"/usr/X11R6/lib",
 		"/usr/lib" }
 
@@ -47,7 +45,7 @@ project(appname .. "Standalone")
 	language "C++"
 	files { "standalone/**.cpp", "standalone/**.h" }
 	defines { "CONFIG_STANDALONE=1", "BINTYPE=\"Linux Standalone\"" }
-	buildoptions { "-fkeep-inline-functions -msse" }
+	buildoptions { "-msse" }
 
 
 configuration "Debug"
@@ -70,6 +68,7 @@ project(appname .. "VST")
 	language "C++"
 	files { "vst/**.cpp", "vst/**.h" }
 	defines { "CONFIG_VST=1", "BINTYPE=\"Linux Native VST\"" }
+	buildoptions { "-msse" }
 
 configuration "Debug"
 	defines { "DEBUG=1", "_DEBUG=1" }

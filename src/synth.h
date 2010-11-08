@@ -122,68 +122,109 @@ class chebyshev_7pole
 
 class chebyshev_3pole
 {
-	/* Digital filter designed by mkfilter/mkshape/gencode   A.J. Fisher
-	   Command line: /www/usr/fisher/helpers/mkfilter -Ch -1.0000000000e-01 -Lp -o 3 -a 2.3437500000e-02 0.0000000000e+00 -l */
 	/*
-		  parameters:
-		  filtertype 	= 	Chebyshev
-		  passtype 		= 	Lowpass
-		  ripple 		= 	-.1
-		  order 		= 	3
-		  samplerate	= 	768000
-		  corner1 		= 	18000
-		  corner2 		=
-		  adzero 		=
-		  logmin 		=
+		Digital filter designed by mkfilter/mkshape/gencode   A.J. Fisher
+		parameters:
+
+		filtertype 	= 	Chebyshev
+		passtype 	= 	Lowpass
+		ripple 		= 	-1
+		order 		= 	3
+		samplerate 	= 	768000
+		corner1 	= 	18000
+		corner2 	=
+		adzero 		=
+		logmin 		=
 	*/
 
 	#define NZEROS 3
 	#define NPOLES 3
-	#define GAIN   1.761297947e+03
+	#define GAIN   5.476029231e+03
 	#define IGAIN  (1.0/GAIN)
 
 	public:
-		union {
-			struct { double xv[NZEROS+1]; float yv[NPOLES+1]; };
-			struct { v4sf xv_vec; v4sf yv_vec; };
-		};
-
+		double xv[NZEROS+1]; double yv[NPOLES+1];
 
 		chebyshev_3pole() { memset(xv, 0, sizeof(xv)); memset(yv, 0, sizeof(yv)); }
 
-		float run(float nextvalue)
+		double run(double nextvalue)
 		{
 			xv[0] = xv[1]; xv[1] = xv[2]; xv[2] = xv[3];
 			xv[3] = nextvalue * IGAIN;
 			yv[0] = yv[1]; yv[1] = yv[2]; yv[2] = yv[3];
 			yv[3] =   (xv[0] + xv[3]) + 3 * (xv[1] + xv[2])
-					+ (  0.7518562751f * yv[0])
-					+ ( -2.4565610558f * yv[1])
-					+ (  2.7001626759f * yv[2]);
+						 + (  0.8646065740 * yv[0]) + ( -2.7049827914 * yv[1])
+						 + (  2.8389153049 * yv[2]);
 			return yv[3];
 		}
-/*
-		float run_sse(float nextvalue)
-		{
-			v4sf xv_mul= { 1.0, 3.0, 3.0, 1.0 };
-			v4sf yv_mul= { 0.7518562751, -2.4565610558, 2.7001626759, 0.0 };
-
-			xv[0] = xv[1]; xv[1] = xv[2]; xv[2] = xv[3];
-			xv[3] = nextvalue * IGAIN;
-			yv[0] = yv[1]; yv[1] = yv[2]; yv[2] = yv[3];
-
-			yv[3] = (xv[0] + xv[3]) + 3 * (xv[1] + xv[2])
-					+ (  0.7518562751 * yv[0])
-					+ ( -2.4565610558 * yv[1])
-					+ (  2.7001626759 * yv[2]);
-
-			return yv[3];
-		}
-*/
 	#undef NZEROS
 	#undef NPOLES
-	#undef GAIN
+	#undef IGAIN
 };
+
+
+template<int oversampling>
+class chebyshev_downsampling_lp
+{
+	public:
+		double xv[3+1]; double yv[3+1];
+
+		chebyshev_downsampling_lp() { memset(xv, 0, sizeof(xv)); memset(yv, 0, sizeof(yv)); }
+
+		double run(double nextvalue);
+};
+
+template<>
+inline double chebyshev_downsampling_lp<16>::run(double nextvalue)
+{
+	/*
+		mkfilter/mkshape/gencode   A.J. Fisher
+		parameters:
+
+		filtertype 	= 	Chebyshev
+		passtype 	= 	Lowpass
+		ripple 		= 	-1
+		order 		= 	3
+		samplerate 	= 	768000
+		corner1 	= 	18000
+	*/
+	xv[0] = xv[1]; xv[1] = xv[2]; xv[2] = xv[3];
+	xv[3] = nextvalue * (1.0 / 5.476029231e+03);
+	yv[0] = yv[1]; yv[1] = yv[2]; yv[2] = yv[3];
+	yv[3] = (xv[0] + xv[3]) + 3 * (xv[1] + xv[2])
+			+ (  0.8646065740 * yv[0]) + ( -2.7049827914 * yv[1])
+			+ (  2.8389153049 * yv[2]);
+	return yv[3];
+}
+
+template<>
+inline double chebyshev_downsampling_lp<8>::run(double nextvalue)
+{
+	/*
+		mkfilter/mkshape/gencode   A.J. Fisher
+		parameters:
+
+		filtertype 	= 	Chebyshev
+		passtype 	= 	Lowpass
+		ripple 		= 	-1
+		order 		= 	3
+		samplerate 	= 	768000
+		corner1 	= 	18000
+	*/
+	xv[0] = xv[1]; xv[1] = xv[2]; xv[2] = xv[3];
+	xv[3] = nextvalue * (1.0 / 7.330193589e+02);
+	yv[0] = yv[1]; yv[1] = yv[2]; yv[2] = yv[3];
+	yv[3] = (xv[0] + xv[3]) + 3 * (xv[1] + xv[2])
+			+ (  0.7478260267 * yv[0]) + ( -2.4083812307 * yv[1])
+			+ (  2.6496414404 * yv[2]);
+	return yv[3];
+}
+
+template<>
+inline double chebyshev_downsampling_lp<1>::run(double nextvalue)
+{
+	return nextvalue;
+}
 
 
 template<int oversampling> class WaveGenerator
@@ -226,19 +267,12 @@ template<int oversampling> class WaveGenerator
 
 		float *generateSamples(int nSamples)
 		{
-//			if(rawSampleBuffer.size()<nSamples*oversampling)
-//				rawSampleBuffer.resize(nSamples*oversampling);
 			if(sampleBuffer.size()<nSamples)
 				sampleBuffer.resize(nSamples);
-
-//			generateRawSamples(&rawSampleBuffer[0], nSamples*oversampling);
-
-			int rawIdx= 0;
+			double s;
 			for(int i= 0; i<nSamples; i++)
 			{
-				float s;
 				for(int k= oversampling; k; k--)
-//					s= chebyshev_lp.run(rawSampleBuffer[rawIdx++]);
 					s= chebyshev_lp.run(getNextRawSample());
 				sampleBuffer[i]= s;
 			}
@@ -250,6 +284,7 @@ template<int oversampling> class WaveGenerator
 		int cyclecount;
 		std::vector<float> rawSampleBuffer;
 		std::vector<float> sampleBuffer;
+		chebyshev_downsampling_lp<oversampling> chebyshev_lp;
 
 		void generateRawSampleChunk(float *buffer, int nSamples)
 		{
@@ -259,9 +294,7 @@ template<int oversampling> class WaveGenerator
 				saw= phase;
 				rect= (phase<0.5? -1: 1);
 				tri= (cyclecount&1? 2-(phase+1)-1: phase);
-
 				phase+= sampleStep;
-
 				buffer[i]= saw*sawFactor + rect*rectFactor + tri*triFactor;
 			}
 		}
@@ -294,16 +327,12 @@ template<int oversampling> class WaveGenerator
 
 			return val;
 		}
-
-		chebyshev_3pole chebyshev_lp;
 };
 
-class wolpVoice: public SynthesiserVoice
+template<int oversampling> class wolpVoice: public SynthesiserVoice
 {
 	public:
-		wolpVoice(class wolp *s): synth(s)
-		{
-		}
+		wolpVoice(class wolp *s);
 
 		//==============================================================================
 		bool canPlaySound (SynthesiserSound* sound) { return true; }
@@ -334,8 +363,7 @@ class wolpVoice: public SynthesiserVoice
 		int cyclecount;
 		unsigned long samples_synthesized;
 
-		WaveGenerator<8> generator8;
-		WaveGenerator<16> generator16;
+		WaveGenerator<oversampling> generator;
 		bandpass<8> filter;
 		ADSRenv env;
 
@@ -371,7 +399,7 @@ class wolp:	public AudioProcessor,
 			release,
 			filtermin,
 			filtermax,
-			filterspeed,
+			oversampling,
 			param_size
 		};
 
@@ -392,6 +420,8 @@ class wolp:	public AudioProcessor,
 		void prepareToPlay (double sampleRate, int estimatedSamplesPerBlock)
 		{
 			setCurrentPlaybackSampleRate(sampleRate);
+			for(int i= 0; i<getNumVoices(); i++)
+				getVoice(i)->setCurrentPlaybackSampleRate(sampleRate);
 		}
 		void releaseResources() { }
 		void processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages);
@@ -487,7 +517,9 @@ class wolp:	public AudioProcessor,
 
 		bool isProcessing;	// whether we are in the processBlock callback
 
-		friend class wolpVoice;
+		friend class wolpVoice<1>;
+		friend class wolpVoice<8>;
+		friend class wolpVoice<16>;
 		friend class editor;
 };
 

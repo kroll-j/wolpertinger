@@ -15,33 +15,4 @@ ADSRenv::~ADSRenv()
 {
 }
 
-void ADSRenv::advance(double seconds, bool noteIsOn)
-{
-	if(!noteIsOn && !noteReleased)
-	{
-		noteReleased= true;
-		noteReleaseTime= curTime;
-		noteReleaseValue= curValue;
-	}
-
-	if(noteReleased)
-	{
-		curValue= noteReleaseValue - (curTime-noteReleaseTime)*releaseInv;
-		if(curValue<0.0) curValue= 0.0;
-	}
-	else
-	{
-		if(curTime<attack)
-			curValue= curTime*attackInv;
-		else
-		{
-			if(curTime>attack+decay)
-				curValue= sustain;
-			else
-				curValue= 1.0 - (curTime-attack)*decayInv*(1.0-sustain);
-		}
-	}
-
-	curTime+= seconds;
-}
 

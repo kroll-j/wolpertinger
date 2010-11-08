@@ -32,7 +32,14 @@ AudioProcessor* JUCE_CALLTYPE createPluginFilter(const String& commandLine)
 
 // ------------------------- SynthVoice -------------------------
 
-void wolpVoice::startNote(const int midiNoteNumber,
+template <int oversampling>
+wolpVoice<oversampling>::wolpVoice(wolp *s): synth(s)
+{
+	setCurrentPlaybackSampleRate(s->getSampleRate());
+}
+
+template <int oversampling>
+void wolpVoice<oversampling>::startNote(const int midiNoteNumber,
 							 const float velocity,
 							 SynthesiserSound* sound,
 							 const int currentPitchWheelPosition)
@@ -50,15 +57,16 @@ void wolpVoice::startNote(const int midiNoteNumber,
 	env.resetTime();
 }
 
-void wolpVoice::stopNote(const bool allowTailOff)
+template <int oversampling>
+void wolpVoice<oversampling>::stopNote(const bool allowTailOff)
 {
 	//if(!allowTailOff) clearCurrentNote();
 	playing= false;
 }
 
 
-
-void wolpVoice::process(float* p1, float* p2, int samples)
+template <int oversampling>
+void wolpVoice<oversampling>::process(float* p1, float* p2, int samples)
 {
 	float param_cutoff= synth->getparam(wolp::cutoff);
 	float cutoff= param_cutoff * freq;
@@ -66,15 +74,17 @@ void wolpVoice::process(float* p1, float* p2, int samples)
 	int nfilters= int(synth->getparam(wolp::nfilters));
 	float *waveSamples;
 
-	generator16.setFrequency(getSampleRate(), freq);
-	generator16.setMultipliers(synth->getparam(wolp::gsaw), synth->getparam(wolp::grect), synth->getparam(wolp::gtri));
-	waveSamples= generator16.generateSamples(samples);
+	generator.setFrequency(getSampleRate(), freq);
+	generator.setMultipliers(synth->getparam(wolp::gsaw), synth->getparam(wolp::grect), synth->getparam(wolp::gtri));
+	waveSamples= generator.generateSamples(samples);
 
 	double sampleStep= 1.0/getSampleRate();
 
+	int sampleCount= samples_synthesized;
+
 	for(int i= 0; i<samples; i++)
 	{
-		double val= waveSamples[i]; //generator.getNextSample();	//
+		double val= waveSamples[i];
 
 		double envVol= env.getValue();
 
@@ -83,7 +93,7 @@ void wolpVoice::process(float* p1, float* p2, int samples)
 		p1[i]+= val*vol*envVol;
 		p2[i]+= val*vol*envVol;
 
-		if( !((++samples_synthesized) & 31) )
+		if( !((++sampleCount) & 31) )
 		{
 			synth->cutoff_filter.setparams(synth->getparam(wolp::velocity) * 10000,
 										   synth->getparam(wolp::inertia) * 100);
@@ -104,11 +114,13 @@ void wolpVoice::process(float* p1, float* p2, int samples)
 		}
 
 		env.advance(sampleStep, playing);
+		samples_synthesized= sampleCount;
 		if(env.isFinished()) { clearCurrentNote(); break; }
 	}
 }
 
-void wolpVoice::renderNextBlock (AudioSampleBuffer& outputBuffer, int startSample, int numSamples)
+template <int oversampling>
+void wolpVoice<oversampling>::renderNextBlock (AudioSampleBuffer& outputBuffer, int startSample, int numSamples)
 {
 	if(getCurrentlyPlayingNote()>=0)
 	{
@@ -156,7 +168,7 @@ void wolp::setStateInformation (const void* data, int sizeInBytes)
 			{
 				if( !strcmp(name, paraminfos[i].internalname) )
 				{
-					params[i]= val;
+					setParameter(i, val);
 					break;
 				}
 			}
@@ -166,7 +178,8 @@ void wolp::setStateInformation (const void* data, int sizeInBytes)
 	else errorstring= T("XML data corrupt\n");
 
 	if(errorstring.length())
-		AlertWindow::showMessageBox(AlertWindow::WarningIcon, String("Wolpertinger"), errorstring);
+//		AlertWindow::showMessageBox(AlertWindow::WarningIcon, String("Wolpertinger"), errorstring);
+		printf("Wolpertinger: %s\n", errorstring.toCString());
 
 	if(xml) delete xml;
 }
@@ -214,6 +227,11 @@ float wolp::getparam(int idx)
 		case release:
 			v= sqr(params[idx]);
 			break;
+
+		case oversampling:
+			v= (params[idx] < 1.0/3+1.0/6? 1.0/16: params[idx] < 2.0/3+1.0/6? 8.0/16: 16.0/16);
+			break;
+
 		default:
 			v= params[idx];
 			break;
@@ -243,7 +261,7 @@ void wolp::setParameter (int idx, float value)
 		{
 			for(int i= voices.size(); --i>=0; )
 			{
-				wolpVoice *voice= (wolpVoice*)voices.getUnchecked(i);
+				wolpVoice<8> *voice= (wolpVoice<8>*)voices.getUnchecked(i);
 				int note= voice->getCurrentlyPlayingNote();
 				if(note>=0) voice->setfreq(getnotefreq(note));
 			}
@@ -251,9 +269,37 @@ void wolp::setParameter (int idx, float value)
 			break;
 		}
 
-		case filterspeed:
+		case oversampling:
 		{
+			int nVoicesMax= 16;
+			int oldVal= (int)getparam(oversampling);
 			params[idx]= value;
+			int val= (int)getparam(oversampling);
+			if(oldVal==val) break;
+			printf("oversampling: ");
+			for(int i= getNumVoices(); i; i--)
+				removeVoice(0);
+			switch(val)
+			{
+				case 1:
+					for(int i= 0; i<nVoicesMax ; i++)
+						addVoice(new wolpVoice<1>(this));
+					printf("Off\n");
+					params[idx]= 1.0/16;
+					break;
+				case 8:
+					for(int i= 0; i<nVoicesMax ; i++)
+						addVoice(new wolpVoice<8>(this));
+					printf("8x\n");
+					params[idx]= 8.0/16;
+					break;
+				default:
+					for(int i= 0; i<nVoicesMax ; i++)
+						addVoice(new wolpVoice<16>(this));
+					printf("16x\n");
+					params[idx]= 16.0/16;
+					break;
+			}
 			break;
 		}
 
@@ -294,12 +340,14 @@ wolp::paraminfo wolp::paraminfos[]=
 	{ "env_release", 		"Release",		0.0,	4.0,	0.5 },
 	{ "filter_minfreq", 	"Filter Min",	0.0,	20000,	0.1 },
 	{ "filter_maxfreq", 	"Filter Max",	0.0,	20000,	1.0 },
-	{ "filter_speed", 		"Filter Speed",	-1.0,	1.0,	0.0 },
+	{ "oversampling", 		"Oversampling",	0.0,	16.0,	0.5 },
 };
 
 void wolp::loaddefaultparams()
 {
 	for(int i= 0; i<param_size; i++) params[i]= paraminfos[i].defval;
+	params[oversampling]= 0;
+	setParameter(oversampling, paraminfos[oversampling].defval);
 }
 
 
@@ -315,8 +363,8 @@ wolp::wolp()
 
 	loaddefaultparams();
 
-	for(int i= 0; i<16 ; i++)
-		addVoice(new wolpVoice(this));
+//	for(int i= 0; i<16 ; i++)
+//		addVoice(new wolpVoice<8>(this));
 
 	addSound(new wolpSound());
 
@@ -346,16 +394,6 @@ void wolp::processBlock(AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 		if(out1[i]<-clp) out1[i]= -clp; else if(out1[i]>clp) out1[i]= clp;
 	}
 
-	double f= cutoff_filter.getspeed(); ///cutoff_filter.getvalue();
-//	double filterspd= sqrt(fabs(f)) * (f<0? -0.000002: 0.000002);
-	double filterspd= f*0.0000000001;
-	if(filterspd!=params[filterspeed])
-	{
-//		printf("filterspd old: %.8f new: %.8f freq: %.2f\n",
-//				params[filterspeed]*20000, filterspd*20000, cutoff_filter.getvalue());
-		params[filterspeed]= filterspd;
-		paraminfos[filterspeed].dirty= true;
-	}
 
 	tabbed_editor *e= (tabbed_editor*)getActiveEditor();
 	if(e)
@@ -372,7 +410,7 @@ void wolp::processBlock(AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 		int nPoly= 0;
 		for(int i= voices.size(); --i>=0; )
 		{
-			wolpVoice *voice= (wolpVoice*)voices.getUnchecked(i);
+			wolpVoice<8> *voice= (wolpVoice<8>*)voices.getUnchecked(i);
 			if(voice->getCurrentlyPlayingNote()>=0) nPoly++;
 		}
 
@@ -406,7 +444,7 @@ void wolp::renderNextBlock (AudioSampleBuffer& outputBuffer,
         if (numThisTime > 0)
         {
             for (int i = voices.size(); --i >= 0;)
-                voices.getUnchecked (i)->renderNextBlock (outputBuffer, startSample, numThisTime);
+				voices.getUnchecked (i)->renderNextBlock (outputBuffer, startSample, numThisTime);
         }
 
         if (useEvent)
@@ -450,7 +488,7 @@ void wolp::renderNextBlock (AudioSampleBuffer& outputBuffer,
 				int note= m.getNoteNumber();
 				for(int i= voices.size(); --i>=0; )
 				{
-					wolpVoice *v= (wolpVoice *)voices.getUnchecked(i);
+					wolpVoice<8> *v= (wolpVoice<8> *)voices.getUnchecked(i);
 					if(v->isPlayingChannel(chan) && v->getCurrentlyPlayingNote()==note)
 					{
 						v->setvolume(m.getAfterTouchValue()*(1.0/0x7F));

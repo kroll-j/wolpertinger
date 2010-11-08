@@ -120,13 +120,18 @@ void StandaloneFilterApplication::initialise (const String& commandLine)
                                           Colour (32, 32, 32));
 
 
-	window->setTitleBarHeight(24);
+	window->setTitleBarHeight(23);
 //	window->setUsingNativeTitleBar(true);
 
     window->toFront (true);
+
+	Image &icon= *ImageCache::getFromMemory(about::icon_png, about::icon_pngSize);
+	ComponentPeer *peer= window->getPeer();
+	if(peer) peer->setIcon(icon);
+
     window->setVisible (true);
 
-    perfTest();
+//    perfTest();
 }
 
 void StandaloneFilterApplication::shutdown()
