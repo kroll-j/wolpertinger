@@ -7,7 +7,7 @@
 /*
 Versions
 0.4	ADSR Volume Envelope
-	16x Oversampling
+	8x / 16x Oversampling
 	Bugfix: Set sample rate correctly
 0.3 Virtual Keyboard Component, GUI niceties
 	Changed back to Juce

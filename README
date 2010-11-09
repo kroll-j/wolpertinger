@@ -30,6 +30,9 @@ SVN via web: http://svn.tuxfamily.org/viewvc.cgi/tumbetoene_wolpertinger/
 
 VERSIONS
 
+0.4	ADSR Volume Envelope
+	8x / 16x Oversampling
+	Bugfix: Set sample rate correctly
 0.3 Virtual Keyboard Component, GUI niceties
     Changed back to Juce
 0.2 MIDI parameter changes now update the GUI
@@ -40,8 +43,8 @@ VERSIONS
 
 INSTALLATION
 
-The executable binary should run out of the box, no installation needed. The 
-VST shared object (.so) is meant to be loaded into VST-compatible host 
+The executable binary should run out of the box, no installation needed. The
+VST shared object (.so) is meant to be loaded into VST-compatible host
 applications, e. g. Renoise.
 
 
@@ -50,33 +53,29 @@ BUILDING
 
 To build your binaries yourself do the following.
 
-1. Check out the 0.3 source from Subversion:
+1. Check out the code from the subversion repository:
 
-	svn co svn://svn.tuxfamily.org/svnroot/tumbetoene/wolpertinger/tags/0.3 wolpertinger-0.3
+	svn co svn://svn.tuxfamily.org/svnroot/tumbetoene/wolpertinger/tags/0.4 wolpertinger-0.4
 
-2. Clone the Juce Git repository into subdir 'juce-git':
+2. Get JUCE 1.51 from http://www.rawmaterialsoftware.com/downloads.php
 
-	git clone git://juce.git.sourceforge.net/gitroot/juce/juce juce-git
-
-3. Optionally, select the commit used for building this version to make sure it's
-perfectly compatible:
-
-	git reset --hard d10fe251dd8afb1d0b6ec48628377c3bd416e682
+3. Edit juce_Config.h to your liking. Jack must be enabled if you want Jack support, OpenGL
+	should be disabled.
 
 4. Build Juce:
-	
+
 	cd build/linux; make && make CONFIG=Release
 
 Juce may need Premake 3.7 to be rebuilt -- http://premake.sourceforge.net/download
 
-5. (Optional) If you want to build the VSTi, put the VST 2.4 SDK into a subdirectory 
-'vstsdk2.4' alongside the wolpertinger directory. You can get the SDK from 
-http://www.steinberg.net/ after doing whatever Steinberg wants you to do (mostly 
-providing a valid email address and staring at their ads for a while). 
+5. (Optional) If you want to build the VSTi, put the VST 2.4 SDK into a subdirectory
+'vstsdk2.4' alongside the wolpertinger directory. You can get the SDK from
+http://www.steinberg.net/ after doing whatever Steinberg wants you to do (mostly
+providing a valid email address and staring at their ads for a while).
 If you don't have the SDK, the VSTi build will fail, but the standalone version will
 still be built.
 
-6. Build Wolpertinger. 
+6. Build Wolpertinger.
 
 	./runpremake
 	make; make config=release
