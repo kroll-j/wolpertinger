@@ -28,7 +28,7 @@
 					<Add option="-D_DEBUG=1" />
 					<Add option="-msse" />
 					<Add option="-ggdb" />
-					<Add directory="../juce-151" />
+					<Add directory="../juce" />
 					<Add directory="../vstsdk2.4" />
 					<Add directory="src" />
 				</Compiler>
@@ -67,7 +67,7 @@
 					<Add option="-DNDEBUG=1" />
 					<Add option="-msse" />
 					<Add option="-O2 -ffast-math" />
-					<Add directory="../juce-151" />
+					<Add directory="../juce" />
 					<Add directory="../vstsdk2.4" />
 					<Add directory="src" />
 				</Compiler>

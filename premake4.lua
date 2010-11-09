@@ -4,7 +4,7 @@ version_string= "0.4"
 
 solution(appname)
 	includedirs {
-		"../juce-151",		-- adjust this to match your juce basedir containing the 'src' subdirectory
+		"../juce",		-- adjust this to match your juce basedir containing the 'src' subdirectory
 		"../vstsdk2.4", 	-- adjust this to match your vst sdk 2.4 basedir containing the 'public.sdk' subdirectory
 		"src"
 	}

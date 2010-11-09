@@ -11,7 +11,6 @@
 				<Option object_output="build/Debug/WolpertingerVST" />
 				<Option type="3" />
 				<Option compiler="gcc" />
-				<Option createDefFile="0" />
 				<Option createStaticLib="1" />
 				<Compiler>
 					<Add option="-g" />
@@ -20,26 +19,23 @@
 					<Add option="-DJUCE_USE_XSHM=1" />
 					<Add option="-DJUCE_ALSA=1" />
 					<Add option="-DJUCE_USE_VSTSDK_2_4=1" />
-					<Add option="-DDATE=&quot;`date +%F`&quot;" />
+					<Add option='-DDATE=&quot;`date +%F`&quot;' />
 					<Add option="-DVERSION=004" />
-					<Add option="-DVERSIONSTRING=&quot;0.4&quot;" />
-					<Add option="-DCONFIGURATION=&quot;Debug&quot;" />
+					<Add option='-DVERSIONSTRING=&quot;0.4&quot;' />
+					<Add option='-DCONFIGURATION=&quot;Debug&quot;' />
 					<Add option="-DJUCE_DEBUG" />
 					<Add option="-DCONFIG_VST=1" />
-					<Add option="-DBINTYPE=&quot;Linux Native VST&quot;" />
+					<Add option='-DBINTYPE=&quot;Linux Native VST&quot;' />
 					<Add option="-DDEBUG=1" />
 					<Add option="-D_DEBUG=1" />
 					<Add option="-msse" />
 					<Add option="-ggdb" />
-					<Add directory="../juce-151" />
+					<Add directory="../juce" />
 					<Add directory="../vstsdk2.4" />
 					<Add directory="src" />
 				</Compiler>
 				<Linker>
 					<Add option="-shared" />
-					<Add directory="../juce/bin" />
-					<Add directory="../../../../usr/X11R6/lib" />
-					<Add directory="../../../../usr/lib" />
 					<Add library="freetype" />
 					<Add library="pthread" />
 					<Add library="rt" />
@@ -49,6 +45,9 @@
 					<Add library="m" />
 					<Add library="GL" />
 					<Add library="juce_debug" />
+					<Add directory="../juce/bin" />
+					<Add directory="../../../../usr/X11R6/lib" />
+					<Add directory="../../../../usr/lib" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -56,7 +55,7 @@
 				<Option object_output="build/Release/WolpertingerVST" />
 				<Option type="3" />
 				<Option compiler="gcc" />
-				<Option createDefFile="0" />
+				<Option host_application="./copyvst" />
 				<Option createStaticLib="1" />
 				<Compiler>
 					<Add option="-O2" />
@@ -65,25 +64,22 @@
 					<Add option="-DJUCE_USE_XSHM=1" />
 					<Add option="-DJUCE_ALSA=1" />
 					<Add option="-DJUCE_USE_VSTSDK_2_4=1" />
-					<Add option="-DDATE=&quot;`date +%F`&quot;" />
+					<Add option='-DDATE=&quot;`date +%F`&quot;' />
 					<Add option="-DVERSION=004" />
-					<Add option="-DVERSIONSTRING=&quot;0.4&quot;" />
-					<Add option="-DCONFIGURATION=&quot;Release&quot;" />
+					<Add option='-DVERSIONSTRING=&quot;0.4&quot;' />
+					<Add option='-DCONFIGURATION=&quot;Release&quot;' />
 					<Add option="-DCONFIG_VST=1" />
-					<Add option="-DBINTYPE=&quot;Linux Native VST&quot;" />
+					<Add option='-DBINTYPE=&quot;Linux Native VST&quot;' />
 					<Add option="-DNDEBUG=1" />
 					<Add option="-msse" />
 					<Add option="-O2 -ffast-math" />
-					<Add directory="../juce-151" />
+					<Add directory="../juce" />
 					<Add directory="../vstsdk2.4" />
 					<Add directory="src" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
 					<Add option="-shared" />
-					<Add directory="../juce/bin" />
-					<Add directory="../../../../usr/X11R6/lib" />
-					<Add directory="../../../../usr/lib" />
 					<Add library="freetype" />
 					<Add library="pthread" />
 					<Add library="rt" />
@@ -93,56 +89,38 @@
 					<Add library="m" />
 					<Add library="GL" />
 					<Add library="juce" />
+					<Add directory="../juce/bin" />
+					<Add directory="../../../../usr/X11R6/lib" />
+					<Add directory="../../../../usr/lib" />
 				</Linker>
 			</Target>
 		</Build>
-		<Unit filename="src/ADSRenv.cpp">
-		</Unit>
-		<Unit filename="src/KeyboardButton.cpp">
-		</Unit>
-		<Unit filename="src/PresetComboBox.cpp">
-		</Unit>
-		<Unit filename="src/RotatingToggleButton.cpp">
-		</Unit>
-		<Unit filename="src/synth.cpp">
-		</Unit>
-		<Unit filename="src/tabbed-editor.cpp">
-		</Unit>
-		<Unit filename="src/editor.cpp">
-		</Unit>
-		<Unit filename="src/about.cpp">
-		</Unit>
-		<Unit filename="src/ADSRenv.h">
-		</Unit>
-		<Unit filename="src/JucePluginCharacteristics.h">
-		</Unit>
-		<Unit filename="src/KeyboardButton.h">
-		</Unit>
-		<Unit filename="src/PresetComboBox.h">
-		</Unit>
-		<Unit filename="src/RotatingToggleButton.h">
-		</Unit>
-		<Unit filename="src/filters.h">
-		</Unit>
-		<Unit filename="src/juce_PluginHeaders.h">
-		</Unit>
-		<Unit filename="src/synth.h">
-		</Unit>
-		<Unit filename="src/simd.h">
-		</Unit>
-		<Unit filename="src/about.h">
-		</Unit>
-		<Unit filename="src/tabbed-editor.h">
-		</Unit>
-		<Unit filename="src/editor.h">
-		</Unit>
-		<Unit filename="vst/juce_VST_Wrapper.cpp">
-		</Unit>
-		<Unit filename="vst/juce_IncludeCharacteristics.h">
-		</Unit>
-		<Unit filename="vst/juce_PluginHeaders.h">
-		</Unit>
-		<Extensions />
+		<Unit filename="src/ADSRenv.cpp" />
+		<Unit filename="src/ADSRenv.h" />
+		<Unit filename="src/JucePluginCharacteristics.h" />
+		<Unit filename="src/KeyboardButton.cpp" />
+		<Unit filename="src/KeyboardButton.h" />
+		<Unit filename="src/PresetComboBox.cpp" />
+		<Unit filename="src/PresetComboBox.h" />
+		<Unit filename="src/RotatingToggleButton.cpp" />
+		<Unit filename="src/RotatingToggleButton.h" />
+		<Unit filename="src/about.cpp" />
+		<Unit filename="src/about.h" />
+		<Unit filename="src/editor.cpp" />
+		<Unit filename="src/editor.h" />
+		<Unit filename="src/filters.h" />
+		<Unit filename="src/juce_PluginHeaders.h" />
+		<Unit filename="src/simd.h" />
+		<Unit filename="src/synth.cpp" />
+		<Unit filename="src/synth.h" />
+		<Unit filename="src/tabbed-editor.cpp" />
+		<Unit filename="src/tabbed-editor.h" />
+		<Unit filename="vst/juce_IncludeCharacteristics.h" />
+		<Unit filename="vst/juce_PluginHeaders.h" />
+		<Unit filename="vst/juce_VST_Wrapper.cpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
 	</Project>
 </CodeBlocks_project_file>
-
