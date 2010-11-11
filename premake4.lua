@@ -15,6 +15,7 @@ solution(appname)
 	includedirs {
 		jucedir,
 		vstdir,
+		"juce",
 		"src"
 	}
 

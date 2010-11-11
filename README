@@ -21,7 +21,7 @@ ABOUT
 Wolpertinger is a subtractive synth with a sharp bandpass filter whose center
 frequency "bounces" around the frequency of the playing notes. Thanks to the
 Juce library it can be used both as a standalone application supporting JACK
-or ALSA audio outputs, and as a VST instrument.
+or ALSA audio outputs, and as a VST instrument for native Linux VST hosts.
 
 Web: http://tumbetoene.tuxfamily.org/
 Subversion: svn://svn.tuxfamily.org/svnroot/tumbetoene/wolpertinger
@@ -33,12 +33,12 @@ VERSIONS
 0.4	ADSR Volume Envelope
 	8x / 16x Oversampling
 	Bugfix: Set sample rate correctly
-0.3 Virtual Keyboard Component, GUI niceties
-    Changed back to Juce
-0.2 MIDI parameter changes now update the GUI
-    Binaries no longer linked to OpenGL
-    Debug and Release binaries included
-0.1 Initial Release
+0.3 	Virtual Keyboard Component, GUI niceties
+    	Changed back to Juce
+0.2 	MIDI parameter changes now update the GUI
+    	Binaries no longer linked to OpenGL
+    	Debug and Release binaries included
+0.1 	Initial Release
 
 
 INSTALLATION
@@ -57,18 +57,7 @@ To build your binaries yourself do the following.
 
 	svn co svn://svn.tuxfamily.org/svnroot/tumbetoene/wolpertinger/tags/0.4 wolpertinger-0.4
 
-2. Get JUCE 1.51 from http://www.rawmaterialsoftware.com/downloads.php
-
-3. Edit juce_Config.h to your liking. Jack must be enabled if you want Jack support, OpenGL
-	should be disabled.
-
-4. Build Juce:
-
-	cd build/linux; make && make CONFIG=Release
-
-Juce may need Premake 3.7 to build -- http://premake.sourceforge.net/download
-
-5. (Optional) If you want to build the VSTi, put the VST 2.4 SDK into a subdirectory
+2. (Optional) If you want to build the VSTi, put the VST 2.4 SDK into a subdirectory
 'vstsdk2.4' alongside the wolpertinger directory. You can get the SDK from
 http://www.steinberg.net/ after doing whatever Steinberg wants you to do (mostly
 providing a valid email address and staring at their ads for a while).
@@ -77,6 +66,4 @@ still be built.
 
 6. Build Wolpertinger.
 
-	./runpremake
-	make; make config=release
-
+	make
