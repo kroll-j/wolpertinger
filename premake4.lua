@@ -1,16 +1,29 @@
+-- set this to false if you want to use your own copy of JUCE
+juce_amalgamated= true
+
+-- if you set juce_amalgamated to false, adjust this to match your juce basedir containing the 'src' subdirectory
+jucedir= "../juce"
+
+-- to build the VSTi, adjust this to match your vst sdk 2.4 basedir containing the 'public.sdk' subdirectory
+vstdir= "../vstsdk2.4"
+
 appname= "Wolpertinger"
 version= "004"
 version_string= "0.4"
 
 solution(appname)
 	includedirs {
-		"../juce",		-- adjust this to match your juce basedir containing the 'src' subdirectory
-		"../vstsdk2.4", 	-- adjust this to match your vst sdk 2.4 basedir containing the 'public.sdk' subdirectory
+		jucedir,
+		vstdir,
 		"src"
 	}
 
+	buildoptions {
+		"`freetype-config --cflags`"
+	}
+	
 	libdirs {
-		"../juce/bin",		-- adjust this to match your juce bindir
+		jucedir .. "/bin",
 		"/usr/X11R6/lib",
 		"/usr/lib" }
 
@@ -29,8 +42,10 @@ solution(appname)
 
 	files { "src/**.cpp", "src/**.h" }
 
+	if juce_amalgamated then files { "juce/*.cpp", "juce/*.h" } end
+
 	links { "freetype", "pthread", "rt", "X11", "Xext",
-		"asound", "m", "GL" }
+		"asound", "m" }
 
 configuration "Debug"
 	defines { "CONFIGURATION=\"Debug\"", "JUCE_DEBUG" }
@@ -50,14 +65,14 @@ project(appname .. "Standalone")
 
 configuration "Debug"
 	defines { "DEBUG=1", "_DEBUG=1" }
-	links { "juce_debug" }
+	if not juce_amalgamated then links { "juce_debug" } end
 	flags { "Symbols" }
 	buildoptions { "-ggdb" }
 	targetsuffix "-debug"
 
 configuration "Release"
 	defines { "NDEBUG=1" }
-	links { "juce" }
+	if not juce_amalgamated then links { "juce" } end
 	flags { "Optimize" }
 	buildoptions { "-O2 -ffast-math" }
 
@@ -72,14 +87,14 @@ project(appname .. "VST")
 
 configuration "Debug"
 	defines { "DEBUG=1", "_DEBUG=1" }
-	links { "juce_debug" }
+	if not juce_amalgamated then links { "juce_debug" } end
 	flags { "Symbols" }
 	buildoptions { "-ggdb" }
 	targetsuffix "-debug"
 
 configuration "Release"
 	defines { "NDEBUG=1" }
-	links { "juce" }
+	if not juce_amalgamated then links { "juce" } end
 	flags { "Optimize" }
 	buildoptions { "-O2 -ffast-math" }
 

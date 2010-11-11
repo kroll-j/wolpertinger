@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  8 Nov 2010 12:29:28am
+  Creation date:  9 Nov 2010 4:40:41pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -28,6 +28,108 @@
 
 
 //[MiscUserDefs] You can add your own user definitions and misc code here...
+
+struct _myLookAndFeel: public LookAndFeel
+{
+	_myLookAndFeel()
+	{
+		setColour(ComboBox::backgroundColourId, Colour(0xFF101010));
+		setColour(ComboBox::textColourId, Colour(0xFFF0F0F0));
+		setColour(ComboBox::outlineColourId, Colour(0xFF404040));
+		setColour(ComboBox::buttonColourId, Colour(0xFF707070));
+		setColour(ComboBox::arrowColourId, Colour(0xFF000000));
+		setColour(TextButton::buttonColourId, Colour(0xFF405068));
+		setColour(TextButton::textColourOnId, Colour(0xFFFFFFFF));
+		setColour(TextButton::textColourOffId, Colour(0xFFFFFFFF));
+		setColour(PopupMenu::backgroundColourId, Colour(0xFF404040));
+		setColour(PopupMenu::textColourId, Colour(0xFFf0f0f0));
+		setColour(PopupMenu::highlightedBackgroundColourId, Colour(0xFF000000));
+
+		LookAndFeel::setDefaultLookAndFeel(this);
+	}
+
+	~_myLookAndFeel()
+	{
+	}
+
+	void drawPopupMenuBackground (Graphics& g, int width, int height)
+	{
+		const Colour background (findColour (PopupMenu::backgroundColourId));
+		g.fillAll (background);
+
+		g.setColour (background.overlaidWith (Colour (0x10000000)));
+		for (int i = 0; i < height; i += 3)
+			g.fillRect (0, i, width, 1);
+
+		g.setColour(Colour(0, 0, 0));
+		g.drawRect (0, 0, width, height);
+	}
+
+	void drawDocumentWindowTitleBar (DocumentWindow& window,
+									 Graphics& g, int w, int h,
+									 int titleSpaceX, int titleSpaceW,
+									 const Image* icon,
+									 bool drawTitleTextOnLeft)
+	{
+		const bool isActive = window.isActiveWindow();
+
+		g.setGradientFill (ColourGradient (window.getBackgroundColour(),
+										   0.0f, 0.0f,
+										   window.getBackgroundColour().contrasting (isActive ? 0.15f : 0.05f),
+										   0.0f, (float) h, false));
+		g.fillAll();
+
+		g.setGradientFill (ColourGradient (Colour(0x40FFFFFF),
+										   0.0f, 0.0f,
+										   window.getBackgroundColour().withAlpha((uint8)0),
+										   0.0f, (float)4, false));
+		g.fillRect(0,0, w,4);
+
+		g.setGradientFill (ColourGradient (window.getBackgroundColour().withAlpha((uint8)0),
+										   0.0f, h-4,
+										   Colour(0x80000000),
+										   0.0f, (float)h, false));
+		g.fillRect(0,h-4, w,4);
+
+
+		Font font (h * 0.65f, Font::bold);
+		g.setFont (font);
+
+		int textW = font.getStringWidth (window.getName());
+		int iconW = 0;
+		int iconH = 0;
+
+		if (icon != 0)
+		{
+			iconH = (int) font.getHeight();
+			iconW = icon->getWidth() * iconH / icon->getHeight() + 4;
+		}
+
+		textW = jmin (titleSpaceW, textW + iconW);
+		int textX = drawTitleTextOnLeft ? titleSpaceX
+										: jmax (titleSpaceX, (w - textW) / 2);
+
+		if (textX + textW > titleSpaceX + titleSpaceW)
+			textX = titleSpaceX + titleSpaceW - textW;
+
+		if (icon != 0)
+		{
+			g.setOpacity (isActive ? 1.0f : 0.6f);
+			g.drawImageWithin (icon, textX, (h - iconH) / 2, iconW, iconH,
+							   RectanglePlacement::centred, false);
+			textX += iconW;
+			textW -= iconW;
+		}
+
+		if (window.isColourSpecified (DocumentWindow::textColourId) || isColourSpecified (DocumentWindow::textColourId))
+			g.setColour (findColour (DocumentWindow::textColourId));
+		else
+			g.setColour (window.getBackgroundColour().contrasting (isActive ? 0.7f : 0.4f));
+
+		g.drawText (window.getName(), textX, 0, textW, h, Justification::centredLeft, true);
+	}
+} *myLookAndFeel;
+
 //[/MiscUserDefs]
 
 //==============================================================================
@@ -535,9 +637,9 @@ editor::editor (AudioProcessor *const ownerFilter)
     oversmplComboBox->setJustificationType (Justification::centredLeft);
     oversmplComboBox->setTextWhenNothingSelected (T("None"));
     oversmplComboBox->setTextWhenNoChoicesAvailable (T("(no choices)"));
-    oversmplComboBox->addItem (T("None (General Harshness)"), 1);
-    oversmplComboBox->addItem (T("8x (Good Speed/Quality Tradeoff)"), 2);
-    oversmplComboBox->addItem (T("16x (Best Quality)"), 3);
+    oversmplComboBox->addItem (T("None"), 1);
+    oversmplComboBox->addItem (T("8x"), 2);
+    oversmplComboBox->addItem (T("16x"), 3);
     oversmplComboBox->addListener (this);
 
     addAndMakeVisible (label25 = new Label (T("new label"),
@@ -559,6 +661,9 @@ editor::editor (AudioProcessor *const ownerFilter)
     //[Constructor] You can add your own custom stuff here..
 
     ((wolp*)ownerFilter)->addChangeListener(this);
+	if(!myLookAndFeel) myLookAndFeel= new _myLookAndFeel();
+
+	oversmplComboBox->setLookAndFeel(myLookAndFeel);
 
     //[/Constructor]
 }
@@ -935,111 +1040,6 @@ void editor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 
-struct _myLookAndFeel: public LookAndFeel
-{
-	LookAndFeel *oldDefaultLF;
-
-	_myLookAndFeel()
-	{
-		setColour(ComboBox::backgroundColourId, Colour(0xFF101010));
-		setColour(ComboBox::textColourId, Colour(0xFFF0F0F0));
-		setColour(ComboBox::outlineColourId, Colour(0xFF404040));
-		setColour(ComboBox::buttonColourId, Colour(0xFF707070));
-		setColour(ComboBox::arrowColourId, Colour(0xFF000000));
-		setColour(TextButton::buttonColourId, Colour(0xFF405068));
-		setColour(TextButton::textColourOnId, Colour(0xFFFFFFFF));
-		setColour(TextButton::textColourOffId, Colour(0xFFFFFFFF));
-		setColour(PopupMenu::backgroundColourId, Colour(0xFF404040));
-		setColour(PopupMenu::textColourId, Colour(0xFFf0f0f0));
-		setColour(PopupMenu::highlightedBackgroundColourId, Colour(0xFF000000));
-
-		oldDefaultLF= &LookAndFeel::getDefaultLookAndFeel();
-		LookAndFeel::setDefaultLookAndFeel(this);
-	}
-
-	~_myLookAndFeel()
-	{
-		setDefaultLookAndFeel(oldDefaultLF);
-	}
-
-	void drawPopupMenuBackground (Graphics& g, int width, int height)
-	{
-		const Colour background (findColour (PopupMenu::backgroundColourId));
-		g.fillAll (background);
-
-		g.setColour (background.overlaidWith (Colour (0x10000000)));
-		for (int i = 0; i < height; i += 3)
-			g.fillRect (0, i, width, 1);
-
-		g.setColour(Colour(0, 0, 0));
-		g.drawRect (0, 0, width, height);
-	}
-
-	void drawDocumentWindowTitleBar (DocumentWindow& window,
-									 Graphics& g, int w, int h,
-									 int titleSpaceX, int titleSpaceW,
-									 const Image* icon,
-									 bool drawTitleTextOnLeft)
-	{
-		const bool isActive = window.isActiveWindow();
-
-		g.setGradientFill (ColourGradient (window.getBackgroundColour(),
-										   0.0f, 0.0f,
-										   window.getBackgroundColour().contrasting (isActive ? 0.15f : 0.05f),
-										   0.0f, (float) h, false));
-		g.fillAll();
-
-		g.setGradientFill (ColourGradient (Colour(0x40FFFFFF),
-										   0.0f, 0.0f,
-										   window.getBackgroundColour().withAlpha((uint8)0),
-										   0.0f, (float)4, false));
-		g.fillRect(0,0, w,4);
-
-		g.setGradientFill (ColourGradient (window.getBackgroundColour().withAlpha((uint8)0),
-										   0.0f, h-4,
-										   Colour(0x80000000),
-										   0.0f, (float)h, false));
-		g.fillRect(0,h-4, w,4);
-
-
-		Font font (h * 0.65f, Font::bold);
-		g.setFont (font);
-
-		int textW = font.getStringWidth (window.getName());
-		int iconW = 0;
-		int iconH = 0;
-
-		if (icon != 0)
-		{
-			iconH = (int) font.getHeight();
-			iconW = icon->getWidth() * iconH / icon->getHeight() + 4;
-		}
-
-		textW = jmin (titleSpaceW, textW + iconW);
-		int textX = drawTitleTextOnLeft ? titleSpaceX
-										: jmax (titleSpaceX, (w - textW) / 2);
-
-		if (textX + textW > titleSpaceX + titleSpaceW)
-			textX = titleSpaceX + titleSpaceW - textW;
-
-		if (icon != 0)
-		{
-			g.setOpacity (isActive ? 1.0f : 0.6f);
-			g.drawImageWithin (icon, textX, (h - iconH) / 2, iconW, iconH,
-							   RectanglePlacement::centred, false);
-			textX += iconW;
-			textW -= iconW;
-		}
-
-		if (window.isColourSpecified (DocumentWindow::textColourId) || isColourSpecified (DocumentWindow::textColourId))
-			g.setColour (findColour (DocumentWindow::textColourId));
-		else
-			g.setColour (window.getBackgroundColour().contrasting (isActive ? 0.7f : 0.4f));
-
-		g.drawText (window.getName(), textX, 0, textW, h, Justification::centredLeft, true);
-	}
-} *myLookAndFeel;
-
 
 void editor::changeListenerCallback(void *objectThatHasChanged)
 {
@@ -1085,9 +1085,8 @@ void editor::changeListenerCallback(void *objectThatHasChanged)
 
 		case wolp::oversampling:
 		{
-			int idx= int(synth->getParameter(wolp::oversampling)*3);
+			int idx= int(synth->getParameter(wolp::oversampling)*2);
 			oversmplComboBox->setSelectedItemIndex( idx, true );
-			oversmplComboBox->setText(idx==0? "None": idx==1? "8x": "16x", true);
 			break;
 		}
 
@@ -1100,7 +1099,6 @@ void editor::changeListenerCallback(void *objectThatHasChanged)
 
 void editor::parentHierarchyChanged()
 {
-	if(!myLookAndFeel) myLookAndFeel= new _myLookAndFeel();
 }
 
 //[/MiscUserCode]
@@ -1372,8 +1370,8 @@ BEGIN_JUCER_METADATA
          fontsize="15" bold="0" italic="0" justification="34"/>
   <COMBOBOX name="new combo box" id="cf1a54db9ee6988d" memberName="oversmplComboBox"
             virtualName="" explicitFocusOrder="0" pos="128 116 56 18" editable="0"
-            layout="33" items="None (General Harshness)&#10;8x (Good Speed/Quality Tradeoff)&#10;16x (Best Quality)"
-            textWhenNonSelected="None" textWhenNoItems="(no choices)"/>
+            layout="33" items="None&#10;8x&#10;16x" textWhenNonSelected="None"
+            textWhenNoItems="(no choices)"/>
   <LABEL name="new label" id="2bbccba2db676bcc" memberName="label25" virtualName=""
          explicitFocusOrder="0" pos="22 116 102 18" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="Oversampling:" editableSingleClick="0"
