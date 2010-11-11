@@ -6,6 +6,49 @@
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
+			<Target title="Release">
+				<Option output="build/Wolpertinger004.so" prefix_auto="0" extension_auto="0" />
+				<Option object_output="build/Release/WolpertingerVST" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createDefFile="0" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-fPIC" />
+					<Add option="-DLINUX=1" />
+					<Add option="-DJUCE_USE_XSHM=1" />
+					<Add option="-DJUCE_ALSA=1" />
+					<Add option="-DJUCE_USE_VSTSDK_2_4=1" />
+					<Add option="-DDATE=&quot;`date +%F`&quot;" />
+					<Add option="-DVERSION=004" />
+					<Add option="-DVERSIONSTRING=&quot;0.4&quot;" />
+					<Add option="-DCONFIGURATION=&quot;Release&quot;" />
+					<Add option="-DCONFIG_VST=1" />
+					<Add option="-DBINTYPE=&quot;Linux Native VST&quot;" />
+					<Add option="-DNDEBUG=1" />
+					<Add option="`freetype-config --cflags`" />
+					<Add option="-msse" />
+					<Add option="-O2 -ffast-math" />
+					<Add directory="../juce" />
+					<Add directory="../vstsdk2.4" />
+					<Add directory="src" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-shared" />
+					<Add directory="../juce/bin" />
+					<Add directory="../../../../usr/X11R6/lib" />
+					<Add directory="../../../../usr/lib" />
+					<Add library="freetype" />
+					<Add library="pthread" />
+					<Add library="rt" />
+					<Add library="X11" />
+					<Add library="Xext" />
+					<Add library="m" />
+					<Add library="asound" />
+				</Linker>
+			</Target>
 			<Target title="Debug">
 				<Option output="build/Wolpertinger004-debug.so" prefix_auto="0" extension_auto="0" />
 				<Option object_output="build/Debug/WolpertingerVST" />
@@ -46,51 +89,8 @@
 					<Add library="rt" />
 					<Add library="X11" />
 					<Add library="Xext" />
-					<Add library="asound" />
 					<Add library="m" />
-				</Linker>
-			</Target>
-			<Target title="Release">
-				<Option output="build/Wolpertinger004.so" prefix_auto="0" extension_auto="0" />
-				<Option object_output="build/Release/WolpertingerVST" />
-				<Option type="3" />
-				<Option compiler="gcc" />
-				<Option createDefFile="0" />
-				<Option createStaticLib="1" />
-				<Compiler>
-					<Add option="-O2" />
-					<Add option="-fPIC" />
-					<Add option="-DLINUX=1" />
-					<Add option="-DJUCE_USE_XSHM=1" />
-					<Add option="-DJUCE_ALSA=1" />
-					<Add option="-DJUCE_USE_VSTSDK_2_4=1" />
-					<Add option="-DDATE=&quot;`date +%F`&quot;" />
-					<Add option="-DVERSION=004" />
-					<Add option="-DVERSIONSTRING=&quot;0.4&quot;" />
-					<Add option="-DCONFIGURATION=&quot;Release&quot;" />
-					<Add option="-DCONFIG_VST=1" />
-					<Add option="-DBINTYPE=&quot;Linux Native VST&quot;" />
-					<Add option="-DNDEBUG=1" />
-					<Add option="`freetype-config --cflags`" />
-					<Add option="-msse" />
-					<Add option="-O2 -ffast-math" />
-					<Add directory="../juce" />
-					<Add directory="../vstsdk2.4" />
-					<Add directory="src" />
-				</Compiler>
-				<Linker>
-					<Add option="-s" />
-					<Add option="-shared" />
-					<Add directory="../juce/bin" />
-					<Add directory="../../../../usr/X11R6/lib" />
-					<Add directory="../../../../usr/lib" />
-					<Add library="freetype" />
-					<Add library="pthread" />
-					<Add library="rt" />
-					<Add library="X11" />
-					<Add library="Xext" />
 					<Add library="asound" />
-					<Add library="m" />
 				</Linker>
 			</Target>
 		</Build>
@@ -106,9 +106,9 @@
 		</Unit>
 		<Unit filename="src/tabbed-editor.cpp">
 		</Unit>
-		<Unit filename="src/editor.cpp">
-		</Unit>
 		<Unit filename="src/about.cpp">
+		</Unit>
+		<Unit filename="src/editor.cpp">
 		</Unit>
 		<Unit filename="src/ADSRenv.h">
 		</Unit>

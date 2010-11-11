@@ -27,7 +27,7 @@ solution(appname)
 		"/usr/X11R6/lib",
 		"/usr/lib" }
 
-	configurations { "Debug", "Release" }
+	configurations { "Release", "Debug" }
 	objdir "build"
 	targetdir "build"
 	targetprefix ""
@@ -44,8 +44,7 @@ solution(appname)
 
 	if juce_amalgamated then files { "juce/*.cpp", "juce/*.h" } end
 
-	links { "freetype", "pthread", "rt", "X11", "Xext",
-		"asound", "m" }
+	links { "freetype", "pthread", "rt", "X11", "Xext", "m", "asound" }
 
 configuration "Debug"
 	defines { "CONFIGURATION=\"Debug\"", "JUCE_DEBUG" }
@@ -62,7 +61,6 @@ project(appname .. "Standalone")
 	defines { "CONFIG_STANDALONE=1", "BINTYPE=\"Linux Standalone\"" }
 	buildoptions { "-msse" }
 
-
 configuration "Debug"
 	defines { "DEBUG=1", "_DEBUG=1" }
 	if not juce_amalgamated then links { "juce_debug" } end
@@ -75,6 +73,7 @@ configuration "Release"
 	if not juce_amalgamated then links { "juce" } end
 	flags { "Optimize" }
 	buildoptions { "-O2 -ffast-math" }
+
 
 
 
