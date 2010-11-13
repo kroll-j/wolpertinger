@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  13 Nov 2010 6:07:15pm
+  Creation date:  13 Nov 2010 7:11:27pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -36,14 +36,14 @@ about::about ()
       label2 (0),
       cachedImage_logo_png (0)
 {
-    addAndMakeVisible (hyperlinkButton = new HyperlinkButton (T("tumbetoene.tuxfamily.org"),
+    addAndMakeVisible (hyperlinkButton = new HyperlinkButton (T("___"),
                                                               URL (T("http://tumbetoene.tuxfamily.org"))));
     hyperlinkButton->setTooltip (T("http://tumbetoene.tuxfamily.org"));
-    hyperlinkButton->setButtonText (T("tumbetoene.tuxfamily.org"));
+    hyperlinkButton->setButtonText (T("___"));
     hyperlinkButton->setColour (HyperlinkButton::textColourId, Colour (0xffaeffc9));
 
     addAndMakeVisible (label = new Label (T("new label"),
-                                          T("Wolpertinger\nA subtractive antialiased synthesizer.\nBuilt using truckloads of Feinstoff.")));
+                                          T("Wolpertinger\nA subtractive antialiased synthesizer\nbuilt using truckloads of Feinstoff.")));
     label->setFont (Font (15.0000f, Font::plain));
     label->setJustificationType (Justification::topLeft);
     label->setEditable (false, false, false);
@@ -111,7 +111,7 @@ void about::paint (Graphics& g)
 
 void about::resized()
 {
-    hyperlinkButton->setBounds (getWidth() - 288 - ((192) / 2), 156, 192, 24);
+    hyperlinkButton->setBounds (341 - ((106) / 2), 30, 106, 100);
     label->setBounds (16, 28, 264, 48);
     label2->setBounds (16, 84, 208, 48);
     //[UserResized] Add your own custom resize handling here..
@@ -140,13 +140,12 @@ BEGIN_JUCER_METADATA
     <IMAGE pos="295 17 93 98" resource="logo_png" opacity="1" mode="1"/>
   </BACKGROUND>
   <HYPERLINKBUTTON name="new hyperlink" id="1625319d316ec703" memberName="hyperlinkButton"
-                   virtualName="" explicitFocusOrder="0" pos="288Rc 156 192 24"
-                   tooltip="http://tumbetoene.tuxfamily.org" textCol="ffaeffc9"
-                   buttonText="tumbetoene.tuxfamily.org" connectedEdges="0" needsCallback="0"
+                   virtualName="" explicitFocusOrder="0" pos="341c 30 106 100" tooltip="http://tumbetoene.tuxfamily.org"
+                   textCol="ffaeffc9" buttonText="___" connectedEdges="0" needsCallback="0"
                    radioGroupId="0" url="http://tumbetoene.tuxfamily.org"/>
   <LABEL name="new label" id="7e2a61a2798f6bbf" memberName="label" virtualName=""
          explicitFocusOrder="0" pos="16 28 264 48" textCol="ffffffff"
-         edTextCol="ff000000" edBkgCol="0" labelText="Wolpertinger&#10;A subtractive antialiased synthesizer.&#10;Built using truckloads of Feinstoff."
+         edTextCol="ff000000" edBkgCol="0" labelText="Wolpertinger&#10;A subtractive antialiased synthesizer&#10;built using truckloads of Feinstoff."
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15" bold="0" italic="0" justification="9"/>
   <LABEL name="new label" id="799547a0a1e6f1f1" memberName="label2" virtualName=""
