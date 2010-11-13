@@ -1,4 +1,4 @@
-    tumbetoene: Wolpertinger v0.4
+    Wolpertinger v0.4
     Copyright (C) 2009, 2010  Johannes Kroll
 
     This program is free software; you can redistribute it and/or modify
@@ -33,6 +33,7 @@ VERSIONS
 0.4	ADSR Volume Envelope
 	8x / 16x Oversampling (configurable)
 	Bugfix: Set sample rate correctly
+	Experimental Win32-VST build
 0.3 	Virtual Keyboard Component, GUI niceties
     	Changed back to Juce
 0.2 	MIDI parameter changes now update the GUI

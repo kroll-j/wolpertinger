@@ -74,6 +74,8 @@ OBJECTS := \
 	$(OBJDIR)/about.o \
 	$(OBJDIR)/juce_amalgamated.o \
 	$(OBJDIR)/wolpMain.o \
+	$(OBJDIR)/juce_AudioFilterStreamer.o \
+	$(OBJDIR)/juce_StandaloneFilterWindow.o \
 
 RESOURCES := \
 
@@ -160,6 +162,12 @@ $(OBJDIR)/juce_amalgamated.o: juce/juce_amalgamated.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o $@ -c $<
 $(OBJDIR)/wolpMain.o: standalone/wolpMain.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o $@ -c $<
+$(OBJDIR)/juce_AudioFilterStreamer.o: standalone/juce_AudioFilterStreamer.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o $@ -c $<
+$(OBJDIR)/juce_StandaloneFilterWindow.o: standalone/juce_StandaloneFilterWindow.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o $@ -c $<
 

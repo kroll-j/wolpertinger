@@ -4,9 +4,8 @@
 #include "synth.h"
 
 #include "../vst/juce_PluginHeaders.h"
-
-#include "juce_AudioFilterStreamer.cpp"
-#include "juce_StandaloneFilterWindow.cpp"
+#include "juce_AudioFilterStreamer.h"
+#include "juce_StandaloneFilterWindow.h"
 
 //==============================================================================
 /**
