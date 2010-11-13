@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  13 Nov 2010 7:11:27pm
+  Creation date:  13 Nov 2010 7:18:26pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -43,7 +43,7 @@ about::about ()
     hyperlinkButton->setColour (HyperlinkButton::textColourId, Colour (0xffaeffc9));
 
     addAndMakeVisible (label = new Label (T("new label"),
-                                          T("Wolpertinger\nA subtractive antialiased synthesizer\nbuilt using truckloads of Feinstoff.")));
+                                          T("Wolpertinger\nA subtractive antialiased synthesizer")));
     label->setFont (Font (15.0000f, Font::plain));
     label->setJustificationType (Justification::topLeft);
     label->setEditable (false, false, false);
@@ -52,7 +52,7 @@ about::about ()
     label->setColour (TextEditor::backgroundColourId, Colour (0x0));
 
     addAndMakeVisible (label2 = new Label (T("new label"),
-                                           T("v0.x\nCompiled on blah\nNative Linux VST")));
+                                           T("v0.x\nBuild date blah\nNative Linux VST")));
     label2->setFont (Font (15.0000f, Font::plain));
     label2->setJustificationType (Justification::centredLeft);
     label2->setEditable (false, false, false);
@@ -145,12 +145,12 @@ BEGIN_JUCER_METADATA
                    radioGroupId="0" url="http://tumbetoene.tuxfamily.org"/>
   <LABEL name="new label" id="7e2a61a2798f6bbf" memberName="label" virtualName=""
          explicitFocusOrder="0" pos="16 28 264 48" textCol="ffffffff"
-         edTextCol="ff000000" edBkgCol="0" labelText="Wolpertinger&#10;A subtractive antialiased synthesizer&#10;built using truckloads of Feinstoff."
+         edTextCol="ff000000" edBkgCol="0" labelText="Wolpertinger&#10;A subtractive antialiased synthesizer"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15" bold="0" italic="0" justification="9"/>
   <LABEL name="new label" id="799547a0a1e6f1f1" memberName="label2" virtualName=""
          explicitFocusOrder="0" pos="16 84 208 48" textCol="ffffffff"
-         edTextCol="ff000000" edBkgCol="0" labelText="v0.x&#10;Compiled on blah&#10;Native Linux VST"
+         edTextCol="ff000000" edBkgCol="0" labelText="v0.x&#10;Build date blah&#10;Native Linux VST"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15" bold="0" italic="0" justification="33"/>
 </JUCER_COMPONENT>

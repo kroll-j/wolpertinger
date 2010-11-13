@@ -18,7 +18,7 @@
 
 ABOUT
 
-Wolpertinger is a subtractive synth with a sharp bandpass filter whose center
+Wolpertinger is a subtractive synth with a bandpass filter whose center 
 frequency "bounces" around the frequency of the playing notes. Thanks to the
 Juce library it can be used both as a standalone application supporting JACK
 or ALSA audio outputs, and as a VST instrument for (Linux) VST hosts.
@@ -31,9 +31,10 @@ SVN via web: http://svn.tuxfamily.org/viewvc.cgi/tumbetoene_wolpertinger/
 VERSIONS
 
 0.4	ADSR Volume Envelope
-	8x / 16x Oversampling (configurable)
+	Configurable 8x / 16x Oversampling
 	Bugfix: Set sample rate correctly
 	Experimental Win32-VST build
+	Amalgamated JUCE for easier building
 0.3 	Virtual Keyboard Component, GUI niceties
     	Changed back to Juce
 0.2 	MIDI parameter changes now update the GUI
@@ -66,8 +67,6 @@ To build your binaries yourself do the following.
 'vstsdk2.4' alongside the wolpertinger directory. You can get the SDK from
 http://www.steinberg.net/ after doing whatever Steinberg wants you to do (mostly
 providing a valid email address and staring at their ads for a while).
-If you don't have the SDK, the VSTi build will fail, but the standalone version will
-still be built.
 
 3. Build Wolpertinger. Amalgamated JUCE is now included for easier building, so 
 usually all you need to do is:

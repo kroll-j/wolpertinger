@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  6 Nov 2010 5:03:05pm
+  Creation date:  13 Nov 2010 7:26:58pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -64,7 +64,7 @@ tabbed_editor::tabbed_editor (AudioProcessor *const ownerFilter)
     comboBox->addListener (this);
 
     addAndMakeVisible (polytext = new Label (T("new label"),
-                                             T("Poly: 0")));
+                                             String::empty));
     polytext->setFont (Font (15.0000f, Font::plain));
     polytext->setJustificationType (Justification::centredRight);
     polytext->setEditable (false, false, false);
@@ -207,7 +207,7 @@ BEGIN_JUCER_METADATA
             textWhenNonSelected="" textWhenNoItems="(no choices)"/>
   <LABEL name="new label" id="e5d0a1b78b69180a" memberName="polytext"
          virtualName="" explicitFocusOrder="0" pos="328 500 72 16" textCol="ffffffff"
-         outlineCol="ff0000" edTextCol="ff000000" edBkgCol="0" labelText="Poly: 0"
+         outlineCol="ff0000" edTextCol="ff000000" edBkgCol="0" labelText=""
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15" bold="0" italic="0" justification="34"/>
 </JUCER_COMPONENT>
