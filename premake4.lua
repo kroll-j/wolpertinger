@@ -12,10 +12,14 @@ version= "004"
 version_string= "0.4"
 
 solution(appname)
+	if juce_amalgamated then 
+		includedirs { "juce" } 
+	else
+		includedirs { jucedir }
+	end
+
 	includedirs {
-		jucedir,
 		vstdir,
-		"juce",
 		"src"
 	}
 
@@ -34,12 +38,12 @@ solution(appname)
 	targetprefix ""
 	targetname(appname .. version)
 
-	defines { "LINUX=1", "JUCE_USE_XSHM=1", "JUCE_ALSA=1", "JUCE_USE_VSTSDK_2_4=1",
-			  "DATE=\"`date +%F`\"",
-			  "VERSION=" .. version,
-			  "VERSIONSTRING=\"" .. version_string .. "\""
-			}
-
+	defines { "LINUX=1", "JUCE_USE_XSHM=1", "JUCE_ALSA=1", "JUCE_JACK=1", 
+		  "JUCE_USE_VSTSDK_2_4=1",
+		  "DATE=\"`date +%F`\"",
+		  "VERSION=" .. version,
+		  "VERSIONSTRING=\"" .. version_string .. "\""
+		}
 
 	files { "src/**.cpp", "src/**.h" }
 

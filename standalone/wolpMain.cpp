@@ -5,8 +5,8 @@
 
 #include "../vst/juce_PluginHeaders.h"
 
-#include "extras/audio plugins/wrapper/Standalone/juce_AudioFilterStreamer.cpp"
-#include "extras/audio plugins/wrapper/Standalone/juce_StandaloneFilterWindow.cpp"
+#include "juce_AudioFilterStreamer.cpp"
+#include "juce_StandaloneFilterWindow.cpp"
 
 //==============================================================================
 /**

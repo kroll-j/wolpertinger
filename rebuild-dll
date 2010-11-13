@@ -1,0 +1,4 @@
+make -f Makefile.W32VST clean && \
+make -f Makefile.W32VST config=debug clean && \
+make -f Makefile.W32VST -j2 verbose=1 && \
+make -f Makefile.W32VST config=debug -j2 verbose=1

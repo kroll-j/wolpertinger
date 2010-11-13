@@ -23,8 +23,8 @@ ifeq ($(config),release)
   OBJDIR     = build/Release/WolpertingerStandalone
   TARGETDIR  = build
   TARGET     = $(TARGETDIR)/Wolpertinger004
-  DEFINES   += -DLINUX=1 -DJUCE_USE_XSHM=1 -DJUCE_ALSA=1 -DJUCE_USE_VSTSDK_2_4=1 -DDATE="`date +%F`" -DVERSION=004 -DVERSIONSTRING="0.4" -DCONFIGURATION="Release" -DCONFIG_STANDALONE=1 -DBINTYPE="Linux Standalone" -DNDEBUG=1
-  INCLUDES  += -I../juce -I../vstsdk2.4 -Isrc
+  DEFINES   += -DLINUX=1 -DJUCE_USE_XSHM=1 -DJUCE_ALSA=1 -DJUCE_JACK=1 -DJUCE_USE_VSTSDK_2_4=1 -DDATE="`date +%F`" -DVERSION=004 -DVERSIONSTRING="0.4" -DCONFIGURATION="Release" -DCONFIG_STANDALONE=1 -DBINTYPE="Linux Standalone" -DNDEBUG=1
+  INCLUDES  += -Ijuce -I../vstsdk2.4 -Isrc
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -O2 `freetype-config --cflags` -msse -O2 -ffast-math
   CXXFLAGS  += $(CFLAGS) 
@@ -45,8 +45,8 @@ ifeq ($(config),debug)
   OBJDIR     = build/Debug/WolpertingerStandalone
   TARGETDIR  = build
   TARGET     = $(TARGETDIR)/Wolpertinger004-debug
-  DEFINES   += -DLINUX=1 -DJUCE_USE_XSHM=1 -DJUCE_ALSA=1 -DJUCE_USE_VSTSDK_2_4=1 -DDATE="`date +%F`" -DVERSION=004 -DVERSIONSTRING="0.4" -DCONFIGURATION="Debug" -DJUCE_DEBUG -DCONFIG_STANDALONE=1 -DBINTYPE="Linux Standalone" -DDEBUG=1 -D_DEBUG=1
-  INCLUDES  += -I../juce -I../vstsdk2.4 -Isrc
+  DEFINES   += -DLINUX=1 -DJUCE_USE_XSHM=1 -DJUCE_ALSA=1 -DJUCE_JACK=1 -DJUCE_USE_VSTSDK_2_4=1 -DDATE="`date +%F`" -DVERSION=004 -DVERSIONSTRING="0.4" -DCONFIGURATION="Debug" -DJUCE_DEBUG -DCONFIG_STANDALONE=1 -DBINTYPE="Linux Standalone" -DDEBUG=1 -D_DEBUG=1
+  INCLUDES  += -Ijuce -I../vstsdk2.4 -Isrc
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -g `freetype-config --cflags` -msse -ggdb
   CXXFLAGS  += $(CFLAGS) 
@@ -70,8 +70,8 @@ OBJECTS := \
 	$(OBJDIR)/RotatingToggleButton.o \
 	$(OBJDIR)/synth.o \
 	$(OBJDIR)/tabbed-editor.o \
-	$(OBJDIR)/about.o \
 	$(OBJDIR)/editor.o \
+	$(OBJDIR)/about.o \
 	$(OBJDIR)/juce_amalgamated.o \
 	$(OBJDIR)/wolpMain.o \
 
@@ -150,10 +150,10 @@ $(OBJDIR)/synth.o: src/synth.cpp
 $(OBJDIR)/tabbed-editor.o: src/tabbed-editor.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o $@ -c $<
-$(OBJDIR)/about.o: src/about.cpp
+$(OBJDIR)/editor.o: src/editor.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o $@ -c $<
-$(OBJDIR)/editor.o: src/editor.cpp
+$(OBJDIR)/about.o: src/about.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o $@ -c $<
 $(OBJDIR)/juce_amalgamated.o: juce/juce_amalgamated.cpp

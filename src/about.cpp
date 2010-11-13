@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  8 Nov 2010 6:18:32pm
+  Creation date:  13 Nov 2010 6:07:15pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -43,7 +43,7 @@ about::about ()
     hyperlinkButton->setColour (HyperlinkButton::textColourId, Colour (0xffaeffc9));
 
     addAndMakeVisible (label = new Label (T("new label"),
-                                          T("Wolpertinger\nA subtractive antialiased synth \ncreated without any animal testing.")));
+                                          T("Wolpertinger\nA subtractive antialiased synthesizer.\nBuilt using truckloads of Feinstoff.")));
     label->setFont (Font (15.0000f, Font::plain));
     label->setJustificationType (Justification::topLeft);
     label->setEditable (false, false, false);
@@ -112,7 +112,7 @@ void about::paint (Graphics& g)
 void about::resized()
 {
     hyperlinkButton->setBounds (getWidth() - 288 - ((192) / 2), 156, 192, 24);
-    label->setBounds (16, 28, 250, 48);
+    label->setBounds (16, 28, 264, 48);
     label2->setBounds (16, 84, 208, 48);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
@@ -145,8 +145,8 @@ BEGIN_JUCER_METADATA
                    buttonText="tumbetoene.tuxfamily.org" connectedEdges="0" needsCallback="0"
                    radioGroupId="0" url="http://tumbetoene.tuxfamily.org"/>
   <LABEL name="new label" id="7e2a61a2798f6bbf" memberName="label" virtualName=""
-         explicitFocusOrder="0" pos="16 28 250 48" textCol="ffffffff"
-         edTextCol="ff000000" edBkgCol="0" labelText="Wolpertinger&#10;A subtractive antialiased synth &#10;created without any animal testing."
+         explicitFocusOrder="0" pos="16 28 264 48" textCol="ffffffff"
+         edTextCol="ff000000" edBkgCol="0" labelText="Wolpertinger&#10;A subtractive antialiased synthesizer.&#10;Built using truckloads of Feinstoff."
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15" bold="0" italic="0" justification="9"/>
   <LABEL name="new label" id="799547a0a1e6f1f1" memberName="label2" virtualName=""

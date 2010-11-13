@@ -778,7 +778,7 @@ inline int numElementsInArray (Type& array)	 { return static_cast<int> (sizeof (
 inline double juce_hypot (double a, double b)
 {
   #if JUCE_WINDOWS
-	return _hypot (a, b);
+	return hypot (a, b);
   #else
 	return hypot (a, b);
   #endif
@@ -787,7 +787,7 @@ inline double juce_hypot (double a, double b)
 inline float juce_hypotf (float a, float b)
 {
   #if JUCE_WINDOWS
-	return (float) _hypot (a, b);
+	return (float) hypot (a, b);
   #else
 	return hypotf (a, b);
   #endif

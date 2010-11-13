@@ -1,4 +1,4 @@
-    tumbetoene: Wolpertinger v0.3
+    tumbetoene: Wolpertinger v0.4
     Copyright (C) 2009, 2010  Johannes Kroll
 
     This program is free software; you can redistribute it and/or modify
@@ -21,7 +21,7 @@ ABOUT
 Wolpertinger is a subtractive synth with a sharp bandpass filter whose center
 frequency "bounces" around the frequency of the playing notes. Thanks to the
 Juce library it can be used both as a standalone application supporting JACK
-or ALSA audio outputs, and as a VST instrument for native Linux VST hosts.
+or ALSA audio outputs, and as a VST instrument for (Linux) VST hosts.
 
 Web: http://tumbetoene.tuxfamily.org/
 Subversion: svn://svn.tuxfamily.org/svnroot/tumbetoene/wolpertinger
@@ -31,7 +31,7 @@ SVN via web: http://svn.tuxfamily.org/viewvc.cgi/tumbetoene_wolpertinger/
 VERSIONS
 
 0.4	ADSR Volume Envelope
-	8x / 16x Oversampling
+	8x / 16x Oversampling (configurable)
 	Bugfix: Set sample rate correctly
 0.3 	Virtual Keyboard Component, GUI niceties
     	Changed back to Juce
@@ -45,8 +45,12 @@ INSTALLATION
 
 The executable binary should run out of the box, no installation needed. The
 VST shared object (.so) is meant to be loaded into VST-compatible host
-applications, e. g. Renoise.
+applications, e. g. Renoise. Check your host documentation for native Linux
+VST support. 
 
+The included Win32 DLL can be loaded into Linux hosts which only support 
+Windows VSTs, such as LMMS. This is experimental and not recommended. If 
+possible, use the native Linux VST under Linux!
 
 
 BUILDING
@@ -64,6 +68,15 @@ providing a valid email address and staring at their ads for a while).
 If you don't have the SDK, the VSTi build will fail, but the standalone version will
 still be built.
 
-6. Build Wolpertinger.
+3. Build Wolpertinger. Amalgamated JUCE is now included for easier building, so 
+usually all you need to do is:
 
 	make
+
+You can run "make config=debug" to build unoptimized binaries with debugging symbols. 
+Run "make help" for make options.
+
+If you want to use your own copy of JUCE or adjust other build options, you need
+premake 4 from http://industriousone.com/premake. You can edit the premake4.lua 
+script and regenerate the Makefiles by running the "runpremake" script.
+

@@ -1,0 +1,6 @@
+premake4 gmake
+
+make clean && \
+make config=debug clean && \
+make -j2 verbose=1 && \
+make -j2 verbose=1 config=debug

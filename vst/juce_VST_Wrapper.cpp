@@ -28,6 +28,7 @@
 #endif
 
 #ifdef _WIN32
+  #undef DATE
   #include <windows.h>
 #elif defined (LINUX)
   #include <X11/Xlib.h>
@@ -133,7 +134,7 @@
 #endif
 
 #include "juce_PluginHeaders.h"
-#include "extras/audio plugins/wrapper/juce_PluginHostType.h"
+#include "juce_PluginHostType.h"
 
 
 #ifdef _MSC_VER
@@ -1586,7 +1587,7 @@ extern "C" __declspec (dllexport) AEffect* VSTPluginMain (audioMasterCallback au
     return pluginEntryPoint (audioMaster);
 }
 
-#ifndef _WIN64 // (can't compile this on win64, but it's not needed anyway with VST2.4)
+#if ! defined(_WIN64) && ! JUCE_USE_VSTSDK_2_4  // (can't compile this on win64, but it's not needed anyway with VST2.4)
 extern "C" __declspec (dllexport) void* main (audioMasterCallback audioMaster)
 {
     return (void*) pluginEntryPoint (audioMaster);

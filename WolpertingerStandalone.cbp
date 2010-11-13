@@ -16,6 +16,7 @@
 					<Add option="-DLINUX=1" />
 					<Add option="-DJUCE_USE_XSHM=1" />
 					<Add option="-DJUCE_ALSA=1" />
+					<Add option="-DJUCE_JACK=1" />
 					<Add option="-DJUCE_USE_VSTSDK_2_4=1" />
 					<Add option="-DDATE=&quot;`date +%F`&quot;" />
 					<Add option="-DVERSION=004" />
@@ -27,7 +28,7 @@
 					<Add option="`freetype-config --cflags`" />
 					<Add option="-msse" />
 					<Add option="-O2 -ffast-math" />
-					<Add directory="../juce" />
+					<Add directory="juce" />
 					<Add directory="../vstsdk2.4" />
 					<Add directory="src" />
 				</Compiler>
@@ -55,6 +56,7 @@
 					<Add option="-DLINUX=1" />
 					<Add option="-DJUCE_USE_XSHM=1" />
 					<Add option="-DJUCE_ALSA=1" />
+					<Add option="-DJUCE_JACK=1" />
 					<Add option="-DJUCE_USE_VSTSDK_2_4=1" />
 					<Add option="-DDATE=&quot;`date +%F`&quot;" />
 					<Add option="-DVERSION=004" />
@@ -68,7 +70,7 @@
 					<Add option="`freetype-config --cflags`" />
 					<Add option="-msse" />
 					<Add option="-ggdb" />
-					<Add directory="../juce" />
+					<Add directory="juce" />
 					<Add directory="../vstsdk2.4" />
 					<Add directory="src" />
 				</Compiler>
