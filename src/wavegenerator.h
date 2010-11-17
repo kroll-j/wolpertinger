@@ -267,11 +267,11 @@ class NewWaveGenerator
 					float lastPhase= masterWaveGenerator.phase;
 
 					masterSample= masterWaveGenerator.getNextRawSample(masterWaveGenerator.sampleStep +
-																	   masterWaveGenerator.sampleStep*slaveSample*0.9999);
+																	   masterWaveGenerator.sampleStep*slaveSample*0); //.9999);
 					slaveSample= slaveWaveGenerator.getNextRawSample(slaveWaveGenerator.sampleStep +
 																	 slaveWaveGenerator.sampleStep*masterSample*2.5);
 
-					s= downsamplingFilter.run(masterSample +  slaveSample);
+					s= downsamplingFilter.run(masterSample); // + slaveSample);
 
 					if(masterWaveGenerator.phase < lastPhase)
 					{
