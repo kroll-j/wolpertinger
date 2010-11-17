@@ -6,6 +6,7 @@
 
 /*
 Versions
+0.5 Bugfix: Triangle wave generation was shifted one octave down
 0.4	ADSR Volume Envelope
 	8x / 16x Oversampling
 	Bugfix: Set sample rate correctly
@@ -55,6 +56,7 @@ void wolpVoice<oversampling>::startNote(const int midiNoteNumber,
 	env.setSustain(synth->getparam(wolp::sustain));
 	env.setRelease(synth->getparam(wolp::release));
 	env.resetTime();
+	generator.beginNote();
 }
 
 template <int oversampling>

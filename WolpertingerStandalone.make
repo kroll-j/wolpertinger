@@ -22,14 +22,14 @@ endif
 ifeq ($(config),release)
   OBJDIR     = build/Release/WolpertingerStandalone
   TARGETDIR  = build
-  TARGET     = $(TARGETDIR)/Wolpertinger004
-  DEFINES   += -DLINUX=1 -DJUCE_USE_XSHM=1 -DJUCE_ALSA=1 -DJUCE_JACK=1 -DJUCE_USE_VSTSDK_2_4=1 -DDATE="`date +%F`" -DVERSION=004 -DVERSIONSTRING="0.4" -DCONFIGURATION="Release" -DCONFIG_STANDALONE=1 -DBINTYPE="Linux Standalone" -DNDEBUG=1
-  INCLUDES  += -Ijuce -I../vstsdk2.4 -Isrc
+  TARGET     = $(TARGETDIR)/Wolpertinger005
+  DEFINES   += -DLINUX=1 -DJUCE_USE_XSHM=1 -DJUCE_ALSA=1 -DJUCE_JACK=1 -DJUCE_USE_VSTSDK_2_4=1 -DDATE="`date +%F`" -DVERSION=005 -DVERSIONSTRING="0.5" -DCONFIGURATION="Release" -DCONFIG_STANDALONE=1 -DBINTYPE="Linux Standalone" -DNDEBUG=1
+  INCLUDES  += -I../juce-git -I../vstsdk2.4 -Isrc
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -O2 `freetype-config --cflags` -msse -O2 -ffast-math
   CXXFLAGS  += $(CFLAGS) 
-  LDFLAGS   += -s -L../juce/bin -L../../../../usr/X11R6/lib -L../../../../usr/lib
-  LIBS      += -lfreetype -lpthread -lrt -lX11 -lXext -lm -lasound
+  LDFLAGS   += -s -L../juce-git/bin -L../../../../usr/X11R6/lib -L../../../../usr/lib
+  LIBS      += -lfreetype -lpthread -lrt -lX11 -lXext -lm -lasound -ljuce
   RESFLAGS  += $(DEFINES) $(INCLUDES) 
   LDDEPS    += 
   LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(ARCH) $(LIBS)
@@ -44,14 +44,14 @@ endif
 ifeq ($(config),debug)
   OBJDIR     = build/Debug/WolpertingerStandalone
   TARGETDIR  = build
-  TARGET     = $(TARGETDIR)/Wolpertinger004-debug
-  DEFINES   += -DLINUX=1 -DJUCE_USE_XSHM=1 -DJUCE_ALSA=1 -DJUCE_JACK=1 -DJUCE_USE_VSTSDK_2_4=1 -DDATE="`date +%F`" -DVERSION=004 -DVERSIONSTRING="0.4" -DCONFIGURATION="Debug" -DJUCE_DEBUG -DCONFIG_STANDALONE=1 -DBINTYPE="Linux Standalone" -DDEBUG=1 -D_DEBUG=1
-  INCLUDES  += -Ijuce -I../vstsdk2.4 -Isrc
+  TARGET     = $(TARGETDIR)/Wolpertinger005-debug
+  DEFINES   += -DLINUX=1 -DJUCE_USE_XSHM=1 -DJUCE_ALSA=1 -DJUCE_JACK=1 -DJUCE_USE_VSTSDK_2_4=1 -DDATE="`date +%F`" -DVERSION=005 -DVERSIONSTRING="0.5" -DCONFIGURATION="Debug" -DJUCE_DEBUG -DCONFIG_STANDALONE=1 -DBINTYPE="Linux Standalone" -DDEBUG=1 -D_DEBUG=1
+  INCLUDES  += -I../juce-git -I../vstsdk2.4 -Isrc
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -g `freetype-config --cflags` -msse -ggdb
   CXXFLAGS  += $(CFLAGS) 
-  LDFLAGS   += -L../juce/bin -L../../../../usr/X11R6/lib -L../../../../usr/lib
-  LIBS      += -lfreetype -lpthread -lrt -lX11 -lXext -lm -lasound
+  LDFLAGS   += -L../juce-git/bin -L../../../../usr/X11R6/lib -L../../../../usr/lib
+  LIBS      += -lfreetype -lpthread -lrt -lX11 -lXext -lm -lasound -ljuce_debug
   RESFLAGS  += $(DEFINES) $(INCLUDES) 
   LDDEPS    += 
   LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(ARCH) $(LIBS)
@@ -69,10 +69,9 @@ OBJECTS := \
 	$(OBJDIR)/PresetComboBox.o \
 	$(OBJDIR)/RotatingToggleButton.o \
 	$(OBJDIR)/synth.o \
-	$(OBJDIR)/tabbed-editor.o \
 	$(OBJDIR)/editor.o \
+	$(OBJDIR)/tabbed-editor.o \
 	$(OBJDIR)/about.o \
-	$(OBJDIR)/juce_amalgamated.o \
 	$(OBJDIR)/wolpMain.o \
 	$(OBJDIR)/juce_AudioFilterStreamer.o \
 	$(OBJDIR)/juce_StandaloneFilterWindow.o \
@@ -149,16 +148,13 @@ $(OBJDIR)/RotatingToggleButton.o: src/RotatingToggleButton.cpp
 $(OBJDIR)/synth.o: src/synth.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o $@ -c $<
-$(OBJDIR)/tabbed-editor.o: src/tabbed-editor.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o $@ -c $<
 $(OBJDIR)/editor.o: src/editor.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o $@ -c $<
-$(OBJDIR)/about.o: src/about.cpp
+$(OBJDIR)/tabbed-editor.o: src/tabbed-editor.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o $@ -c $<
-$(OBJDIR)/juce_amalgamated.o: juce/juce_amalgamated.cpp
+$(OBJDIR)/about.o: src/about.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o $@ -c $<
 $(OBJDIR)/wolpMain.o: standalone/wolpMain.cpp

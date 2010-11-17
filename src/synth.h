@@ -226,6 +226,7 @@ inline double chebyshev_downsampling_lp<1>::run(double nextvalue)
 	return nextvalue;
 }
 
+#include "wavegenerator.h"
 
 template<int oversampling> class WaveGenerator
 {
@@ -363,7 +364,7 @@ template<int oversampling> class wolpVoice: public SynthesiserVoice
 		int cyclecount;
 		unsigned long samples_synthesized;
 
-		WaveGenerator<oversampling> generator;
+		NewWaveGenerator<oversampling> generator;
 		bandpass<8> filter;
 		ADSRenv env;
 

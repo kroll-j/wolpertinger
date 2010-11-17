@@ -7,7 +7,7 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Release">
-				<Option output="build/Wolpertinger004.so" prefix_auto="0" extension_auto="0" />
+				<Option output="build/Wolpertinger005.so" prefix_auto="0" extension_auto="0" />
 				<Option object_output="build/Release/WolpertingerVST" />
 				<Option type="3" />
 				<Option compiler="gcc" />
@@ -22,8 +22,8 @@
 					<Add option="-DJUCE_JACK=1" />
 					<Add option="-DJUCE_USE_VSTSDK_2_4=1" />
 					<Add option="-DDATE=&quot;`date +%F`&quot;" />
-					<Add option="-DVERSION=004" />
-					<Add option="-DVERSIONSTRING=&quot;0.4&quot;" />
+					<Add option="-DVERSION=005" />
+					<Add option="-DVERSIONSTRING=&quot;0.5&quot;" />
 					<Add option="-DCONFIGURATION=&quot;Release&quot;" />
 					<Add option="-DCONFIG_VST=1" />
 					<Add option="-DBINTYPE=&quot;Linux Native VST&quot;" />
@@ -31,14 +31,14 @@
 					<Add option="`freetype-config --cflags`" />
 					<Add option="-msse" />
 					<Add option="-O2 -ffast-math" />
-					<Add directory="juce" />
+					<Add directory="../juce-151" />
 					<Add directory="../vstsdk2.4" />
 					<Add directory="src" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
 					<Add option="-shared" />
-					<Add directory="../juce/bin" />
+					<Add directory="../juce-151/bin" />
 					<Add directory="../../../../usr/X11R6/lib" />
 					<Add directory="../../../../usr/lib" />
 					<Add library="freetype" />
@@ -48,10 +48,11 @@
 					<Add library="Xext" />
 					<Add library="m" />
 					<Add library="asound" />
+					<Add library="juce" />
 				</Linker>
 			</Target>
 			<Target title="Debug">
-				<Option output="build/Wolpertinger004-debug.so" prefix_auto="0" extension_auto="0" />
+				<Option output="build/Wolpertinger005-debug.so" prefix_auto="0" extension_auto="0" />
 				<Option object_output="build/Debug/WolpertingerVST" />
 				<Option type="3" />
 				<Option compiler="gcc" />
@@ -66,8 +67,8 @@
 					<Add option="-DJUCE_JACK=1" />
 					<Add option="-DJUCE_USE_VSTSDK_2_4=1" />
 					<Add option="-DDATE=&quot;`date +%F`&quot;" />
-					<Add option="-DVERSION=004" />
-					<Add option="-DVERSIONSTRING=&quot;0.4&quot;" />
+					<Add option="-DVERSION=005" />
+					<Add option="-DVERSIONSTRING=&quot;0.5&quot;" />
 					<Add option="-DCONFIGURATION=&quot;Debug&quot;" />
 					<Add option="-DJUCE_DEBUG" />
 					<Add option="-DCONFIG_VST=1" />
@@ -77,13 +78,13 @@
 					<Add option="`freetype-config --cflags`" />
 					<Add option="-msse" />
 					<Add option="-ggdb" />
-					<Add directory="juce" />
+					<Add directory="../juce-151" />
 					<Add directory="../vstsdk2.4" />
 					<Add directory="src" />
 				</Compiler>
 				<Linker>
 					<Add option="-shared" />
-					<Add directory="../juce/bin" />
+					<Add directory="../juce-151/bin" />
 					<Add directory="../../../../usr/X11R6/lib" />
 					<Add directory="../../../../usr/lib" />
 					<Add library="freetype" />
@@ -93,6 +94,7 @@
 					<Add library="Xext" />
 					<Add library="m" />
 					<Add library="asound" />
+					<Add library="juce_debug" />
 				</Linker>
 			</Target>
 		</Build>
@@ -106,11 +108,11 @@
 		</Unit>
 		<Unit filename="src/synth.cpp">
 		</Unit>
+		<Unit filename="src/editor.cpp">
+		</Unit>
 		<Unit filename="src/tabbed-editor.cpp">
 		</Unit>
 		<Unit filename="src/about.cpp">
-		</Unit>
-		<Unit filename="src/editor.cpp">
 		</Unit>
 		<Unit filename="src/ADSRenv.h">
 		</Unit>
@@ -136,13 +138,7 @@
 		</Unit>
 		<Unit filename="src/editor.h">
 		</Unit>
-		<Unit filename="juce/juce_amalgamated.cpp">
-		</Unit>
-		<Unit filename="juce/juce_amalgamated.h">
-		</Unit>
-		<Unit filename="juce/juce_Config.h">
-		</Unit>
-		<Unit filename="juce/juce.h">
+		<Unit filename="src/wavegenerator.h">
 		</Unit>
 		<Unit filename="vst/juce_VST_Wrapper.cpp">
 		</Unit>

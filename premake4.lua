@@ -1,15 +1,15 @@
 -- set this to false if you want to use your own copy of JUCE
-juce_amalgamated= true
+juce_amalgamated= false
 
 -- if you set juce_amalgamated to false, adjust this to match your juce basedir containing the 'src' subdirectory
-jucedir= "../juce"
+jucedir= "../juce-151"
 
 -- to build the VSTi, adjust this to match your vst sdk 2.4 basedir containing the 'public.sdk' subdirectory
 vstdir= "../vstsdk2.4"
 
 appname= "Wolpertinger"
-version= "004"
-version_string= "0.4"
+version= "005"
+version_string= "0.5"
 
 solution(appname)
 	if juce_amalgamated then 
