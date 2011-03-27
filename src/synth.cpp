@@ -7,6 +7,11 @@
 /*
 Versions
 0.5 Bugfix: Triangle wave generation was shifted one octave down
+	Tiny important fix that makes the wave generator signal spectrally much cleaner
+					   that makes the spectrum of the wave generator signal much cleaner
+					   that cleans up the spectral distribution of the wave generator signals,
+						 removing a lot of low-power noise
+						 demo erstellen :)
 0.4	ADSR Volume Envelope
 	8x / 16x Oversampling
 	Bugfix: Set sample rate correctly
@@ -87,7 +92,6 @@ void wolpVoice<oversampling>::process(float* p1, float* p2, int samples)
 	for(int i= 0; i<samples; i++)
 	{
 		double val= waveSamples[i];
-
 		double envVol= env.getValue();
 
 		val= filter.run(val, nfilters);

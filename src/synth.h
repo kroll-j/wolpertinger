@@ -489,8 +489,8 @@ class wolp:	public AudioProcessor,
 		virtual void handleNoteOn (MidiKeyboardState* source,
 								   int midiChannel, int midiNoteNumber, float velocity)
 		{
-//			printf("MidiKeyboard noteOn isProcessing=%s\n", isProcessing? "true": "false");
-			noteOn(midiChannel, midiNoteNumber, velocity);
+			// XXX keyboard velocity stuff disabled for now
+			noteOn(midiChannel, midiNoteNumber, 1.0); //velocity);
 		}
 
 		/** Called when one of the MidiKeyboardState's keys is released.
@@ -506,7 +506,7 @@ class wolp:	public AudioProcessor,
 									int midiChannel, int midiNoteNumber)
 		{
 //			printf("MidiKeyboard noteOff isProcessing=%s\n", isProcessing? "true": "false");
-			noteOff(midiChannel, midiNoteNumber, velocity);
+			noteOff(midiChannel, midiNoteNumber, true);
 		}
 
 	protected:

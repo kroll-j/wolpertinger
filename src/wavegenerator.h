@@ -195,35 +195,56 @@ class RawWaveGenerator
 			return val;
 		}
 
-		double getNextRawSample(double step)
+		double getNextRawSample(double step, double phaseMod= 0.0)
 		{
 			double saw, rect, tri;
-			saw= phase;
-			rect= (phase<0? -1: 1);
-			tri= (phase<0? (phase+0.5)*2: 1-phase*2);
+			double p= phase + phaseMod;
+//			while(p<-1) p+= 2;
+//			while(p>1) p-= 2;
+			saw= p;
+			rect= (p<0? -1: 1);
+			tri= (p<0? p*2+1: 1-p*2);
 
 			double val= saw*sawFactor + rect*rectFactor + tri*triFactor;
 
 			phase+= step;
 			if(step>0)
 			{
-				while(phase > 1)
+#define PHASEMODULO
+#ifdef PHASEMODULO
+				while(phase >= 1.0)
 					cyclecount++,
 					phase -= 2;
+#else
+				if(phase >= 1.0)
+					cyclecount++,
+					phase= -1.0;
+#endif
+					// TODO: Check whether resetting the phase instead of subtracting
+					// gives better spectral results.
+					// ausserdem: integer-zähler ausprobieren
 			}
 			else
 			{
-				while(phase < -1)
+#ifdef PHASEMODULO
+				while(phase <= -1)
 					cyclecount++,
 					phase += 2;
+#else
+				if(phase <= -1.0)
+					cyclecount++,
+					phase= 1.0;
+#endif
 			}
 
+			nSamples++;
 			return val;
 		}
 
 	private:
 		double sawFactor, rectFactor, triFactor, sampleStep, phase, noteFrequency;
 		int cyclecount;
+		uint32_t nSamples;
 
 		friend class NewWaveGenerator<oversampling>;
 };
@@ -239,13 +260,15 @@ class NewWaveGenerator
 		void beginNote()
 		{
 			overflow= 0;
-			masterWaveGenerator.phase= slaveWaveGenerator.phase= 0.0;
+			masterWaveGenerator.phase= slaveWaveGenerator.phase= -1;
+			nSamplesGenerated= 0;
 		}
 
 		void setFrequency(double sampleRate, double noteFrequency)
 		{
+//			noteFrequency= noteFrequency * 1.99 + rand()*0.02/RAND_MAX;
 			masterWaveGenerator.setFrequency(sampleRate, noteFrequency);
-			slaveWaveGenerator.setFrequency(sampleRate, noteFrequency*2);
+			slaveWaveGenerator.setFrequency(sampleRate, noteFrequency*1.7);
 			samplingRate= sampleRate;
 		}
 
@@ -260,39 +283,47 @@ class NewWaveGenerator
 			if(sampleBuffer.size()<nSamples)
 				sampleBuffer.resize(nSamples);
 			double s, masterSample, slaveSample;
+			double phaseMod= sin( nSamplesGenerated*(1.0/48000)*M_PI*5 );
+			double phaseMod2= sin( nSamplesGenerated*(1.0/48000)*M_PI*3 );
 			for(int i= 0; i<nSamples; i++)
 			{
+					float lastPhase= masterWaveGenerator.phase;
 				for(int k= oversampling; k; k--)
 				{
-					float lastPhase= masterWaveGenerator.phase;
 
+					double phaseDiff= (masterWaveGenerator.phase-slaveWaveGenerator.phase);
 					masterSample= masterWaveGenerator.getNextRawSample(masterWaveGenerator.sampleStep +
-																	   masterWaveGenerator.sampleStep*slaveSample*0); //.9999);
+																	   masterWaveGenerator.sampleStep*slaveSample*0,//.9999);
+																	   phaseMod)*.01;
 					slaveSample= slaveWaveGenerator.getNextRawSample(slaveWaveGenerator.sampleStep +
-																	 slaveWaveGenerator.sampleStep*masterSample*2.5);
+																	 slaveWaveGenerator.sampleStep*masterSample*5 +
+																	 slaveWaveGenerator.sampleStep*(masterSample-slaveSample)*0 +
+																	 slaveWaveGenerator.sampleStep*phaseDiff*-1,
+																	 -phaseMod2*1);
 
-					s= downsamplingFilter.run(masterSample); // + slaveSample);
+					s= downsamplingFilter.run(masterSample + slaveSample);
+				}
 
 					if(masterWaveGenerator.phase < lastPhase)
 					{
 						// phase reset
 						phaseCount++;
 						overflow+= masterWaveGenerator.phase - masterWaveGenerator.sampleStep*oversampling + 1;
-						if(phaseCount>0)
+						if(  (phaseCount>3) ) //&& (rand()%1000<500) )
 						{
 							// phase angleichen?
 //							slaveWaveGenerator.phase= overflow*slaveWaveGenerator.sampleStep; //*oversampling;
-//							slaveWaveGenerator.phase= 0;
-							slaveWaveGenerator.sampleStep= -slaveWaveGenerator.sampleStep;
-//							slaveWaveGenerator.phase= (slaveWaveGenerator.sampleStep>0? -1: 1);
+//							slaveWaveGenerator.sampleStep= -slaveWaveGenerator.sampleStep;
+							slaveWaveGenerator.phase= (slaveWaveGenerator.sampleStep>0? -1: 1);
+//							slaveWaveGenerator.phase= -1;
 							overflow= 0;
 							phaseCount= 0;
-//							s= -100;
+//							slaveSample= masterSample= -100;
 						}
 					}
-				}
 
 				sampleBuffer[i]= s;
+				nSamplesGenerated++;
 			}
 			return &sampleBuffer[0];
 		}
@@ -302,6 +333,7 @@ class NewWaveGenerator
 		std::vector<float> sampleBuffer;
 		chebyshev_downsampling_lp<oversampling> downsamplingFilter;
 		int phaseCount;
+		uint32_t nSamplesGenerated;
 		double samplingRate;
 		double overflow;
 };
