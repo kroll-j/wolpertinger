@@ -1,5 +1,5 @@
 -- set this to false if you want to use your own copy of JUCE
-juce_amalgamated= false
+juce_amalgamated= true
 
 -- if you set juce_amalgamated to false, adjust this to match your juce basedir containing the 'src' subdirectory
 jucedir= "../juce-151"

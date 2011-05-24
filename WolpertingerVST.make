@@ -24,12 +24,12 @@ ifeq ($(config),release)
   TARGETDIR  = build
   TARGET     = $(TARGETDIR)/Wolpertinger005.so
   DEFINES   += -DLINUX=1 -DJUCE_USE_XSHM=1 -DJUCE_ALSA=1 -DJUCE_JACK=1 -DJUCE_USE_VSTSDK_2_4=1 -DDATE="`date +%F`" -DVERSION=005 -DVERSIONSTRING="0.5" -DCONFIGURATION="Release" -DCONFIG_VST=1 -DBINTYPE="Linux Native VST" -DNDEBUG=1
-  INCLUDES  += -I../juce-git -I../vstsdk2.4 -Isrc
+  INCLUDES  += -Ijuce -I../vstsdk2.4 -Isrc
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -O2 -fPIC `freetype-config --cflags` -msse -O2 -ffast-math
   CXXFLAGS  += $(CFLAGS) 
-  LDFLAGS   += -s -shared -L../juce-git/bin -L../../../../usr/X11R6/lib -L../../../../usr/lib
-  LIBS      += -lfreetype -lpthread -lrt -lX11 -lXext -lm -lasound -ljuce
+  LDFLAGS   += -s -shared -L../juce-151/bin -L../../../../usr/X11R6/lib -L../../../../usr/lib
+  LIBS      += -lfreetype -lpthread -lrt -lX11 -lXext -lm -lasound
   RESFLAGS  += $(DEFINES) $(INCLUDES) 
   LDDEPS    += 
   LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(ARCH) $(LIBS)
@@ -46,12 +46,12 @@ ifeq ($(config),debug)
   TARGETDIR  = build
   TARGET     = $(TARGETDIR)/Wolpertinger005-debug.so
   DEFINES   += -DLINUX=1 -DJUCE_USE_XSHM=1 -DJUCE_ALSA=1 -DJUCE_JACK=1 -DJUCE_USE_VSTSDK_2_4=1 -DDATE="`date +%F`" -DVERSION=005 -DVERSIONSTRING="0.5" -DCONFIGURATION="Debug" -DJUCE_DEBUG -DCONFIG_VST=1 -DBINTYPE="Linux Native VST" -DDEBUG=1 -D_DEBUG=1
-  INCLUDES  += -I../juce-git -I../vstsdk2.4 -Isrc
+  INCLUDES  += -Ijuce -I../vstsdk2.4 -Isrc
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -g -fPIC `freetype-config --cflags` -msse -ggdb
   CXXFLAGS  += $(CFLAGS) 
-  LDFLAGS   += -shared -L../juce-git/bin -L../../../../usr/X11R6/lib -L../../../../usr/lib
-  LIBS      += -lfreetype -lpthread -lrt -lX11 -lXext -lm -lasound -ljuce_debug
+  LDFLAGS   += -shared -L../juce-151/bin -L../../../../usr/X11R6/lib -L../../../../usr/lib
+  LIBS      += -lfreetype -lpthread -lrt -lX11 -lXext -lm -lasound
   RESFLAGS  += $(DEFINES) $(INCLUDES) 
   LDDEPS    += 
   LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(ARCH) $(LIBS)
@@ -68,10 +68,11 @@ OBJECTS := \
 	$(OBJDIR)/KeyboardButton.o \
 	$(OBJDIR)/PresetComboBox.o \
 	$(OBJDIR)/RotatingToggleButton.o \
-	$(OBJDIR)/synth.o \
-	$(OBJDIR)/editor.o \
-	$(OBJDIR)/tabbed-editor.o \
 	$(OBJDIR)/about.o \
+	$(OBJDIR)/editor.o \
+	$(OBJDIR)/synth.o \
+	$(OBJDIR)/tabbed-editor.o \
+	$(OBJDIR)/juce_amalgamated.o \
 	$(OBJDIR)/juce_VST_Wrapper.o \
 
 RESOURCES := \
@@ -143,16 +144,19 @@ $(OBJDIR)/PresetComboBox.o: src/PresetComboBox.cpp
 $(OBJDIR)/RotatingToggleButton.o: src/RotatingToggleButton.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o $@ -c $<
-$(OBJDIR)/synth.o: src/synth.cpp
+$(OBJDIR)/about.o: src/about.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o $@ -c $<
 $(OBJDIR)/editor.o: src/editor.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o $@ -c $<
+$(OBJDIR)/synth.o: src/synth.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o $@ -c $<
 $(OBJDIR)/tabbed-editor.o: src/tabbed-editor.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o $@ -c $<
-$(OBJDIR)/about.o: src/about.cpp
+$(OBJDIR)/juce_amalgamated.o: juce/juce_amalgamated.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o $@ -c $<
 $(OBJDIR)/juce_VST_Wrapper.o: vst/juce_VST_Wrapper.cpp
