@@ -417,6 +417,8 @@ class wolp:	public AudioProcessor,
 		wolp();
 		~wolp();
 
+		bool hasEditor() const { return true; }
+
 		const String getName() const { return "wolp"; }
 		void prepareToPlay (double sampleRate, int estimatedSamplesPerBlock)
 		{

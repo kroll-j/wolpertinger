@@ -7,7 +7,7 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Release">
-				<Option output="build/Wolpertinger005" prefix_auto="0" extension_auto="0" />
+				<Option output="build/Wolpertinger0041" prefix_auto="0" extension_auto="0" />
 				<Option object_output="build/Release/WolpertingerStandalone" />
 				<Option type="0" />
 				<Option compiler="gcc" />
@@ -18,9 +18,9 @@
 					<Add option="-DJUCE_ALSA=1" />
 					<Add option="-DJUCE_JACK=1" />
 					<Add option="-DJUCE_USE_VSTSDK_2_4=1" />
-					<Add option="-DDATE=&quot;`date +%F`&quot;" />
-					<Add option="-DVERSION=005" />
-					<Add option="-DVERSIONSTRING=&quot;0.5&quot;" />
+					<Add option="-DBUILDDATE=&quot;`date +%F`&quot;" />
+					<Add option="-DWOLPVERSION=0041" />
+					<Add option="-DWOLPVERSIONSTRING=&quot;0.4.1&quot;" />
 					<Add option="-DCONFIGURATION=&quot;Release&quot;" />
 					<Add option="-DCONFIG_STANDALONE=1" />
 					<Add option="-DBINTYPE=&quot;Linux Standalone&quot;" />
@@ -34,7 +34,7 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add directory="../juce-151/bin" />
+					<Add directory="../juce-153/bin" />
 					<Add directory="../../../../usr/X11R6/lib" />
 					<Add directory="../../../../usr/lib" />
 					<Add library="freetype" />
@@ -47,7 +47,7 @@
 				</Linker>
 			</Target>
 			<Target title="Debug">
-				<Option output="build/Wolpertinger005-debug" prefix_auto="0" extension_auto="0" />
+				<Option output="build/Wolpertinger0041-debug" prefix_auto="0" extension_auto="0" />
 				<Option object_output="build/Debug/WolpertingerStandalone" />
 				<Option type="0" />
 				<Option compiler="gcc" />
@@ -58,9 +58,9 @@
 					<Add option="-DJUCE_ALSA=1" />
 					<Add option="-DJUCE_JACK=1" />
 					<Add option="-DJUCE_USE_VSTSDK_2_4=1" />
-					<Add option="-DDATE=&quot;`date +%F`&quot;" />
-					<Add option="-DVERSION=005" />
-					<Add option="-DVERSIONSTRING=&quot;0.5&quot;" />
+					<Add option="-DBUILDDATE=&quot;`date +%F`&quot;" />
+					<Add option="-DWOLPVERSION=0041" />
+					<Add option="-DWOLPVERSIONSTRING=&quot;0.4.1&quot;" />
 					<Add option="-DCONFIGURATION=&quot;Debug&quot;" />
 					<Add option="-DJUCE_DEBUG" />
 					<Add option="-DCONFIG_STANDALONE=1" />
@@ -75,7 +75,7 @@
 					<Add directory="src" />
 				</Compiler>
 				<Linker>
-					<Add directory="../juce-151/bin" />
+					<Add directory="../juce-153/bin" />
 					<Add directory="../../../../usr/X11R6/lib" />
 					<Add directory="../../../../usr/lib" />
 					<Add library="freetype" />
@@ -103,6 +103,10 @@
 		<Unit filename="src/synth.cpp">
 		</Unit>
 		<Unit filename="src/tabbed-editor.cpp">
+		</Unit>
+		<Unit filename="src/editor.cpp.save">
+		</Unit>
+		<Unit filename="src/synth.cpp.save">
 		</Unit>
 		<Unit filename="src/ADSRenv.h">
 		</Unit>
@@ -134,15 +138,17 @@
 		</Unit>
 		<Unit filename="juce/juce.h">
 		</Unit>
-		<Unit filename="juce/juce_Config.h">
-		</Unit>
 		<Unit filename="juce/juce_amalgamated.h">
+		</Unit>
+		<Unit filename="juce/juce_Config.h">
 		</Unit>
 		<Unit filename="standalone/juce_AudioFilterStreamer.cpp">
 		</Unit>
 		<Unit filename="standalone/juce_StandaloneFilterWindow.cpp">
 		</Unit>
 		<Unit filename="standalone/wolpMain.cpp">
+		</Unit>
+		<Unit filename="standalone/wolpMain.cpp.save">
 		</Unit>
 		<Unit filename="standalone/juce_AudioFilterStreamer.h">
 		</Unit>

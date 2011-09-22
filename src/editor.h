@@ -48,7 +48,7 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-    void changeListenerCallback(void *objectThatHasChanged);
+    void changeListenerCallback(ChangeBroadcaster *objectThatHasChanged);
     void parentHierarchyChanged();
     //[/UserMethods]
 
@@ -118,7 +118,7 @@ private:
     Label* label23;
     ComboBox* oversmplComboBox;
     Label* label25;
-    Image* cachedImage_scratches_png;
+    Image cachedImage_scratches_png;
 
     //==============================================================================
     // (prevent copy constructor and operator= being generated..)

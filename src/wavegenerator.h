@@ -292,16 +292,17 @@ class NewWaveGenerator
 				{
 
 					double phaseDiff= (masterWaveGenerator.phase-slaveWaveGenerator.phase);
-					masterSample= masterWaveGenerator.getNextRawSample(masterWaveGenerator.sampleStep +
-																	   masterWaveGenerator.sampleStep*slaveSample*0,//.9999);
-																	   phaseMod)*.01;
-					slaveSample= slaveWaveGenerator.getNextRawSample(slaveWaveGenerator.sampleStep +
-																	 slaveWaveGenerator.sampleStep*masterSample*5 +
-																	 slaveWaveGenerator.sampleStep*(masterSample-slaveSample)*0 +
-																	 slaveWaveGenerator.sampleStep*phaseDiff*-1,
-																	 -phaseMod2*1);
+					masterSample= masterWaveGenerator.getNextRawSample();
+//                                                                        masterWaveGenerator.sampleStep +
+//																	   masterWaveGenerator.sampleStep*slaveSample*0,//.9999);
+//																	   phaseMod)*.01;
+//					slaveSample= slaveWaveGenerator.getNextRawSample(slaveWaveGenerator.sampleStep +
+//																	 slaveWaveGenerator.sampleStep*masterSample*5 +
+//																	 slaveWaveGenerator.sampleStep*(masterSample-slaveSample)*0 +
+//																	 slaveWaveGenerator.sampleStep*phaseDiff*-1,
+//																	 -phaseMod2*1);
 
-					s= downsamplingFilter.run(masterSample + slaveSample);
+					s= downsamplingFilter.run(masterSample); // + slaveSample);
 				}
 
 					if(masterWaveGenerator.phase < lastPhase)

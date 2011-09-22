@@ -45,7 +45,7 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-    void changeListenerCallback(void *objectThatHasChanged);
+    void changeListenerCallback(ChangeBroadcaster *objectThatHasChanged);
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -68,7 +68,7 @@ private:
     HyperlinkButton* hyperlinkButton;
     Label* label;
     Label* label2;
-    Image* cachedImage_logo_png;
+    Image cachedImage_logo_png;
 
     //==============================================================================
     // (prevent copy constructor and operator= being generated..)

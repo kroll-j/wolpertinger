@@ -70,8 +70,8 @@ about::about ()
     //[Constructor] You can add your own custom stuff here..
 #define tostring(x) #x
 #define stringify(x) tostring(x)
-	String buildinfo= String(T("v")) + T(stringify(VERSIONSTRING)) + T("\n") +
-					  T("Build Date ") + T(stringify(DATE)) + T("\n") +
+	String buildinfo= String(T("v")) + T(stringify(WOLPVERSIONSTRING)) + T("\n") +
+					  T("Build Date ") + T(stringify(BUILDDATE)) + T("\n") +
 					  T(stringify(BINTYPE)) + T(", ") + T(stringify(CONFIGURATION));
     label2->setText(buildinfo, false);
     //[/Constructor]
@@ -85,7 +85,7 @@ about::~about()
     deleteAndZero (hyperlinkButton);
     deleteAndZero (label);
     deleteAndZero (label2);
-    ImageCache::release (cachedImage_logo_png);
+//    ImageCache::release (cachedImage_logo_png);
 
     //[Destructor]. You can add your own custom destruction code here..
     //[/Destructor]

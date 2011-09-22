@@ -86,6 +86,23 @@
   #define JUCE_DIRECTSOUND 1
 #endif
 
+/** JUCE_DIRECTSHOW: Enables DirectShow media-streaming architecture (MS Windows only).
+*/
+#ifndef JUCE_DIRECTSHOW
+  #define JUCE_DIRECTSHOW 0
+#endif
+
+/** JUCE_MEDIAFOUNDATION: Enables Media Foundation multimedia platform (Windows Vista and above).
+*/
+#ifndef JUCE_MEDIAFOUNDATION
+  #define JUCE_MEDIAFOUNDATION 0
+#endif
+
+#if ! JUCE_WINDOWS
+  #undef JUCE_DIRECTSHOW
+  #undef JUCE_MEDIAFOUNDATION
+#endif
+
 /** JUCE_ALSA: Enables ALSA audio devices (Linux only). */
 #ifndef JUCE_ALSA
   #define JUCE_ALSA 1
@@ -101,11 +118,11 @@
     If you're building on Windows, you'll need to have the Apple QuickTime SDK
     installed, and its header files will need to be on your include path.
 */
-#if ! (defined (JUCE_QUICKTIME) || JUCE_LINUX || JUCE_IPHONE || (JUCE_WINDOWS && ! JUCE_MSVC))
+#if ! (defined (JUCE_QUICKTIME) || JUCE_LINUX || JUCE_IOS || JUCE_ANDROID || (JUCE_WINDOWS && ! JUCE_MSVC))
   #define JUCE_QUICKTIME 0
 #endif
 
-#if (JUCE_IPHONE || JUCE_LINUX) && JUCE_QUICKTIME
+#if (JUCE_IOS || JUCE_LINUX) && JUCE_QUICKTIME
   #undef JUCE_QUICKTIME
 #endif
 
@@ -113,8 +130,15 @@
 /** JUCE_OPENGL: Enables the OpenGLComponent class (available on all platforms).
     If you're not using OpenGL, you might want to turn this off to reduce your binary's size.
 */
-#ifndef JUCE_OPENGL
+#if ! (defined (JUCE_OPENGL) || JUCE_ANDROID)
   #define JUCE_OPENGL 0
+#endif
+
+/** JUCE_DIRECT2D: Enables the Windows 7 Direct2D renderer.
+    If you're building on a platform older than Vista, you won't be able to compile with this feature.
+*/
+#ifndef JUCE_DIRECT2D
+  #define JUCE_DIRECT2D 0
 #endif
 
 //=============================================================================
@@ -237,7 +261,7 @@
     Carbon isn't required for a normal app, but may be needed by specialised classes like
     plugin-hosts, which support older APIs.
 */
-#ifndef JUCE_SUPPORT_CARBON
+#if ! (defined (JUCE_SUPPORT_CARBON) || defined (__LP64__))
   #define JUCE_SUPPORT_CARBON 1
 #endif
 
@@ -267,10 +291,11 @@
 #endif
 
 //=============================================================================
-/** JUCE_CHECK_MEMORY_LEAKS: Enables a memory-leak check when an app terminates.
-    (Currently, this only affects Windows builds in debug mode).
+/** JUCE_CHECK_MEMORY_LEAKS: Enables a memory-leak check for certain objects when
+    the app terminates. See the LeakedObjectDetector class and the JUCE_LEAK_DETECTOR
+    macro for more details about enabling leak checking for specific classes.
 */
-#ifndef JUCE_CHECK_MEMORY_LEAKS
+#if JUCE_DEBUG && ! defined (JUCE_CHECK_MEMORY_LEAKS)
   #define JUCE_CHECK_MEMORY_LEAKS 1
 #endif
 
@@ -289,15 +314,15 @@
   #define JUCE_QUICKTIME 0
   #undef  JUCE_OPENGL
   #define JUCE_OPENGL 0
-  #undef JUCE_USE_CDBURNER
+  #undef  JUCE_USE_CDBURNER
   #define JUCE_USE_CDBURNER 0
-  #undef JUCE_USE_CDREADER
+  #undef  JUCE_USE_CDREADER
   #define JUCE_USE_CDREADER 0
-  #undef JUCE_WEB_BROWSER
+  #undef  JUCE_WEB_BROWSER
   #define JUCE_WEB_BROWSER 0
-  #undef JUCE_PLUGINHOST_AU
+  #undef  JUCE_PLUGINHOST_AU
   #define JUCE_PLUGINHOST_AU 0
-  #undef JUCE_PLUGINHOST_VST
+  #undef  JUCE_PLUGINHOST_VST
   #define JUCE_PLUGINHOST_VST 0
 #endif
 

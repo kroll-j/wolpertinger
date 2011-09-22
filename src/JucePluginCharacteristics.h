@@ -182,8 +182,8 @@
 */
 #define __makestring(x) #x
 #define stringify(x) __makestring(x)
-#define JucePlugin_VersionCode              VERSION
-#define JucePlugin_VersionString            stringify(VERSIONSTRING)
+#define JucePlugin_VersionCode              WOLPVERSION
+#define JucePlugin_VersionString            stringify(WOLPVERSIONSTRING)
 
 
 //==============================================================================

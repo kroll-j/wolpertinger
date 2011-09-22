@@ -116,7 +116,7 @@ void wolpVoice<oversampling>::process(float* p1, float* p2, int samples)
 
 			synth->setParameter(wolp::curcutoff, sqrt(cut/20000));
 //			synth->setParameterNotifyingHost(wolp::curcutoff, sqrt(cut/20000));
-			synth->sendChangeMessage((void*)wolp::curcutoff);
+//			synth->sendChangeMessage(); //(void*)wolp::curcutoff);  // XXX
 		}
 
 		env.advance(sampleStep, playing);
@@ -185,7 +185,7 @@ void wolp::setStateInformation (const void* data, int sizeInBytes)
 
 	if(errorstring.length())
 //		AlertWindow::showMessageBox(AlertWindow::WarningIcon, String("Wolpertinger"), errorstring);
-		printf("Wolpertinger: %s\n", errorstring.toCString());
+		printf("Wolpertinger: %s\n", (const char*)errorstring.toUTF8());
 
 	if(xml) delete xml;
 }
@@ -316,11 +316,11 @@ void wolp::setParameter (int idx, float value)
 		}
 	}
 
-	if(isProcessing)
+//	if(isProcessing)
 		paraminfos[idx].dirty= true;
 
-	else if(getActiveEditor())
-		sendChangeMessage((void*)idx);
+//	else if(getActiveEditor())
+//		sendChangeMessage(); //(void*)idx); // XXX
 }
 
 
@@ -404,14 +404,11 @@ void wolp::processBlock(AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 	tabbed_editor *e= (tabbed_editor*)getActiveEditor();
 	if(e)
 	{
+		bool updateGUI= false;
 		for(int i= 0; i<param_size; i++)
-		{
-			if(paraminfos[i].dirty)
-			{
-				sendChangeMessage((void*)i);
-				paraminfos[i].dirty= false;
-			}
-		}
+			if(paraminfos[i].dirty) updateGUI= true;
+
+        if(updateGUI) sendChangeMessage();
 
 		int nPoly= 0;
 		for(int i= voices.size(); --i>=0; )
@@ -486,7 +483,7 @@ void wolp::renderNextBlock (AudioSampleBuffer& outputBuffer,
                 handleController (m.getChannel(),
                                   m.getControllerNumber(),
                                   m.getControllerValue());
-                printf("controller: %s\n", MidiMessage::getControllerName(m.getControllerNumber()).toUTF8());
+                printf("controller: %s\n", MidiMessage::getControllerName(m.getControllerNumber()).toUTF8().getAddress());
             }
             else if(m.isAftertouch())
             {

@@ -22,13 +22,13 @@ endif
 ifeq ($(config),release)
   OBJDIR     = build/Release/WolpertingerStandalone
   TARGETDIR  = build
-  TARGET     = $(TARGETDIR)/Wolpertinger005
-  DEFINES   += -DLINUX=1 -DJUCE_USE_XSHM=1 -DJUCE_ALSA=1 -DJUCE_JACK=1 -DJUCE_USE_VSTSDK_2_4=1 -DDATE="`date +%F`" -DVERSION=005 -DVERSIONSTRING="0.5" -DCONFIGURATION="Release" -DCONFIG_STANDALONE=1 -DBINTYPE="Linux Standalone" -DNDEBUG=1
+  TARGET     = $(TARGETDIR)/Wolpertinger0041
+  DEFINES   += -DLINUX=1 -DJUCE_USE_XSHM=1 -DJUCE_ALSA=1 -DJUCE_JACK=1 -DJUCE_USE_VSTSDK_2_4=1 -DBUILDDATE="`date +%F`" -DWOLPVERSION=0041 -DWOLPVERSIONSTRING="0.4.1" -DCONFIGURATION="Release" -DCONFIG_STANDALONE=1 -DBINTYPE="Linux Standalone" -DNDEBUG=1
   INCLUDES  += -Ijuce -I../vstsdk2.4 -Isrc
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -O2 `freetype-config --cflags` -msse -O2 -ffast-math
   CXXFLAGS  += $(CFLAGS) 
-  LDFLAGS   += -s -L../juce-151/bin -L../../../../usr/X11R6/lib -L../../../../usr/lib
+  LDFLAGS   += -s -L../juce-153/bin -L../../../../usr/X11R6/lib -L../../../../usr/lib
   LIBS      += -lfreetype -lpthread -lrt -lX11 -lXext -lm -lasound
   RESFLAGS  += $(DEFINES) $(INCLUDES) 
   LDDEPS    += 
@@ -44,13 +44,13 @@ endif
 ifeq ($(config),debug)
   OBJDIR     = build/Debug/WolpertingerStandalone
   TARGETDIR  = build
-  TARGET     = $(TARGETDIR)/Wolpertinger005-debug
-  DEFINES   += -DLINUX=1 -DJUCE_USE_XSHM=1 -DJUCE_ALSA=1 -DJUCE_JACK=1 -DJUCE_USE_VSTSDK_2_4=1 -DDATE="`date +%F`" -DVERSION=005 -DVERSIONSTRING="0.5" -DCONFIGURATION="Debug" -DJUCE_DEBUG -DCONFIG_STANDALONE=1 -DBINTYPE="Linux Standalone" -DDEBUG=1 -D_DEBUG=1
+  TARGET     = $(TARGETDIR)/Wolpertinger0041-debug
+  DEFINES   += -DLINUX=1 -DJUCE_USE_XSHM=1 -DJUCE_ALSA=1 -DJUCE_JACK=1 -DJUCE_USE_VSTSDK_2_4=1 -DBUILDDATE="`date +%F`" -DWOLPVERSION=0041 -DWOLPVERSIONSTRING="0.4.1" -DCONFIGURATION="Debug" -DJUCE_DEBUG -DCONFIG_STANDALONE=1 -DBINTYPE="Linux Standalone" -DDEBUG=1 -D_DEBUG=1
   INCLUDES  += -Ijuce -I../vstsdk2.4 -Isrc
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -g `freetype-config --cflags` -msse -ggdb
   CXXFLAGS  += $(CFLAGS) 
-  LDFLAGS   += -L../juce-151/bin -L../../../../usr/X11R6/lib -L../../../../usr/lib
+  LDFLAGS   += -L../juce-153/bin -L../../../../usr/X11R6/lib -L../../../../usr/lib
   LIBS      += -lfreetype -lpthread -lrt -lX11 -lXext -lm -lasound
   RESFLAGS  += $(DEFINES) $(INCLUDES) 
   LDDEPS    += 

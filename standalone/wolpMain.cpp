@@ -100,12 +100,14 @@ void StandaloneFilterApplication::initialise (const String& commandLine)
 
     // open up config
     ApplicationProperties* appProperties = ApplicationProperties::getInstance();
-    appProperties->setStorageParameters (T(JucePlugin_Name),
-                                         T("conf"),
-                                         T(".tumbetoene"),
-                                         2000,
-                                         PropertiesFile::ignoreCaseOfKeyNames
-                                         | PropertiesFile::storeAsXML);
+    PropertiesFile::Options options;
+    options.applicationName= T(JucePlugin_Name);
+    options.filenameSuffix= T("conf");
+    options.folderName= T(".tumbetoene");
+    options.ignoreCaseOfKeyNames= true;
+    options.millisecondsBeforeSaving= 2000;
+    options.storageFormat= PropertiesFile::storeAsXML;
+    appProperties->setStorageParameters (options);
 
     // setup window name
     String pluginWindowName;
@@ -124,7 +126,7 @@ void StandaloneFilterApplication::initialise (const String& commandLine)
 
     window->toFront (true);
 
-	Image &icon= *ImageCache::getFromMemory(about::icon_png, about::icon_pngSize);
+	Image icon= ImageCache::getFromMemory(about::icon_png, about::icon_pngSize);
 	ComponentPeer *peer= window->getPeer();
 	if(peer) peer->setIcon(icon);
 

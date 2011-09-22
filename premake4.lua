@@ -2,14 +2,14 @@
 juce_amalgamated= true
 
 -- if you set juce_amalgamated to false, adjust this to match your juce basedir containing the 'src' subdirectory
-jucedir= "../juce-151"
+jucedir= "../juce-153"
 
 -- to build the VSTi, adjust this to match your vst sdk 2.4 basedir containing the 'public.sdk' subdirectory
 vstdir= "../vstsdk2.4"
 
 appname= "Wolpertinger"
-version= "005"
-version_string= "0.5"
+version= "0041"
+version_string= "0.4.1"
 
 solution(appname)
 	if juce_amalgamated then 
@@ -40,9 +40,9 @@ solution(appname)
 
 	defines { "LINUX=1", "JUCE_USE_XSHM=1", "JUCE_ALSA=1", "JUCE_JACK=1", 
 		  "JUCE_USE_VSTSDK_2_4=1",
-		  "DATE=\"`date +%F`\"",
-		  "VERSION=" .. version,
-		  "VERSIONSTRING=\"" .. version_string .. "\""
+		  "BUILDDATE=\"`date +%F`\"",
+		  "WOLPVERSION=" .. version,
+		  "WOLPVERSIONSTRING=\"" .. version_string .. "\""
 		}
 
 	files { "src/**.cpp", "src/**.h" }
@@ -68,7 +68,7 @@ project(appname .. "Standalone")
 
 configuration "Debug"
 	defines { "DEBUG=1", "_DEBUG=1" }
-	if not juce_amalgamated then links { "juce_debug" } end
+	if not juce_amalgamated then links { "jucedebug" } end
 	flags { "Symbols" }
 	buildoptions { "-ggdb" }
 	targetsuffix "-debug"
@@ -91,7 +91,7 @@ project(appname .. "VST")
 
 configuration "Debug"
 	defines { "DEBUG=1", "_DEBUG=1" }
-	if not juce_amalgamated then links { "juce_debug" } end
+	if not juce_amalgamated then links { "jucedebug" } end
 	flags { "Symbols" }
 	buildoptions { "-ggdb" }
 	targetsuffix "-debug"
