@@ -1,5 +1,5 @@
-    Wolpertinger v0.4
-    Copyright (C) 2009, 2010  Johannes Kroll
+    Wolpertinger v0.4.1
+    Copyright (C) 2009-2011  Johannes Kroll
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@ SVN via web: http://svn.tuxfamily.org/viewvc.cgi/tumbetoene_wolpertinger/
 
 VERSIONS
 
+0.4.1	Fix for crashes in some hosts. Build with Juce 1.53.
 0.4	ADSR Volume Envelope
 	Configurable 8x / 16x Oversampling
 	Bugfix: Set sample rate correctly
@@ -51,10 +52,6 @@ The executable binary should run out of the box, no installation needed. The
 VST shared object (.so) is meant to be loaded into VST-compatible host
 applications, e. g. Renoise. Check your host documentation for native Linux
 VST support. 
-
-The included Win32 DLL can be loaded into Linux hosts which only support 
-Windows VSTs, such as LMMS. This is experimental and not recommended. If 
-possible, use the native Linux VST under Linux!
 
 
 BUILDING
